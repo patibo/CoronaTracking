@@ -8,13 +8,13 @@ CREATE TABLE IF NOT EXISTS kunden(`id` int(11) NOT NULL AUTO_INCREMENT,
                                   `email` varchar(50) NOT NULL,
                                   `geburtsdatum` date,
                                   `telefon` varchar(20),
-                                  PRIMARY KEY(`kID`));
+                                  PRIMARY KEY(`id`));
                                   
 CREATE TABLE IF NOT EXISTS eventsentry(`id` int(11) NOT NULL AUTO_INCREMENT,
 									  `name` varchar(70) NOT NULL,
                                       `datum` date NOT NULL,
                                       `zeit` time NOT NULL,
-                                      PRIMARY KEY(`eID`));
+                                      PRIMARY KEY(`id`));
 
 CREATE TABLE IF NOT EXISTS kundenevents(`kID` int(11) NOT NULL,
 										`eID` int(11) NOT NULL,
@@ -22,7 +22,5 @@ CREATE TABLE IF NOT EXISTS kundenevents(`kID` int(11) NOT NULL,
                                         `datum` date NOT NULL,
                                         `zeit` time NOT NULL,
                                         PRIMARY KEY(kID, eID),
-                                        FOREIGN KEY(`kID`) REFERENCES kunden(id),
-                                        FOREIGN KEY(`eID`) REFERENCES eventsentry(id));
-                                        
-                                        
+                                        FOREIGN KEY(`kID`) REFERENCES kunden(`id`),
+                                        FOREIGN KEY(`eID`) REFERENCES eventsentry(`id`)); 
