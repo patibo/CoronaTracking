@@ -1,4 +1,5 @@
 CREATE DATABASE IF NOT EXISTS coronatracking;
+USE coronatracking;
 
 CREATE TABLE IF NOT EXISTS kunden(`id` int(11) NOT NULL AUTO_INCREMENT,
 								  `benutzername` varchar(16) NOT NULL,
