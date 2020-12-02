@@ -1,6 +1,9 @@
 import re #Bibliothek regex wird importiert. Ist für die Überprüfung der Eingaben.
 import mysql.connector#Bibliothek mysql wird importiert. Ist für die Verbindung zur Datenbank.
 import datetime#Bibliothek datetime wird importiert. Ist für die Prüfung vom Geburtsdatum.
+
+#Alisa Rieger Code
+
 class DB:#Hier passiert alles was mit der DB zutun hat
     def __init__(self,user,pswd,host,port,db):#Hier werden die Informationen übergeben die ich für eine DB verbindung brauche
         self.config = {
