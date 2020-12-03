@@ -6,7 +6,9 @@
         <a class="nav-item nav-link" routerLink="/users" routerLinkActive="active">Users</a>
       <br>
       <br>
-        <a class="nav-item nav-link" (click)="logout()">Logout</a>
+      <div  class="log-out">
+        <a  (click)="logout()">Logout</a>
+      </div>
     </div>
 </nav>
 
@@ -15,4 +17,5 @@
     <alert></alert>
     <router-outlet></router-outlet>
 </div>
+
 

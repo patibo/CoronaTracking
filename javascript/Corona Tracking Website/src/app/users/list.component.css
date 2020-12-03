@@ -1,0 +1,23 @@
+
+td{
+  color: white;
+}
+
+table{
+  background-color: #0096d6;
+}
+
+th, td {
+  padding: 10px;
+  text-align: center;
+}
+
+table, th, td {
+  border: 1px solid mediumblue;
+  border-collapse: collapse;
+  border-color: mediumblue;
+}
+table{
+  margin-top: 8%;
+  margin-left: 1%;
+}
