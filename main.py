@@ -159,6 +159,8 @@ class Login:#Hier passiert alles was im hintergrund der Webseite
         server.quit()
         #Die verbindung wird geschlossen
         server.close()
+        
+        #ein SQL-State wo das Passwort geändert wird
     def evinput(self):
         #Zurzeit sind nur placeholder Daten drinnen, die müssen dann angepasst werden, sobald es eine Funktion/Weg zur übertragung der DB Daten gibt.
 
