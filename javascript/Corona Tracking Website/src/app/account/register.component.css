@@ -135,3 +135,11 @@ a:hover, a:active {
 .button-register:hover, button-register:active {
   background-color:  darkgreen;
 }
+
+
+.inputBox .is-required
+
+{
+  font-family: Calibri;
+  color: red;
+}
