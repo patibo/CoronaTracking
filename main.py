@@ -1,8 +1,9 @@
 import re #Bibliothek regex wird importiert. Ist für die Überprüfung der Eingaben.
 import mysql.connector#Bibliothek mysql wird importiert. Ist für die Verbindung zur Datenbank.
 import datetime#Bibliothek datetime wird importiert. Ist für die Prüfung vom Geburtsdatum.
-import smtplib
-import random
+import smtplib#Bibliothek smtplib wird importiert. Ist für den Zugriff und versendung der E-Mails zuständig.
+import random#Bibliothek random wird importiert.Ist für die 5 Stellige Verefezierung für Passwort zurücksetzen.
+
 class DB:#Hier passiert alles was mit der DB zutun hat
     def __init__(self,user,pswd,host,port,db):#Hier werden die Informationen übergeben die ich für eine DB verbindung brauche
         self.config = {
@@ -36,8 +37,7 @@ class DB:#Hier passiert alles was mit der DB zutun hat
     def close(self):#die Verbindung zur DB wird getrennt
         self.cur.close()
         self.mydb.close()
-    #Neues Event anlegen
-    def eventinsert(self, name, datum, zeit): 
+    def eventinsert(self, name, datum, zeit):#Neues Event anlegen
         sql = "INSERT INTO `eventsentry`(`name`, `datum`, `zeit`) VALUES ('{}', '{}', '{}')".format(name, datum, zeit)
         self.cur.execute(sql)
         self.mydb.commit()
@@ -111,9 +111,13 @@ class Login:#Hier passiert alles was im hintergrund der Webseite
         self.id = self.id[0][0]
         self.db.close()#Verbindung zur DB wird getrent
     
-    def kundenevent(self):
+    def kundenevent(self):#Verlauf erstellen
         self.db.connect()#Verbindung zur DB wird erstellt
+
+        #SQL-State wo ich die ID vom Event bekomme was ich auswähle
         event_id = '1'
+
+
         self.db.insert_kundenevent(self.id,event_id)
         self.db.close()#Verbindung zur DB wird getrent
     def mail(self):
@@ -122,7 +126,8 @@ class Login:#Hier passiert alles was im hintergrund der Webseite
         mail_text = 'Es gab einen Coronafall!'
         subject = 'Warnung!'
 
-        
+        #emails sind alle Emails von den Usern, ausgenommen der die Meldung sendete, die auch bei den Events waren wo auch der erkrankte User 3 Tage vor dem 1 Syntom tag war
+
         MAIL_FROM = user
         RCPT_TO  = ", ".join(emails)
         DATA = 'From:%s\nTo:%s\nSubject:%s\n\n%s' % (MAIL_FROM, RCPT_TO, subject, mail_text)
@@ -145,7 +150,7 @@ class Login:#Hier passiert alles was im hintergrund der Webseite
             mail_text += str(random.randint(1,9))
 
         MAIL_FROM = user
-        RCPT_TO  = email
+        RCPT_TO  = email#email ist die Email vom User der das Passwort ändern möchte. Diese Information bekomme ich aus der DB
         DATA = 'From:%s\nTo:%s\nSubject:%s\n\n%s' % (MAIL_FROM, RCPT_TO, subject, mail_text)
         server = smtplib.SMTP('smtp.gmail.com',587)
         server.starttls()
@@ -154,7 +159,7 @@ class Login:#Hier passiert alles was im hintergrund der Webseite
         server.quit()
         #Die verbindung wird geschlossen
         server.close()
-      def evinput(self):
+    def evinput(self):
         #Zurzeit sind nur placeholder Daten drinnen, die müssen dann angepasst werden, sobald es eine Funktion/Weg zur übertragung der DB Daten gibt.
 
         #Input für den Eventnamen
@@ -171,8 +176,9 @@ class Login:#Hier passiert alles was im hintergrund der Webseite
                     datum = datum.replace(i, "-")
 
             #Checkt, ob das Datum im "date"-Format der MySQL Datenbank geschrieben wurde.
-            date = re.match('^\d{4}(?P<sep>[\/.-])\d{2}(?P=sep)(\d{2})$', datum)
-            
+            date_p = "^\d{4}(?P<sep>[\/.-])\d{2}(?P=sep)(\d{2})$"
+            date = re.match(date_p, datum)
+                
             #Falls alle Daten nicht None sind, wird das Event hinzugefügt.
             if date != None and name != None and zeit != None:
                 self.db.connect()#Verbindung zur DB wird erstellt
