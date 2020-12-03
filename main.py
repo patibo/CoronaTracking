@@ -31,9 +31,21 @@ class DB:#Hier passiert alles was mit der DB zutun hat
         self.cur.execute(sql)
         return self.cur.fetchall()
     def select_id(self,benutzername_email,pswd):
-        sql = "SELECT id FROM kunden WHERE (`benutzername`='{}' or `email`='{}') and `passwort` = '{}' ".format(benutzername_email,pswd)
+        sql = "SELECT id FROM kunden WHERE (`benutzername`='{}' or `email`='{}') and `passwort` = '{}' ".format(benutzername_email,benutzername_email,pswd)
         self.cur.execute(sql)
         return self.cur.fetchall()
+    def select_benutzername(self,benutzername):
+        sql = "SELECT COUNT(*) FROM kunden WHERE benutzername = '{}' ".format(benutzername)
+        self.cur.execute(sql)
+        return self.cur.fetchall()
+    def select_mail(self,kunden_id,date):
+        sql = "SELECT kunden.`email` FROM kunden JOIN kundenevents ON kunden.id=kundenevents.kID JOIN eventsentry on eventsentry.id = kundenevents.eID WHERE kunden.id != {} and eventsentry.datum >='{}'and eventsentry.id IN(SELECT eventsentry.id FROM eventsentry JOIN kundenevents ON eventsentry.id=kundenevents.eID JOIN kunden on kunden.id = kundenevents.kID WHERE kunden.id = {} and eventsentry.datum >='{}')".format(kunden_id,date,kunden_id,date)  
+        self.cur.execute(sql)
+        return self.cur.fetchall()  
+    def select_user_email(self, kunden_id):
+        sql = "SELECT `email` FROM kunden WHERE id = {}".format(kunden_id)
+        self.cur.execute(sql)
+        return self.cur.fetchall() 
     def close(self):#die Verbindung zur DB wird getrennt
         self.cur.close()
         self.mydb.close()
@@ -81,12 +93,15 @@ class Login:#Hier passiert alles was im hintergrund der Webseite
         vorname = vorname.strip()#Leerzeichen werden am Anfang und am Ende entfernt
         nachname = nachname.strip()#Leerzeichen werden am Anfang und am Ende entfernt
 
-        p_email = "^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$"
+        p_email = "^([a-zA-Z0-9]+([-_\.]?[a-zA-Z0-9])+@[a-zA-Z0-9]+([-_\.]?[a-zA-Z0-9])+\.[a-z]{2,4}){0,}$"
         p_name = "^[a-zA-Z]+$"
+        p_pswd = "^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}$"
 
         if pswt != pswt_w:#Hier wird geschaut ob in den Passwortfelder das gleiche drinnen steht, wenn nicht kommt eine Fehlermeldung
                 fehler_medlung = "Fehler! Passwortfelder stimmen nicht überein."
                 print(fehler_medlung)
+        if not re.search(p_pswd,pswt):  
+            print('Keine gültiges Passwort! min. 6 Zeichen lang,min. 1 Großbuchstaben, min. 1 Kleinbuchstaben und min. 1 Ziffer enthalten.')
         geburtsdatum = datetime.datetime.strptime(geburtsdatum, '%Y-%m-%d')#wird zum type datetime conventiert
         if geburtsdatum > datetime.datetime.today():#schaut ob du schon geboren wurdest, wenn nicht fehler meldung
             print('Geburtsdatum stimmt nicht!')
@@ -98,6 +113,13 @@ class Login:#Hier passiert alles was im hintergrund der Webseite
             print('Kein gültiger Vorname. Es sind nur Buchstaben erlaubt.') 
         if not re.search(p_name,nachname):  
             print('Kein gültiger Vorname. Es sind nur Buchstaben erlaubt.') 
+
+        exist_benutzername = self.db.select_benutzername(benutzername)
+        exist_benutzername = exist_benutzername[0][0]
+        if exist_benutzername !=0:
+            print("Dieser Benutzername exestiert schon")
+
+
 
 
 
@@ -127,6 +149,16 @@ class Login:#Hier passiert alles was im hintergrund der Webseite
         subject = 'Warnung!'
 
         #emails sind alle Emails von den Usern, ausgenommen der die Meldung sendete, die auch bei den Events waren wo auch der erkrankte User 3 Tage vor dem 1 Syntom tag war
+        heute = datetime.date.today()
+        tage = datetime.timedelta(days=3)
+
+        date = heute-tage
+        self.db.connect()
+        emails = []
+        for i in self.db.select_mail(self.id,date):
+            for e in i:
+                emails.append(e)
+        self.db.close()
 
         MAIL_FROM = user
         RCPT_TO  = ", ".join(emails)
@@ -150,7 +182,10 @@ class Login:#Hier passiert alles was im hintergrund der Webseite
             mail_text += str(random.randint(1,9))
 
         MAIL_FROM = user
-        RCPT_TO  = email#email ist die Email vom User der das Passwort ändern möchte. Diese Information bekomme ich aus der DB
+        self.db.connect()
+        email = self.db.select_user_email(self.id)
+        self.db.close()
+        RCPT_TO  = email[0][0]#email ist die Email vom User der das Passwort ändern möchte. Diese Information bekomme ich aus der DB
         DATA = 'From:%s\nTo:%s\nSubject:%s\n\n%s' % (MAIL_FROM, RCPT_TO, subject, mail_text)
         server = smtplib.SMTP('smtp.gmail.com',587)
         server.starttls()
@@ -159,7 +194,7 @@ class Login:#Hier passiert alles was im hintergrund der Webseite
         server.quit()
         #Die verbindung wird geschlossen
         server.close()
-        
+
         #ein SQL-State wo das Passwort geändert wird
     def evinput(self):
         #Zurzeit sind nur placeholder Daten drinnen, die müssen dann angepasst werden, sobald es eine Funktion/Weg zur übertragung der DB Daten gibt.
@@ -202,6 +237,7 @@ class Login:#Hier passiert alles was im hintergrund der Webseite
                 output.append(str(i))
             print(output)
             self.db.close()
-Website = Login()
-Website.neu()
+#Website = Login()
+#Website.neu()
 # Website.anmelden()
+
