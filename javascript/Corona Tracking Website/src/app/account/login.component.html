@@ -1,5 +1,11 @@
 ﻿
 
+<div class="überschrift">
+  <h1> Corona Tracking App</h1>
+</div>
+<div id="homepage">
+<a routerLink="../register">Register</a>
+</div>
 
         <form [formGroup]="form" (ngSubmit)="onSubmit()">
           <div class="box">
@@ -23,13 +29,21 @@
             </div>
 
 
-                <button [disabled]="loading"  class="button-register">
-                    <span *ngIf="loading" ></span>
-                    Login
-                </button>
-                <a routerLink="../register">Register</a>
 
-          </div>
+
+
+
+            <div
+>              <button style="text-align: right" [disabled]="loading"  class="button-register">
+                <a *ngIf="loading" ></a>
+                Login
+              </button>
+
+            </div>
+
+
+            </div>
+
+
         </form>
-
 

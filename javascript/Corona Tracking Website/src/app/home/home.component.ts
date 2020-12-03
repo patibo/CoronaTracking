@@ -10,6 +10,11 @@ import { AccountService } from '@app/_services';
 export class HomeComponent {
     user: User;
 
+   myFunction() {
+     alert("hi")
+   }
+
+
     constructor(private accountService: AccountService) {
         this.user = this.accountService.userValue;
     }
