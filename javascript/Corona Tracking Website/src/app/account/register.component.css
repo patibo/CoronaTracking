@@ -8,6 +8,7 @@ body{
   color:green;
   font-family: Calibri;
 }
+
 footer {
   width: 100%;
   position: fixed;
@@ -77,6 +78,7 @@ a:hover, a:active {
   padding: 0;
   color: #fff;
   text-align: center;
+
 }
 .box .inputBox input
 {
@@ -117,4 +119,19 @@ a:hover, a:active {
   font-size: 16px;
   font-family: Calibri;
 
+}
+
+
+.button-register
+{
+  background-color: forestgreen;
+  color: white;
+  padding: 14px 25px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.button-register:hover, button-register:active {
+  background-color:  darkgreen;
 }
