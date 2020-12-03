@@ -126,7 +126,7 @@ class Login:#Hier passiert alles was im hintergrund der Webseite
         mail_text = 'Es gab einen Coronafall!'
         subject = 'Warnung!'
 
-        #emails sind alle Emails von den Usern, ausgenommen der die Meldung sendete, die auch auf den Events waren
+        #emails sind alle Emails von den Usern, ausgenommen der die Meldung sendete, die auch bei den Events waren wo auch der erkrankte User 3 Tage vor dem 1 Syntom tag war
 
         MAIL_FROM = user
         RCPT_TO  = ", ".join(emails)
