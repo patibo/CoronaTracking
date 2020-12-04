@@ -17,7 +17,7 @@
 
 
   <div class="box">
-    <h1 style="text-align: center; color: white">Register</h1>
+    <h1 style="text-align: center; color: white">Registrieren</h1>
     <div class="inputBox">
       <label>Username</label>
       <input #username matInput placeholder="user123" formControlName="username" autocomplete="off" />
@@ -39,10 +39,10 @@
         <input #repwInp matInput placeholder="reenter password" formControlName="reenterPassword" autocomplete="off"/>
     </div>
 
-    <button  style="background-color: blue; color: white;margin-right: 10px;" type ="submit">
-        <span>Register</span>
+    <button  style="background-color: green; color: white;margin-right: 10px;" type ="submit">
+        <span>Registrieren</span>
     </button>
-    <button style="background-color: red; color: white;" type="reset" value="Reset">Cancel</button>
+    <button style="background-color: red; color: white;" type="reset" value="Reset">Abbrechen</button>
   </div>
 </form>
 <div #unsuccessLogin *ngIf="div1" style="color: red;">Password and Reenter Password values do not match! Try Again!</div>
