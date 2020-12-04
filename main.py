@@ -39,7 +39,7 @@ class DB:#Hier passiert alles was mit der DB zutun hat
         self.cur.execute(sql)
         return self.cur.fetchall()
     def select_mail(self,kunden_id,date):
-        sql = "SELECT kunden.`email` FROM kunden JOIN kundenevents ON kunden.id=kundenevents.kID JOIN eventsentry on eventsentry.id = kundenevents.eID WHERE kunden.id != {} and eventsentry.datum >='{}'and eventsentry.id IN(SELECT eventsentry.id FROM eventsentry JOIN kundenevents ON eventsentry.id=kundenevents.eID JOIN kunden on kunden.id = kundenevents.kID WHERE kunden.id = {} and eventsentry.datum >='{}')".format(kunden_id,date,kunden_id,date)  
+        sql = "SELECT kunden.`email` FROM kunden JOIN kundenevents ON kunden.id=kundenevents.kID JOIN eventsentry on eventsentry.id = kundenevents.eID WHERE kunden.id != {} and eventsentry.datum >='{}'and eventsentry.id IN(SELECT eventsentry.id FROM eventsentry JOIN kundenevents ON eventsentry.id=kundenevents.eID JOIN kunden on kunden.id = kundenevents.kID WHERE kunden.id = {} and eventsentry.datum >='{}')".format(kunden_id[0][0],date,kunden_id[0][0],date)  
         self.cur.execute(sql)
         return self.cur.fetchall()  
     def select_user_email(self, kunden_id):
@@ -80,9 +80,10 @@ class Login:#Hier passiert alles was im hintergrund der Webseite
                 fehler_medlung = "Fehler! Benutzername/E-Mail oder Passwort stimmt nicht."
                 print(fehler_medlung)
                 fehlerfrei = ""
-            self.db.close()#Verbindung zur DB wird getrennt
+            
             if fehlerfrei == 'ok':
                 self.id = self.db.select_id(benutzername_email,pswt)
+                self.db.close()#Verbindung zur DB wird getrennt
         else:
             fehler_medlung = "Fehler! Benutzername/E-Mail oder Passwort stimmt nicht."
             print(fehler_medlung)
@@ -131,14 +132,14 @@ class Login:#Hier passiert alles was im hintergrund der Webseite
         if not re.search(p_name,nachname):  
             print('Kein gültiger Vorname. Es sind nur Buchstaben erlaubt.') 
             fehlerfrei = ""
-
+        self.db.connect()#verbindung zur DB wird erstellt
         exist_benutzername = self.db.select_benutzername(benutzername)
         exist_benutzername = exist_benutzername[0][0]
         if exist_benutzername !=0:
             print("Dieser Benutzername exestiert schon")
             fehlerfrei = ""
         if fehlerfrei == 'ok':
-            self.db.connect()#verbindung zur DB wird erstellt
+            
             self.db.insert_kunde(benutzername,pswt,vorname,nachname,email)#neues Konot wird erstellt
             self.db.close()#Verbindung zur DB wird getrentt
 
@@ -181,14 +182,23 @@ class Login:#Hier passiert alles was im hintergrund der Webseite
                 emails.append(e)
         self.db.close()
 
-        MAIL_FROM = user
-        RCPT_TO  = ", ".join(emails)
-        DATA = 'From:%s\nTo:%s\nSubject:%s\n\n%s' % (MAIL_FROM, RCPT_TO, subject, mail_text)
+        FROM = user
+        # to  = ", ".join(emails)
+        # print('to: ',to)
+        # DATA = 'From:{}\nTo:{}\nSubject:{}\n\n{}'.format(FROM, to, subject, mail_text)
         server = smtplib.SMTP('smtp.gmail.com',587)
         server.starttls()
         server.login(user, pwd)
-        server.sendmail(MAIL_FROM, RCPT_TO, DATA)
+        # server.sendmail(FROM, to, DATA)
+        
+
+
+        header = 'To:' + ", ".join(emails) + '\n' + 'From: ' + FROM + '\n' + 'Subject: ' + subject + '\n'
+        msg = header + '\n' + mail_text + '\n\n'
+        server.sendmail(FROM, emails, msg)
         server.quit()
+        server.close()
+
         #Die verbindung wird geschlossen
         server.close()
     def passwort_email(self,email):
@@ -279,6 +289,11 @@ class Login:#Hier passiert alles was im hintergrund der Webseite
                 output.append(str(i))
             print(output)
             self.db.close()
+
+
+
+
+
 Website = Login()
 abrechen = False
 while abrechen == False:
