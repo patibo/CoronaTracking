@@ -21,16 +21,13 @@
   <component name="ChangeListManager">
     <list default="true" id="98f1b1c4-7a46-44c4-968d-f0e4efc78cc9" name="Default Changelist" comment="create user and login user">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/app-routing.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/app-routing.module.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/app.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/app.component.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/app.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/app.module.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/components/login/login.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/components/login/login.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/components/home/home.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/components/home/home.component.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/components/login/login.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/components/login/login.component.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/components/login/login.component.scss" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/components/login/login.component.scss" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/app/components/navbar/navbar.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/components/navbar/navbar.component.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/app/components/signup/signup.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/components/signup/signup.component.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/components/signup/signup.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/components/signup/signup.component.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/components/user-list/user-list.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/components/user-list/user-list.component.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/app/components/user/user.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/components/user/user.component.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/components/user/user.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/components/user/user.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/index.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -74,7 +71,8 @@
       <workItem from="1607034084644" duration="53000" />
       <workItem from="1607034922476" duration="257000" />
       <workItem from="1607037647899" duration="1862000" />
-      <workItem from="1607039878563" duration="4575000" />
+      <workItem from="1607039878563" duration="4653000" />
+      <workItem from="1607072702979" duration="3494000" />
     </task>
     <task id="LOCAL-00001" summary="create user and login user">
       <created>1607039157707</created>
@@ -97,7 +95,14 @@
       <option name="project" value="LOCAL" />
       <updated>1607041018332</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="create user and login user">
+      <created>1607044493248</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1607044493248</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -129,13 +134,13 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="1074" y="302" key="EditFileWatcherDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1607032573328" />
-    <state x="1185" y="275" key="FileChooserDialogImpl" timestamp="1607039500316">
+    <state x="1185" y="275" key="FileChooserDialogImpl" timestamp="1607072780634">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="1185" y="275" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1607039500316" />
-    <state x="72" y="253" key="Vcs.Push.Dialog.v2" timestamp="1607041033949">
+    <state x="1185" y="275" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1607072780634" />
+    <state x="72" y="253" key="Vcs.Push.Dialog.v2" timestamp="1607044497562">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="72" y="253" key="Vcs.Push.Dialog.v2/0.0.1920.1040@0.0.1920.1040" timestamp="1607041033949" />
+    <state x="72" y="253" key="Vcs.Push.Dialog.v2/0.0.1920.1040@0.0.1920.1040" timestamp="1607044497562" />
   </component>
 </project>

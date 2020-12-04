@@ -11,10 +11,16 @@
     }
   </style>
 
+
+
   <div class="box">
     <h1 style="text-align: center; color: white">Register</h1>
     <div class="inputBox">
+      <label>Username</label>
+      <input #username matInput placeholder="user123" formControlName="username" autocomplete="off" />
 
+    </div>
+    <div class="inputBox">
         <label>Email</label>
         <input #emailInp matInput placeholder="example@gmail.com" formControlName="email" autocomplete="off" />
 
