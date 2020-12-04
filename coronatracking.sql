@@ -7,8 +7,6 @@ CREATE TABLE IF NOT EXISTS kunden(`id` int(11) NOT NULL AUTO_INCREMENT,
                                   `vorname` varchar(20) NOT NULL,
                                   `nachname` varchar(20) NOT NULL,
                                   `email` varchar(50) NOT NULL,
-                                  `geburtsdatum` date,
-                                  `telefon` varchar(20),
                                    PRIMARY KEY(`id`));
                                   
 CREATE TABLE IF NOT EXISTS eventsentry(`id` int(11) NOT NULL AUTO_INCREMENT,
