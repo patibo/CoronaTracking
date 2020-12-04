@@ -18,8 +18,8 @@ class DB:#Hier passiert alles was mit der DB zutun hat
     def connect(self):#eine Verbindung zur DB wird erstellt
         self.mydb = mysql.connector.connect(**self.config)
         self.cur = self.mydb.cursor()
-    def insert_kunde(self,benutzername,pswt,vorname,nachname,email,geburtsdatum,telefon):#ein Neuer Kunde wird erstellt
-        sql = "INSERT INTO `kunden`(`benutzername`, `passwort`, `vorname`, `nachname`, `email`, `geburtsdatum`, `telefon`) VALUES ('{}','{}','{}','{}','{}','{}','{}')".format(benutzername,pswt,vorname,nachname,email,geburtsdatum,telefon)
+    def insert_kunde(self,benutzername,pswt,vorname,nachname,email):#ein Neuer Kunde wird erstellt
+        sql = "INSERT INTO `kunden`(`benutzername`, `passwort`, `vorname`, `nachname`, `email`) VALUES ('{}','{}','{}','{}','{}')".format(benutzername,pswt,vorname,nachname,email)
         self.cur.execute(sql)
         self.mydb.commit()
     def insert_kundenevent(self,kunden_id,event_id):
@@ -46,6 +46,10 @@ class DB:#Hier passiert alles was mit der DB zutun hat
         sql = "SELECT `email` FROM kunden WHERE id = {}".format(kunden_id)
         self.cur.execute(sql)
         return self.cur.fetchall() 
+    def update_pswd(self, pswd,email):
+        sql = "UPDATE `kunden` SET `passwort`='{}' WHERE `email` = '{}'".format(pswd,email)
+        self.cur.execute(sql)
+        self.mydb.commit()
     def close(self):#die Verbindung zur DB wird getrennt
         self.cur.close()
         self.mydb.close()
@@ -64,28 +68,37 @@ class Login:#Hier passiert alles was im hintergrund der Webseite
         self.db = DB('root','root','localhost','8889','coronatracking')#hier kann ich die Klasse DB verwenden bzw. hier wird sie aufgerufen
         self.id = None
     def anmelden(self):#anmelde funktion
-        benutzername_email = 'ar'#Eingabefeld für Benutzername bzw. E-Mail
-        pswt = 'a'#Eingabefeld für das Passwort
+        benutzername_email = input('Benutzername/E-Mail: ')#Eingabefeld für Benutzername bzw. E-Mail
+        pswt = input('Passwort: ')#Eingabefeld für das Passwort
+        fehlerfrei = "ok"
         
         benutzername_email = benutzername_email.strip()#Leerzeichen werden am Anfang und am Ende entfernt
         self.db.connect()#Verbindung zur DB wird erstellt
         pswd = self.db.select_pswd(benutzername_email)#das Passwort was zum Benutzername/E-Mail passt was in der DB gespeichert wurde wird hier zurückgegeben
-
-        if pswt != pswd[0][0]:#hier wird geschaut ob das Passwort im Eingabefeld das gleiche Passwort ist wie in der DB. Stimmt es nicht kommt eine Fehlermeldung.
+        if len(pswd) != 0:
+            if pswt != pswd[0][0]:#hier wird geschaut ob das Passwort im Eingabefeld das gleiche Passwort ist wie in der DB. Stimmt es nicht kommt eine Fehlermeldung.
+                fehler_medlung = "Fehler! Benutzername/E-Mail oder Passwort stimmt nicht."
+                print(fehler_medlung)
+                fehlerfrei = ""
+            self.db.close()#Verbindung zur DB wird getrennt
+            if fehlerfrei == 'ok':
+                self.id = self.db.select_id(benutzername_email,pswt)
+        else:
             fehler_medlung = "Fehler! Benutzername/E-Mail oder Passwort stimmt nicht."
             print(fehler_medlung)
-        self.db.close()#Verbindung zur DB wird getrennt
+            fehlerfrei = ""
+        return fehlerfrei
 
     def neu(self):
-        benutzername = 'ud'#Eingabefeld vom Benutzernamen
-        pswt = 'u'#Eingabefeld vom Passwort
-        pswt_w = 'u'#Eingabefeld vom Passwort wiederholen
-        vorname = 'ulli'#Eingabefeld vom Vornamen
-        nachname = 'doujak'#Eingabefeld vom Nachname
-        email = 'ud@gmail.com'#Eingabefeld vom E-Mail
-        geburtsdatum = '2020-11-10'#Eingabefeld vom Geburtsdatum
-        telefon = ''#Eingabefeld von der Telefonnummer
-       
+        benutzername = input('Benutzername: ')#Eingabefeld vom Benutzernamen
+        pswt = input('Passwort: ')#Eingabefeld vom Passwort
+        pswt_w = input('Passwort wiederholen: ')#Eingabefeld vom Passwort wiederholen
+        vorname = input('Vorname: ')#Eingabefeld vom Vornamen
+        nachname = input('Nachname: ')#Eingabefeld vom Nachname
+        email = input('E-Mail: ')#Eingabefeld vom E-Mail
+        # geburtsdatum = '2020-11-10'#Eingabefeld vom Geburtsdatum
+        # telefon = ''#Eingabefeld von der Telefonnummer
+        fehlerfrei = "ok"
        
 
 
@@ -99,34 +112,42 @@ class Login:#Hier passiert alles was im hintergrund der Webseite
 
         if pswt != pswt_w:#Hier wird geschaut ob in den Passwortfelder das gleiche drinnen steht, wenn nicht kommt eine Fehlermeldung
                 fehler_medlung = "Fehler! Passwortfelder stimmen nicht überein."
+                fehlerfrei = ""
                 print(fehler_medlung)
         if not re.search(p_pswd,pswt):  
             print('Keine gültiges Passwort! min. 6 Zeichen lang,min. 1 Großbuchstaben, min. 1 Kleinbuchstaben und min. 1 Ziffer enthalten.')
-        geburtsdatum = datetime.datetime.strptime(geburtsdatum, '%Y-%m-%d')#wird zum type datetime conventiert
-        if geburtsdatum > datetime.datetime.today():#schaut ob du schon geboren wurdest, wenn nicht fehler meldung
-            print('Geburtsdatum stimmt nicht!')
+            fehlerfrei = ""
+        # geburtsdatum = datetime.datetime.strptime(geburtsdatum, '%Y-%m-%d')#wird zum type datetime conventiert
+        # if geburtsdatum > datetime.datetime.today():#schaut ob du schon geboren wurdest, wenn nicht fehler meldung
+        #     print('Geburtsdatum stimmt nicht!')
         
         if not re.search(p_email,email):  
             print('Keine gültige Email Adresse')
+            fehlerfrei = ""
 
         if not re.search(p_name,vorname):  
             print('Kein gültiger Vorname. Es sind nur Buchstaben erlaubt.') 
+            fehlerfrei = ""
         if not re.search(p_name,nachname):  
             print('Kein gültiger Vorname. Es sind nur Buchstaben erlaubt.') 
+            fehlerfrei = ""
 
         exist_benutzername = self.db.select_benutzername(benutzername)
         exist_benutzername = exist_benutzername[0][0]
         if exist_benutzername !=0:
             print("Dieser Benutzername exestiert schon")
+            fehlerfrei = ""
+        if fehlerfrei == 'ok':
+            self.db.connect()#verbindung zur DB wird erstellt
+            self.db.insert_kunde(benutzername,pswt,vorname,nachname,email)#neues Konot wird erstellt
+            self.db.close()#Verbindung zur DB wird getrentt
 
 
 
 
 
 
-        self.db.connect()#verbindung zur DB wird erstellt
-        self.db.insert_kunde(benutzername,pswt,vorname,nachname,email,geburtsdatum,telefon)#neues Konot wird erstellt
-        self.db.close()#Verbindung zur DB wird getrentt
+        
     def kunde_id(self,benutzername_email,pswt):
         self.db.connect()#Verbindung zur DB wird erstellt
         self.id = self.db.select_id(benutzername_email,pswt)
@@ -170,7 +191,7 @@ class Login:#Hier passiert alles was im hintergrund der Webseite
         server.quit()
         #Die verbindung wird geschlossen
         server.close()
-    def passwort_email(self):
+    def passwort_email(self,email):
         user = 'alisa6rieger@gmail.com'
         pwd = 'spuzunwyyivbpnbe'
         subject = 'Verifizierungs Email'
@@ -183,9 +204,9 @@ class Login:#Hier passiert alles was im hintergrund der Webseite
 
         MAIL_FROM = user
         self.db.connect()
-        email = self.db.select_user_email(self.id)
+        #email = self.db.select_user_email(self.id)
         self.db.close()
-        RCPT_TO  = email[0][0]#email ist die Email vom User der das Passwort ändern möchte. Diese Information bekomme ich aus der DB
+        RCPT_TO  = email#[0][0]#email ist die Email vom User der das Passwort ändern möchte. Diese Information bekomme ich aus der DB
         DATA = 'From:%s\nTo:%s\nSubject:%s\n\n%s' % (MAIL_FROM, RCPT_TO, subject, mail_text)
         server = smtplib.SMTP('smtp.gmail.com',587)
         server.starttls()
@@ -194,8 +215,29 @@ class Login:#Hier passiert alles was im hintergrund der Webseite
         server.quit()
         #Die verbindung wird geschlossen
         server.close()
-
+        fehlerfrei = "ok"
         #ein SQL-State wo das Passwort geändert wird
+        code = input('Code: ')
+        if code == mail_text:
+            pswt = input('neues Passwort: ')#Eingabefeld vom Passwort
+            pswt_w = input('neues Passwort wiederholen: ')#Eingabefeld vom Passwort wiederholen
+            p_pswd = "^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}$"
+
+            if pswt != pswt_w:#Hier wird geschaut ob in den Passwortfelder das gleiche drinnen steht, wenn nicht kommt eine Fehlermeldung
+                    fehler_medlung = "Fehler! Passwortfelder stimmen nicht überein."
+                    fehlerfrei = ""
+                    print(fehler_medlung)
+            if not re.search(p_pswd,pswt):  
+                print('Keine gültiges Passwort! min. 6 Zeichen lang,min. 1 Großbuchstaben, min. 1 Kleinbuchstaben und min. 1 Ziffer enthalten.')
+                fehlerfrei = ""
+            if fehlerfrei == 'ok':
+                self.db.connect()
+                self.db.update_pswd(pswt,email)
+                self.db.close()
+                print('Passwort wurde zurückgesetzt')
+        else:
+            print('Code ist falsch und kann man jetzt nicht mehr verwenden')
+
     def evinput(self):
         #Zurzeit sind nur placeholder Daten drinnen, die müssen dann angepasst werden, sobald es eine Funktion/Weg zur übertragung der DB Daten gibt.
 
@@ -237,7 +279,32 @@ class Login:#Hier passiert alles was im hintergrund der Webseite
                 output.append(str(i))
             print(output)
             self.db.close()
-#Website = Login()
-#Website.neu()
-# Website.anmelden()
+Website = Login()
+abrechen = False
+while abrechen == False:
+    a = input("1.)Anmelden\n2.)neues Konto erstellen\n3.)Passwort vergessen\n4.)Beenden\n")
+    if a == '1':
+        b = Website.anmelden()
+        if b == 'ok':
+            beenden = False
+            while beenden == False:
+                c = input("1.)Corona-Warn-EMail\n2.)Beenden\n")
+                if c == '1':
+                    Website.mail()
+                elif c == '2':
+                    print('Aufwiedersehen!')
+                    beenden = True
+                else:
+                    print('Falsche Eingabe')
+    elif a == '2':
+        Website.neu()
+    elif a == '3':
+        email = input('E-Mail: ')
+        Website.passwort_email(email)
+    elif a == '4':
+        print('Aufwiedersehen!')
+        abrechen = True
+    else:
+        print('Falsche Eingabe')
+
 
