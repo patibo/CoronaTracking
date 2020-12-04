@@ -6,12 +6,11 @@
         <a (click)="deleteSessionUserInfo()" routerLink="/login">Logout</a>
     </span>
 </mat-toolbar>
-<!-- <div id="last"></div>
-<button (click) = "displayPerson()">Click</button> -->
+
 
 <div style="margin-top: 10px" id="hiName"></div>Welcome
 
-<button (click)="showUserDetailfunc()" style="margin-top: 2%;margin-bottom: 2%; background-color: blue; color: white;"> Hide/Show User Details</button>
+<button (click)="showUserDetailfunc()" style="margin-top: 2%;margin-bottom: 2%; background-color: blue; color: white; padding: 10px"> Hide/Show User Details</button>
 <form [formGroup]="updateUserForm" (ngSubmit)="update()" novalidate *ngIf="showDetails">
     <h1 style="text-align: center; margin-top: 15px;">User Data:</h1>
     <table style="width: 50%; margin: auto; text-align: center;" border=1>
@@ -19,8 +18,9 @@
 
             <th>User Email</th>
             <th>Password</th>
-            <th>Role</th>
+
             <th colspan="2">Action</th>
+          <th>Delete</th>
         </tr>
         <tr>
 
@@ -39,12 +39,12 @@
 <td>
 
 
-        <input  style="text-align: center;" #roleInp formControlName="role" disabled/>
+
 
 </td>
 <td>
     <button style="background-color: blue; color: white;"type ="submit">
-        <span>Update user</span>
+        <span>Change Password</span>
     </button>
 </td>
 <td><button mat-icon-button color="warn">

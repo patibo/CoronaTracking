@@ -12,24 +12,10 @@ import { Router } from '@angular/router';
   styleUrls: ['./user-list.component.scss']
 })
 export class UserListComponent implements OnInit {
+  constructor(private userListCrudService: UserListCrudService, private router: Router) { }
   newUserForm: FormGroup;
 
-  users$:Observable<User[]>
-  constructor(private userListCrudService:UserListCrudService,private router: Router) { }
-
-  ngOnInit(): void {
-    this.users$ = this.userListCrudService.fetchAll()
-    this.newUserForm = this.createFormGroup();
-  }
-
-  createFormGroup():FormGroup{
-    return new FormGroup({
-      email: new FormControl("",[Validators.required]),
-      password: new FormControl("",[Validators.required]),
-      role: new FormControl("",[Validators.required])
-      //, role: new FormControl("user")
-    });
-  }
+  users$: Observable<User[]>;
 
   // post(email: String, password:String):void{
   //   const inpOne = email.trim();
@@ -40,46 +26,12 @@ export class UserListComponent implements OnInit {
 
   //   console.log(inpOne);
   //   console.log(inpTwo);
-  //   //this.users$ = 
+  //   //this.users$ =
   //   this.userListCrudService.post(inpOne,inpTwo);
   // }
 
-  div1:boolean=false;
-  div2:boolean=false;
-  post():void{
-    const inpOne = this.newUserForm.controls['email'].value.trim()
-    const inpTwo = this.newUserForm.controls['password'].value.trim()
-    const inpThree = this.newUserForm.controls['role'].value.trim()
-
-    if(!inpOne || !inpTwo || !inpThree){
-      return;
-    }
-
-    if(inpThree.toLowerCase() === "user" || inpThree.toLowerCase() === "admin"){
-      console.log(this.newUserForm.value);
-      console.log(inpOne);
-      console.log(inpTwo);
-      console.log(inpThree);
-      this.userListCrudService.post(this.newUserForm.value).subscribe();
-      this.div2=true;
-      if(this.div1==true){
-        this.div1 = false;
-      }
-    }
-    else{
-      console.log("invalid input");
-      console.log(this.newUserForm.value);
-      console.log(inpOne);
-      console.log(inpTwo);
-      console.log(inpThree);
-      this.div1=true;
-      if(this.div2==true){
-        this.div2 = false;
-      }
-    }
-    //this.userListCrudService.post(this.newUserForm.value).subscribe();
-    //window.location.reload();
-  }
+  div1 = false;
+  div2 = false;
 
   // div1:boolean=false;
   // div1func(){
@@ -89,45 +41,93 @@ export class UserListComponent implements OnInit {
   //   else{
   //     this.div1=false;
   //   }
-    
+
   // }
 
-  addUser:boolean=false;
-  addUserfunc(){
-    if(this.addUser==false){
-      this.addUser=true;
-    }
-    else{
-      this.addUser=false;
-    }
-    
+  addUser = false;
+
+  showUser = false;
+
+  ngOnInit(): void {
+    this.users$ = this.userListCrudService.fetchAll();
+    this.newUserForm = this.createFormGroup();
   }
 
-  showUser:boolean=false;
-  showUserfunc(){
-    if(this.showUser==false){
-      this.showUser=true;
+  createFormGroup(): FormGroup{
+    return new FormGroup({
+      email: new FormControl('', [Validators.required]),
+      password: new FormControl('', [Validators.required]),
+      role: new FormControl('', [Validators.required])
+      // , role: new FormControl("user")
+    });
+  }
+  post(): void{
+    const inpOne = this.newUserForm.controls.email.value.trim();
+    const inpTwo = this.newUserForm.controls.password.value.trim();
+    const inpThree = this.newUserForm.controls.role.value.trim();
+
+    if (!inpOne || !inpTwo || !inpThree){
+      return;
+    }
+
+    if (inpThree.toLowerCase() === 'user' || inpThree.toLowerCase() === 'admin'){
+      console.log(this.newUserForm.value);
+      console.log(inpOne);
+      console.log(inpTwo);
+      console.log(inpThree);
+      this.userListCrudService.post(this.newUserForm.value).subscribe();
+      this.div2 = true;
+      if (this.div1 == true){
+        this.div1 = false;
+      }
     }
     else{
-      this.showUser=false;
+      console.log('invalid input');
+      console.log(this.newUserForm.value);
+      console.log(inpOne);
+      console.log(inpTwo);
+      console.log(inpThree);
+      this.div1 = true;
+      if (this.div2 == true){
+        this.div2 = false;
+      }
     }
-    
+    // this.userListCrudService.post(this.newUserForm.value).subscribe();
+    // window.location.reload();
   }
-  
-  delete(id:number):void{
+  addUserfunc(){
+    if (this.addUser == false){
+      this.addUser = true;
+    }
+    else{
+      this.addUser = false;
+    }
+
+  }
+  showUserfunc(){
+    if (this.showUser == false){
+      this.showUser = true;
+    }
+    else{
+      this.showUser = false;
+    }
+
+  }
+
+  delete(id: number): void{
     this.userListCrudService.delete(id).subscribe();
-    var loggedInUser = JSON.parse(sessionStorage.getItem('currentUser'));
-    if(loggedInUser.id==id){
+    let loggedInUser = JSON.parse(sessionStorage.getItem('currentUser'));
+    if (loggedInUser.id == id){
       sessionStorage.removeItem('currentUser');
-      this.router.navigate([""]);
+      this.router.navigate(['']);
     }
     else{
       window.location.reload();
     }
-    
+
   }
 
-  deleteSessionUserInfo():void{
+  deleteSessionUserInfo(): void{
     sessionStorage.removeItem('currentUser');
   }
 }

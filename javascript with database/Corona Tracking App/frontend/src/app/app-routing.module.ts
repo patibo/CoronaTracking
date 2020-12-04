@@ -8,12 +8,12 @@ import { HomeComponent } from './components/home/home.component';
 import { UserComponent } from './components/user/user.component';
 
 const routes: Routes = [
-  {path:"", component: HomeComponent},
-  {path:"user", component: UserComponent},
-  {path:"admin", component: UserListComponent},
-  {path:"register", component: SignupComponent},
-  {path:"login", component: LoginComponent},
-  {path:"**", redirectTo: ""},
+  {path: '', component: HomeComponent},
+  {path: 'user', component: UserComponent},
+  {path: 'admin', component: UserListComponent},
+  {path: 'register', component: SignupComponent},
+  {path: 'login', component: LoginComponent},
+  {path: '**', redirectTo: ''},
 ];
 
 @NgModule({
