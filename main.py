@@ -248,7 +248,7 @@ class Login:#Hier passiert alles was im hintergrund der Webseite
         else:
             print('Code ist falsch und kann man jetzt nicht mehr verwenden')
 
-    def evinput(self):
+    def evinput(self, name, datum, zeit):
         #Zurzeit sind nur placeholder Daten drinnen, die müssen dann angepasst werden, sobald es eine Funktion/Weg zur übertragung der DB Daten gibt.
 
         #Input für den Eventnamen
