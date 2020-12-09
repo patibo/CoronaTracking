@@ -15,7 +15,6 @@ class UserProfileAdmin(admin.ModelAdmin):
         list_display =('user', 'birthday')
         search_fields=('user__username',)
 
-admin.site.register(models.Country, CountryAdmin)
-admin.site.register(models.Comment, CommentAdmin)
+
 admin.site.register(models.Post)
 admin.site.register(models.UserProfile, UserProfileAdmin)
