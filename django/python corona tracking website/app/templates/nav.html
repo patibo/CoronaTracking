@@ -1,9 +1,15 @@
 <style>
   .tab {
   overflow: hidden;
-  border: 1px solid #ccc;
-  background-color: mediumblue;
-  padding: 7px
+
+  background-color: #005ca9;
+  padding: 15px
+
+}
+
+a
+{
+color:yellow
 }
 </style>
 
@@ -11,7 +17,10 @@
 <ul class="nav">
   <li class="nav-item">
     <a class="nav-link active" href="{% url 'post_list' %}">Add Event</a>
+
+
   </li>
+
 
 
   {% if user.is_authenticated %}
@@ -28,7 +37,7 @@
 
   {% else %}
 
-      <a class="nav-link active" href="{% url 'register' %}">Register</a>
+      <a class="nav-link active" href="{% url 'register' %}">Registrieren</a>
       <a class="nav-link active" href="{% url 'login' %}">Login</a>
 
 
