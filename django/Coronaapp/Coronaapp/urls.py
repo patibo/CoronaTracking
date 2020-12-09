@@ -24,7 +24,9 @@ urlpatterns = [
     path('users/', views.users, name="users"),
     path('login/', views.login),
     path('app/', views.app),
+    path('register/', views.register),
     path('', views.index),
-    url(r'^loginattempt', views.loginattempt)
+    url(r'^loginattempt', views.loginattempt),
+    path('login1/', views.login1)
     #path('', include("main.urls")),
 ]

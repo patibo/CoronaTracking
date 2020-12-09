@@ -1,0 +1,23 @@
+<h1>Registration</h1>
+{% block content %}
+<form action="/login/" method="POST">
+    {% csrf_token %}
+    {{form.benutzername.label}}
+    {{form.benutzername}}
+    <br>
+    {{form.vorname.label}}
+    {{form.vorname}}
+    <br>
+    {{form.nachname.label}}
+    {{form.nachname}}
+    <br>
+    {{form.email.label}}
+    {{form.email}}
+    <br>
+    {{form.passwort.label}}
+    {{form.passwort}}
+    <br>
+    <input type="submit" name="Create User">
+</form>
+
+{% endblock %}
