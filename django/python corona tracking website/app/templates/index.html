@@ -11,13 +11,16 @@
     </a>
   {% endif %}
 
+
+
+
   <div class="row container">
     {% for post in post_list %}
       <div class="col-sm-6 p-3">
         <div class="card">
           <div class="card-body">
             <h5 class="card-title">{{ post.text }}</h5>
-            <p  style="color:black"; class="card-text">Created by: <a href="{% url 'user_profile' post.created_by.id %}">{{ post.created_by.username }}(Admin)</a></p>
+            <p   class="card-text">Created by: <a style="color:black"; href="{% url 'user_profile' post.created_by.id %}">{{ post.created_by.username }}(Admin)</a></p>
             <a href="{% url 'post_detail' post.id %}" class="btn btn-primary">See event details</a>
           </div>
           <div class="card-footer text-muted">

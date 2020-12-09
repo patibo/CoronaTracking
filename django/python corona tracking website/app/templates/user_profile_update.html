@@ -4,35 +4,27 @@
 {% endblock%}
 
 {% block content %}
+<br>
   <form method="post" class="justify-content-center col-6" enctype='multipart/form-data'>
     {% csrf_token %}
     {{ form.errors }}
     <div class="form-group mx-2">
-      <label for="id_birthday">Birthday:</label>
+      <label for="id_birthday">Geburtsdatum:</label>
       <input type="text" name="birthday" value="{{ form.birthday.initial | date:'Y-m-d' }}"
              id="id_birthday">
     </div>
 
-    <div class="form-group mx-2">
-      <label for="id_country">Country:</label> 
-      <select name="country" class="form-control" id="id_country">
-        {% for value, key in form.fields.country.choices %}
-          <option value="{{ value }}"{% if form.initial.country == value %} selected {% endif %}>
-            {{ key }}
-          </option>
-        {% endfor %}
-      </select>
-    </div>
+
 
     <div class="form-group mx-2">
-      <label for="id_first_name">First name:</label>
+      <label for="id_first_name">Vorname:</label>
       <input type="text" class="form-control" name="first_name" 
              value="{{ form.first_name.initial }}" required="" id="id_first_name" 
              maxlength="100">
     </div>
 
     <div class="form-group mx-2">
-      <label for="id_last_name">Last name:</label>
+      <label for="id_last_name">Nachname:</label>
       <input type="text" class="form-control" name="last_name" 
              required="" id="id_last_name" maxlength="100" 
              value="{{ form.last_name.initial }}">
@@ -47,7 +39,7 @@
 
     <div class="input-group">
       <div class="input-group-prepend">
-        <span class="input-group-text" id="inputGroupFileAddon01">Avatar upload</span>
+        <span class="input-group-text" id="inputGroupFileAddon01">Bild uploaden</span>
       </div>
       <div class="custom-file">
         <input type="file" name="avatar" id="id_avatar" class="custom-file-input">
@@ -59,10 +51,5 @@
 {% endblock %}
 
 {% block js %}
-<script>
-  $(".custom-file-input").on("change", function() {
-    var fileName = $(this).val().split("\\").pop();
-    $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
-  });
-</script>
+
 {% endblock %}
