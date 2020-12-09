@@ -34,8 +34,30 @@
 
 <hr />
 <button (click)="showUserfunc()" style="margin-top: 2%;margin-bottom: 2%; background-color: blue; color: white;"> Show/Hide User List</button>
+
+
+<h1 style="text-align: left;">Add new Event:</h1>
+<label>Name     </label>
+<input  formControlName="name" />
+<br>
+<br>
+<label>Datum  </label>
+<input #emailInp matInput formControlName="name" />
+<br>
+<br>
+<label>Zeit   </label>
+<input #emailInp matInput formControlName="name" />
+
+<br>
+<br>
+<button>Add</button>
 <div *ngIf="showUser">
+
+
 <h1 style="text-align: center;">User List</h1>
+
+
+
 <table style="width: 50%; margin: auto; text-align: center;" border=1>
     <tr>
         <th>User Id</th>
@@ -51,4 +73,9 @@
         </td>
     </tr>
 </table>
+
+
+
+
+
 </div>

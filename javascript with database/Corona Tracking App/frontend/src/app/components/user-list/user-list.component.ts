@@ -111,9 +111,14 @@ export class UserListComponent implements OnInit {
     else{
       this.showUser = false;
     }
-
   }
 
+  createEvent() {
+    var btn = document.createElement('BUTTON');
+    btn.innerHTML = 'Name, Datum Zeit';
+    document.body.appendChild(btn);
+
+  }
   delete(id: number): void{
     this.userListCrudService.delete(id).subscribe();
     let loggedInUser = JSON.parse(sessionStorage.getItem('currentUser'));
