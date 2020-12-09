@@ -17,4 +17,4 @@ class UserProfileAdmin(admin.ModelAdmin):
 
 
 admin.site.register(models.Post)
-admin.site.register(models.UserProfile, UserProfileAdmin)
+
