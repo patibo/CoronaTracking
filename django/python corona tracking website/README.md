@@ -1,4 +1,4 @@
-# socialapp
+
 Django project example containing a social-app
 
 Install virtualenv:
@@ -34,8 +34,5 @@ Start server:
 
         python manage.py runserver
 
-### Stop server using CTRL+C
 
-Create admin user (superuser):
 
-        python manage.py createsuperuser
