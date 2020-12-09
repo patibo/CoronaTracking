@@ -16,7 +16,7 @@ color:yellow
  <div class="tab">
 <ul class="nav">
   <li class="nav-item">
-    <a class="nav-link active" href="{% url 'post_list' %}">Show Events</a>
+    <a class="nav-link active" href="{% url 'post_list' %}">Events anzeigen</a>
 
 
   </li>
@@ -25,7 +25,7 @@ color:yellow
 
   {% if user.is_authenticated %}
 
-      <a class="nav-link active" href="{% url 'user_profile' user.id %}">Hello, {{ user.username }}</a>
+      <a class="nav-link active" href="{% url 'user_profile' user.id %}">Hallo, {{ user.username }}</a>
 
     {% if user.is_superuser %}
 
@@ -33,7 +33,7 @@ color:yellow
 
     {% endif %}
 
-      <a class="nav-link active" href="{% url 'logout' %}">Logout</a>
+      <a class="nav-link active" href="{% url 'logout' %}">Abmelden</a>
 
   {% else %}
 
