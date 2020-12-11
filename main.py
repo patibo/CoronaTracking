@@ -13,7 +13,8 @@ class GUI:
         self.backend = Login()
         """ GUI Fenster """
         self.surface = surface
-        self.title = ''
+        self.title = 'Coronatracking-App'
+        self.surface.title(self.title)
 
         #regestrierung
         self.benutzername = Label(self.surface)
@@ -24,8 +25,8 @@ class GUI:
         self.email = Label(self.surface)
 
         self.e_benutzername = Entry(self.surface)
-        self.e_pswt = Entry(self.surface)
-        self.e_pswt_w = Entry(self.surface)
+        self.e_pswt = Entry(self.surface,show="*")
+        self.e_pswt_w = Entry(self.surface,show="*")
         self.e_vorname = Entry(self.surface)
         self.e_nachname = Entry(self.surface)
         self.e_email = Entry(self.surface)
@@ -36,11 +37,16 @@ class GUI:
         self.userLabel = Label(self.surface)
         self.userEntry = Entry(self.surface)
         self.passLabel = Label(self.surface)
-        self.passEntry = Entry(self.surface)
+        self.passEntry = Entry(self.surface,show="*")
 
         self.b_regestrieren = Button(self.surface)
         self.b_login = Button(self.surface)
         self.b_pswt_return = Button(self.surface)
+
+        self.l_verlauf = Label(self.surface)
+        self.t_verlauf = Label(self.surface)
+
+        self.b_logout = Button(self.surface)
 
     def leer(self):
         self.benutzername.grid_forget()
@@ -69,7 +75,11 @@ class GUI:
         self.b_regestrieren.grid_forget()
         self.b_login.grid_forget()
         self.b_pswt_return.grid_forget()
+
+        self.l_verlauf.grid_forget()
+        self.t_verlauf.grid_forget()
         
+        self.b_logout.grid_forget()
 
 
     def regestrieren(self):
@@ -140,9 +150,9 @@ class GUI:
         self.b_login.config(text='Login',command=self.login_pr)
         self.b_pswt_return.config(text='Passwort zurücksetzen',command=self.pswt_r)
 
-        self.b_regestrieren.grid(row=3, column=0)
+        self.b_regestrieren.grid(row=2, column=1)
         self.b_login.grid(row=2, column=0)
-        self.b_pswt_return.grid(row=4, column=0)
+        self.b_pswt_return.grid(row=2, column=3)
         self.fehler.grid(row=1, column=4)
         self.surface.mainloop()
     def login_pr(self):
@@ -162,9 +172,20 @@ class GUI:
             self.main()
     def main(self):
         self.leer()
-        lable = Label(self.surface)
-        lable.config(text='hallo')
-        lable.grid()
+        output = self.backend.kundenevent()
+        text = ''
+        for i in output:
+            text = text +i[1]+" am "+str(i[2])+" um "+str(i[3])+"\n"
+        
+        self.l_verlauf.config(text=text)
+        self.t_verlauf.config(text='Verlauf',font = "Helvetica 16 bold italic")
+        self.l_verlauf.grid(row = 2, column=0)
+        self.t_verlauf.grid(row = 1, column=0)
+        self.b_logout.grid(row = 3, column=1)
+        self.b_logout.config(text='Abmelden',command=self.logout)
+    def logout(self):
+        self.backend.logout()
+        self.login()
     def pswt_r(self):
         pass
 class DB:#Hier passiert alles was mit der DB zutun hat
@@ -484,7 +505,8 @@ class Login:#Hier passiert alles was im hintergrund der Webseite
             output.append(i)
         self.db.close()
         return output
-       
+    def logout(self):
+        self.id = None
 
 
 
