@@ -1,0 +1,4 @@
+# ignoriert python cache files, vscode, und wheel installationsdateien
+*.pyc
+*.vscode
+*.whl
