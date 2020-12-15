@@ -183,6 +183,7 @@ class GUI:
         self.t_verlauf.grid(row = 1, column=0)
         self.b_logout.grid(row = 3, column=1)
         self.b_logout.config(text='Abmelden',command=self.logout)
+
     def logout(self):
         self.backend.logout()
         self.login()
@@ -197,6 +198,8 @@ class DB:#Hier passiert alles was mit der DB zutun hat
             'port': port,
             'database': db
         }
+
+        #Datenbank verbindung wird erstellt
         self.mydb = None
         self.cur = None
     def connect(self):#eine Verbindung zur DB wird erstellt
