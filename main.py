@@ -244,6 +244,7 @@ class GUI:#Klasse der Oberfläche
         self.b_logout.grid(row = 3, column=11)
         self.b_logout.config(text='Abmelden',command=self.logout)
         self.b_verdachtsfall.config(text='Corona Fall melden', command=self.verdachtsfall, bg='red', fg='white')
+        self.b_verdachtsfall.grid(row = 12, column=1)
     def verdachtsfall(self):
         MsgBox = messagebox.askquestion('Exit Application', 'Sind Sie sich sicher, dass Sie einen Corona Fall melden möchten?',icon='warning')
         if MsgBox == 'yes':
@@ -422,7 +423,7 @@ class Backend:#Hier passiert alles was im hintergrund der Webseite
         nachname = nachname.strip()#Leerzeichen werden am Anfang und am Ende entfernt
 
         p_email = "^([a-zA-Z0-9]+([-_\.]?[a-zA-Z0-9])+@[a-zA-Z0-9]+([-_\.]?[a-zA-Z0-9])+\.[a-z]{2,4}){0,}$"
-        p_name = "^[a-zA-ZäüöÄÜÖ]+${,20}"
+        p_name = "^[a-zA-ZäüöÄÜÖ]{,20}$"
         p_pswd = "^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,32}$"
         p_benutzername = "^[0-9A-Za-z]{,16}$"
 
@@ -484,10 +485,6 @@ class Backend:#Hier passiert alles was im hintergrund der Webseite
             self.db.insert_kunde(benutzername,encoded_pswd,vorname,nachname,email)#neues Konot wird erstellt
 
             self.db.close()#Verbindung zur DB wird getrentt
-
-
-
-
 
 
         
