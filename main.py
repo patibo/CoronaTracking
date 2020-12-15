@@ -302,6 +302,10 @@ class DB:#Hier passiert alles was mit der DB zutun hat
         sql = "SELECT COUNT(*) FROM kunden WHERE benutzername = '{}' ".format(benutzername)
         self.cur.execute(sql)
         return self.cur.fetchall()
+    def select_email(self,email):
+        sql = "SELECT COUNT(*) FROM kunden WHERE benutzername = '{}' ".format(benutzername)
+        self.cur.execute(sql)
+        return self.cur.fetchall()
     def select_mail(self,kunden_id,date):
         sql = "SELECT kunden.`email` FROM kunden JOIN kundenevents ON kunden.id=kundenevents.kID JOIN eventsentry on eventsentry.id = kundenevents.eID WHERE kunden.id != {} and eventsentry.datum >='{}'and eventsentry.id IN(SELECT eventsentry.id FROM eventsentry JOIN kundenevents ON eventsentry.id=kundenevents.eID JOIN kunden on kunden.id = kundenevents.kID WHERE kunden.id = {} and eventsentry.datum >='{}')".format(kunden_id[0][0],date,kunden_id[0][0],date)  
         self.cur.execute(sql)
@@ -383,8 +387,9 @@ class Backend:#Hier passiert alles was im hintergrund der Webseite
         nachname = nachname.strip()#Leerzeichen werden am Anfang und am Ende entfernt
 
         p_email = "^([a-zA-Z0-9]+([-_\.]?[a-zA-Z0-9])+@[a-zA-Z0-9]+([-_\.]?[a-zA-Z0-9])+\.[a-z]{2,4}){0,}$"
-        p_name = "^[a-zA-ZäüöÄÜÖ]+$"
-        p_pswd = "^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}$"
+        p_name = "^[a-zA-ZäüöÄÜÖ]+${,20}"
+        p_pswd = "^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,32}$"
+        p_benutzername = "^[0-9A-Za-z]{,16}$"
 
         self.db.connect()#verbindung zur DB wird erstellt
         exist_benutzername = self.db.select_benutzername(benutzername)
@@ -393,6 +398,10 @@ class Backend:#Hier passiert alles was im hintergrund der Webseite
             #print('Dieser Benutzername exestiert schon')
             fehlerfrei = ""
             return "Dieser Benutzername exestiert schon"
+        if not re.search(p_benutzername,benutzername):  
+            fehlerfrei = ""
+            #print('Keine gültiges Passwort! min. 6 Zeichen lang,min. 1 Großbuchstaben, min. 1 Kleinbuchstaben und min. 1 Ziffer enthalten.')
+            return 'Keine gültiger Benutzername! max. 16 Zeichen lang, nur Buchstaben und Zahlen erlaubt.'
 
         if pswt != pswt_w:#Hier wird geschaut ob in den Passwortfelder das gleiche drinnen steht, wenn nicht kommt eine Fehlermeldung
             fehler_medlung = "Fehler! Passwortfelder stimmen nicht überein."
@@ -402,7 +411,7 @@ class Backend:#Hier passiert alles was im hintergrund der Webseite
         if not re.search(p_pswd,pswt):  
             fehlerfrei = ""
             #print('Keine gültiges Passwort! min. 6 Zeichen lang,min. 1 Großbuchstaben, min. 1 Kleinbuchstaben und min. 1 Ziffer enthalten.')
-            return 'Keine gültiges Passwort! min. 6 Zeichen lang,min. 1 Großbuchstaben, min. 1 Kleinbuchstaben und min. 1 Ziffer enthalten.'
+            return 'Keine gültiges Passwort! min. 8 und max. 32 Zeichen lang,min. 1 Großbuchstaben, min. 1 Kleinbuchstaben und min. 1 Ziffer enthalten.'
             
         # geburtsdatum = datetime.datetime.strptime(geburtsdatum, '%Y-%m-%d')#wird zum type datetime conventiert
         # if geburtsdatum > datetime.datetime.today():#schaut ob du schon geboren wurdest, wenn nicht fehler meldung
@@ -411,17 +420,22 @@ class Backend:#Hier passiert alles was im hintergrund der Webseite
            
             fehlerfrei = ""
             #print('Kein gültiger Vorname. Es sind nur Buchstaben erlaubt.')
-            return 'Kein gültiger Vorname. Es sind nur Buchstaben erlaubt.'
+            return 'Kein gültiger Vorname. Es sind nur Buchstaben erlaubt und darf nicht länger als 20 Zeichen lang sein.'
         if not re.search(p_name,nachname):  
             
             fehlerfrei = ""
             #print('Kein gültiger Nachname. Es sind nur Buchstaben erlaubt.')
-            return 'Kein gültiger Nachname. Es sind nur Buchstaben erlaubt.'
+            return 'Kein gültiger Nachname. Es sind nur Buchstaben erlaubt und darf nicht länger als 20 Zeichen lang sein.'
         if not re.search(p_email,email):  
            
             fehlerfrei = ""
             #print('Keine gültige Email Adresse')
             return 'Keine gültige Email Adresse'
+        exist_email = self.db.select_email(email)
+        exist_email = exist_email[0][0]
+        if exist_email != 0:
+            fehlerfrei = ""
+            return "Diese E-Mail exestiert schon"
 
        
         
