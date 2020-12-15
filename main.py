@@ -61,8 +61,12 @@ class GUI:#Klasse der Oberfläche
         self.ev_name = Entry(self.surface)
         self.ev_datum = Entry(self.surface)
         self.ev_zeit = Entry(self.surface)
-        self.ev_button = Button(self.surface)
+        
         self.ev_error = Label(self.surface)
+        #Event_hinzufügen
+        self.ev_title = Label(self.surface)
+        self.ev_createbutton = Button(self.surface)
+        self.ev_cancelbutton = Button(self.surface)
 
     def clear_design(self):
         #hier werden alle Labels, Enterys, etc. ausgeblendet
@@ -111,8 +115,11 @@ class GUI:#Klasse der Oberfläche
         self.ev_name.grid_forget()
         self.ev_datum.grid_forget()
         self.ev_zeit.grid_forget()
-        self.ev_button.grid_forget()
         self.ev_error.grid_forget()
+
+        self.ev_title.grid_forget()
+        self.ev_createbutton.grid_forget()
+        self.ev_cancelbutton.grid_forget()
 
 
     def regestrieren(self):
@@ -124,6 +131,7 @@ class GUI:#Klasse der Oberfläche
         self.vorname.config(text='Vorname:',bg="#005ca9", fg="white")
         self.nachname.config(text='Nachname:',bg="#005ca9", fg="white")
         self.email.config(text='Email:',bg="#005ca9", fg="white")
+        
         #Labels,Enterys, Buttons werden hier positioniert
         self.benutzername.grid(row=2, column=1, pady = (20,10),padx = (80))
         self.pswt.grid(row=4, column=1, pady = (0,10))
@@ -141,7 +149,7 @@ class GUI:#Klasse der Oberfläche
 
         self.b_save.config(text='Erstellen', command=self.benutzer_erstellen,bg="green")#der Text vom Button wird geändert und festgelegt welche Methode aufgerufen wird, wenn der Button geklickt wird
         self.b_save.grid(row=18, column=1, pady = (12))
-        self.fehler.grid(row=3, column=5)
+        self.fehler.grid(row=18, column=2,sticky=N+S+E+W, columnspan=30)
         
 
 
@@ -178,6 +186,7 @@ class GUI:#Klasse der Oberfläche
         #der Text der Labels werden geändert
         self.userLabel.config(text="Email/Benutzername:",bg="#005ca9", fg="white")
         self.passLabel.config(text="Passwort:",bg="#005ca9", fg="white")
+        self.fehler.config(bg="#005ca9", fg="red")
         #die Labels werden positioniert
         self.userLabel.grid(row=1, column=0, padx = (50))
         self.userEntry.grid(row=1, column=1,pady = (20))
@@ -236,24 +245,27 @@ class GUI:#Klasse der Oberfläche
     #Fenster zum erstellen von Events
     def event_input(self):
         self.clear_design()
-        self.name.config(text='Name:')
-        self.datum.config(text='Datum:')
-        self.zeit.config(text='Zeit:')
-        self.ev_button.config(text="Event erstellen", command=self.event_erstellen)
-        self.ev_error.config(text="")
+        self.ev_title.config(text="Geben Sie die Info des Events das sie erstellen wollen an.", bg="#005ca9", font="bold")
+        self.name.config(text='Name:', bg="#005ca9")
+        self.datum.config(text='Datum:', bg="#005ca9")
+        self.zeit.config(text='Zeit:', bg="#005ca9")
+        self.ev_createbutton.config(text="Bestätigen", command=self.event_erstellen)
+        self.ev_cancelbutton.config(text="Abbrechen", command=self.main)
+        self.ev_error.config(text="", bg="#005ca9", fg="red")
+        self.ev_title.grid(row=0, columnspan=20)
+        self.name.grid(row=1, column=0)
+        self.datum.grid(row=2, column=0)
+        self.zeit.grid(row=3, column=0)
 
-        self.name.grid(row=0, column=0)
-        self.datum.grid(row=1, column=0)
-        self.zeit.grid(row=2, column=0)
+        self.ev_name.grid(row=1, column=1)
+        self.ev_datum.grid(row=2, column=1)
+        self.ev_zeit.grid(row=3, column=1)
 
-        self.ev_name.grid(row=0, column=1)
-        self.ev_datum.grid(row=1, column=1)
-        self.ev_zeit.grid(row=2, column=1)
-
-        self.ev_button.grid(row=3, column=1)
-        self.ev_error.grid(row=4, column=0)
+        self.ev_createbutton.grid(row=4, column=1)
+        self.ev_cancelbutton.grid(row=4, column=3)
+        self.ev_error.grid(row=5, column=0, columnspan=5, sticky=N+S+E+W)
     def event_erstellen(self):
-        #Input für den Eventnamen
+       #Input für den Eventnamen
         name = self.ev_name.get()
         #Input für das Eventdatum (YYYY-MM-DD Format, geht auch mit / oder .)
         datum = self.ev_datum.get()
@@ -261,13 +273,15 @@ class GUI:#Klasse der Oberfläche
         zeit = self.ev_zeit.get()
 
         #Sind alle Felder ausgefüllt, wird das Event angelegt/erstellt.
-        if name != None and datum != None and zeit != None:
+        if name != '' and datum != '' and zeit != '':
             print("success")
-            self.backend.evinput(name, datum, zeit)
-        
+            fehler = self.backend.evinput(name, datum, zeit)
+            self.ev_error.config(text=fehler, fg="red")
+
         else:
-            self.ev_error.config(text="Die Eingabe ist unvollständig!", fg="red")
-            self.event_input()
+            fehler = "Die Eingabe ist unvollständig!"
+            self.ev_error.config(text=fehler)
+
 class DB:#Hier passiert alles was mit der DB zutun hat
     def __init__(self,user,pswd,host,port,db):#Hier werden die Informationen übergeben die ich für eine DB verbindung brauche
         self.config = {
@@ -557,27 +571,24 @@ class Backend:#Hier passiert alles was im hintergrund der Webseite
             print('Code ist falsch und kann man jetzt nicht mehr verwenden')
 
     def evinput(self, name, datum, zeit):
-        
-        if datum != None:
-            #Checkt ob das Datum richtig formatiert ist, falls nicht, wird es korregiert. (YYYY-MM-DD)
-            for i in datum:
-                if i == "/" or i == ".":
-                    datum = datum.replace(i, "-")
+        #Checkt ob das Datum richtig formatiert ist, falls nicht, wird es korregiert. (YYYY-MM-DD)
+        for i in datum:
+            if i == "/" or i == ".":
+                datum = datum.replace(i, "-")
 
-            #Checkt, ob das Datum im "date"-Format der MySQL Datenbank geschrieben wurde.
-            date_p = "^\d{4}(?P<sep>[\/.-])\d{2}(?P=sep)(\d{2})$"
-            date = re.match(date_p, datum)
+        #Checkt, ob das Datum im "date"-Format der MySQL Datenbank geschrieben wurde.
+        date_p = "^\d{4}(?P<sep>[\/.-])\d{2}(?P=sep)(\d{2})$"
+        date = re.match(date_p, datum)
                 
-            #Falls alle Daten nicht None sind, wird das Event hinzugefügt.
-            if date != None and name != None and zeit != None:
-                self.db.connect()
-                self.db.eventinsert(name, datum, zeit)
-                self.db.close()
+        #Falls alle Daten nicht None sind, wird das Event hinzugefügt.
+        if date != None and name != None and zeit != None:
+            self.db.connect()
+            self.db.eventinsert(name, datum, zeit)
+            self.db.close()
                 
-            else:
-                fehler = "Die Eingabe ist unvollständig!"
-                return fehler
-                #Popup Fenster das sagt: "Daten Fehlen", am besten so, dass angegeben wird, was genau fehlt.
+        else:
+            fehler = "Die Eingabe ist Fehlerhaft!"
+            return fehler
 
 
     #Funktion um Events aus der Datenbank zu holen.
