@@ -5,6 +5,7 @@ import smtplib#Bibliothek smtplib wird importiert. Ist für den Zugriff und vers
 import random#Bibliothek random wird importiert.Ist für die 5 Stellige Verefezierung für Passwort zurücksetzen.
 import base64#Bibliothek für die Verschlüsselung
 from tkinter import *#Bibliothek für die Obrfläche
+from tkinter import messagebox
 
 
 class GUI:#Klasse der Oberfläche
@@ -67,6 +68,8 @@ class GUI:#Klasse der Oberfläche
         self.ev_title = Label(self.surface)
         self.ev_createbutton = Button(self.surface)
         self.ev_cancelbutton = Button(self.surface)
+        #email
+        self.b_verdachtsfall = Button(self.surface)
 
     def clear_design(self):
         #hier werden alle Labels, Enterys, etc. ausgeblendet
@@ -120,6 +123,9 @@ class GUI:#Klasse der Oberfläche
         self.ev_title.grid_forget()
         self.ev_createbutton.grid_forget()
         self.ev_cancelbutton.grid_forget()
+
+        #email
+        self.b_verdachtsfall.grid_forget()
 
 
     def regestrieren(self):
@@ -237,6 +243,17 @@ class GUI:#Klasse der Oberfläche
         self.t_verlauf.grid(row = 0, column=1)
         self.b_logout.grid(row = 3, column=11)
         self.b_logout.config(text='Abmelden',command=self.logout)
+        self.b_verdachtsfall.config(text='Corona Fall melden', command=self.verdachtsfall, bg='red', fg='white')
+    def verdachtsfall(self):
+        MsgBox = messagebox.askquestion('Exit Application', 'Sind Sie sich sicher, dass Sie einen Corona Fall melden möchten?',icon='warning')
+        if MsgBox == 'yes':
+            self.backend.mail()
+            messagebox.showinfo('Bestätigung', 'Die warn E-Mails wurden versendet')
+            self.main()
+        else:
+            self.main()
+            
+
     def logout(self):
         self.backend.logout()
         self.login()
@@ -274,13 +291,17 @@ class GUI:#Klasse der Oberfläche
 
         #Sind alle Felder ausgefüllt, wird das Event angelegt/erstellt.
         if name != '' and datum != '' and zeit != '':
-            print("success")
             fehler = self.backend.evinput(name, datum, zeit)
-            self.ev_error.config(text=fehler, fg="red")
+            if fehler != None:
+                self.ev_error.config(text=fehler, fg="red")
+                self.event_input()
+            else:
+                self.main()
 
         else:
             fehler = "Die Eingabe ist unvollständig!"
             self.ev_error.config(text=fehler)
+            self.event_input()
 
 class DB:#Hier passiert alles was mit der DB zutun hat
     def __init__(self,user,pswd,host,port,db):#Hier werden die Informationen übergeben die ich für eine DB verbindung brauche
@@ -317,7 +338,7 @@ class DB:#Hier passiert alles was mit der DB zutun hat
         self.cur.execute(sql)
         return self.cur.fetchall()
     def select_email(self,email):
-        sql = "SELECT COUNT(*) FROM kunden WHERE benutzername = '{}' ".format(benutzername)
+        sql = "SELECT COUNT(*) FROM kunden WHERE email = '{}' ".format(email)
         self.cur.execute(sql)
         return self.cur.fetchall()
     def select_mail(self,kunden_id,date):
@@ -572,6 +593,7 @@ class Backend:#Hier passiert alles was im hintergrund der Webseite
 
     def evinput(self, name, datum, zeit):
         #Checkt ob das Datum richtig formatiert ist, falls nicht, wird es korregiert. (YYYY-MM-DD)
+        fehler = None
         for i in datum:
             if i == "/" or i == ".":
                 datum = datum.replace(i, "-")
@@ -585,6 +607,7 @@ class Backend:#Hier passiert alles was im hintergrund der Webseite
             self.db.connect()
             self.db.eventinsert(name, datum, zeit)
             self.db.close()
+            return fehler
                 
         else:
             fehler = "Die Eingabe ist Fehlerhaft!"
