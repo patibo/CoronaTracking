@@ -634,6 +634,7 @@ class Backend:#Hier passiert alles was im hintergrund der Webseite
                 #print('Passwort wurde zurückgesetzt')
         else:
             #print('Code ist falsch und kann man jetzt nicht mehr verwenden')
+            pass
 
     def evinput(self, name, datum, zeit):
         #Checkt ob das Datum richtig formatiert ist, falls nicht, wird es korregiert. (YYYY-MM-DD)
