@@ -95,6 +95,19 @@ class GUI:#Klasse der Oberfläche
 
         self.email_adress = None
 
+    def menubar(self):
+        menubar = Menu(self.surface)
+        filemenu = Menu(self.surface, tearoff=0)
+        filemenu.add_command(label="Registrieren", command=self.regestrieren())
+        filemenu.add_command(label="Login", command=self.login)
+
+        filemenu.add_separator()
+        filemenu.add_command(label="Exit", command=self.surface.destroy)
+        menubar.add_cascade(label="File", menu=filemenu)
+
+        self.surface.config(menu=menubar)
+
+
     def clear_design(self):
         #hier werden alle Labels, Enterys, etc. ausgeblendet
         """ Hauptseit: Listenbox """
@@ -202,7 +215,7 @@ class GUI:#Klasse der Oberfläche
         self.b_save.config(text='Erstellen', command=self.benutzer_erstellen,bg="green")#der Text vom Button wird geändert und festgelegt welche Methode aufgerufen wird, wenn der Button geklickt wird
         self.b_save.grid(row=18, column=2, pady = (12))
         self.fehler.grid(row=19, column=2, columnspan=30)
-        
+
 
 
         
@@ -245,7 +258,7 @@ class GUI:#Klasse der Oberfläche
         self.passLabel.grid(row=2, column=0)
         self.passEntry.grid(row=2, column=1,pady = (5))
         #die Eigenschaften der Buttons werden geändert
-        self.b_regestrieren.config(text='Regestrieren',command=self.regestrieren,bg="green")
+        self.b_regestrieren.config(text='Regestrieren',command=self.menubar,bg="green")
         self.b_login.config(text='Login',command=self.login_pr,bg="green")
         self.b_pswt_return.config(text='Passwort zurücksetzen',command=self.pswt_r,bg="#33ccff")
         #die Buttons werden positioniert
@@ -297,7 +310,7 @@ class GUI:#Klasse der Oberfläche
         self.clear_design()
         self.var_event_auswahl.set("Events")  # default value
 
-        self.event_l.config(text='Event auswählen')
+        self.event_l.config(text='Select One', width=10)
         self.event_l.grid(row=2, column=1)
         liste = self.backend.event()
         self.event_om = OptionMenu(self.surface,self.var_event_auswahl, *liste)
@@ -306,7 +319,7 @@ class GUI:#Klasse der Oberfläche
         self.event_b.config(text='Reservieren', command=self.reservieren)
         self.event_b.grid(row=2, column=3)
         self.pv_stop.config(text="Abbrechen", command=self.main)
-        self.pv_stop.grid(row=3, column=1)
+        self.pv_stop.grid(row=2, column=1)
     def reservieren(self):
         name = self.var_event_auswahl.get()
         self.backend.db.connect()
