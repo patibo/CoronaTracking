@@ -28,7 +28,7 @@ class GUI:#Klasse der Oberfläche
         self.pswt_w = Label(self.surface)
         self.vorname = Label(self.surface)
         self.nachname = Label(self.surface)
-        self.email = Label(self.surface)
+        self.email_r = Label(self.surface)
 
         self.e_benutzername = Entry(self.surface)
         self.e_pswt = Entry(self.surface,show="*")
@@ -107,7 +107,7 @@ class GUI:#Klasse der Oberfläche
         self.pswt_w.grid_forget()
         self.vorname.grid_forget()
         self.nachname.grid_forget()
-        self.email.grid_forget()
+        self.email_r.grid_forget()
 
         self.e_benutzername.grid_forget()
         self.e_pswt.grid_forget()
@@ -182,7 +182,7 @@ class GUI:#Klasse der Oberfläche
         self.pswt_w.config(text='Passwort wiederholen:',bg="#005ca9", fg="white")
         self.vorname.config(text='Vorname:',bg="#005ca9", fg="white")
         self.nachname.config(text='Nachname:',bg="#005ca9", fg="white")
-        self.email.config(text='Email:',bg="#005ca9", fg="white")
+        self.email_r.config(text='Email:',bg="#005ca9", fg="white")
         
         #Labels,Enterys, Buttons werden hier positioniert
         self.benutzername.grid(row=2, column=1)
@@ -190,7 +190,7 @@ class GUI:#Klasse der Oberfläche
         self.pswt_w.grid(row=6, column=1, pady=(0, 10))
         self.vorname.grid(row=8, column=1, pady=(0, 10))
         self.nachname.grid(row=10, column=1, pady=(0, 10))
-        self.email.grid(row=14, column=1, pady=(0, 10))
+        self.email_r.grid(row=14, column=1, pady=(0, 10))
 
         self.e_benutzername.grid(row=2, column=2, pady=(20, 10))
         self.e_pswt.grid(row=4, column=2, pady=(0, 10))
@@ -538,7 +538,9 @@ class DB:#Hier passiert alles was mit der DB zutun hat
 
 class Backend:#Hier passiert alles was im hintergrund der Webseite
     def __init__(self):
-        self.db = DB('root','15071998','localhost','3306','coronatracking')#hier kann ich die Klasse DB verwenden bzw. hier wird sie aufgerufen
+        #ilirjan: 'root','15071998','localhost','3306','coronatracking'
+        #alisa: 'root','root','localhost','8889','coronatracking'
+        self.db = DB('root','root','localhost','8889','coronatracking')#hier kann ich die Klasse DB verwenden bzw. hier wird sie aufgerufen
         self.id = None
         self.mail_text = ""
     def anmelden(self,benutzername_email,pswt):#anmelde funktion
