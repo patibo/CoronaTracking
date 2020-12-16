@@ -105,6 +105,7 @@ class GUI:#Klasse der Oberfläche
 
         self.surface.config(menu=menubar)
 
+
     def menubar2(self):
         menubar = Menu(self.surface)
 
@@ -265,21 +266,23 @@ class GUI:#Klasse der Oberfläche
             self.e_email.delete(0,'end')
             self.login()
     def fehler_text_leer_regestrieren(self):
+        """die Eingabefelder Benutzername/E-Mail und Passwort auf der Login Seite werden geleert und die Fehlermeldung ausgeblendet. Dann wird die regestrier Seite geöffnet/aufgerufen"""
         self.fehler.config(text='')
         self.userEntry.delete(0,'end')
         self.passEntry.delete(0,'end')
         self.regestrieren()
     def fehler_text_leer_pswt_r(self):
+        """die Eingabefelder Benutzername/E-Mail und Passwort auf der Login Seite werden geleert und die Fehlermeldung ausgeblendet. Dann wird die Passwort zurücksetzen Seite geöffnet/aufgerufen"""
         self.fehler.config(text='')
         self.userEntry.delete(0,'end')
         self.passEntry.delete(0,'end')
         self.pswt_r()
     def login(self):
-        self.surface.configure(bg="#005ca9")
-        self.surface.geometry("800x400")
+        self.surface.configure(bg="#005ca9")#hintergrundfrabe des fensters
+        self.surface.geometry("800x400")#größe des fensters
         self.clear_design()#ganzer Inhalt des Fensters wird ausgeblendet
-        self.menubar()
-        self.email.delete(0,'end')
+        self.menubar()#menübar wird angezeigt
+        self.email.delete(0,'end')#das meist verwendte Eingabefeld für Passwort zurücksetzen wird hier entleert
         #der Text der Labels werden geändert
         self.userLabel.config(text="Email/Benutzername:",bg="#005ca9", fg="white", padx=130)
         self.passLabel.config(text="Passwort:",bg="#005ca9", fg="white")
@@ -302,38 +305,38 @@ class GUI:#Klasse der Oberfläche
 
 
     def login_pr(self):
-        user = self.userEntry.get()
-        pswt = self.passEntry.get()
-        fehler_text = self.backend.anmelden(user, pswt)
+        user = self.userEntry.get()#Inhalt des Eingabefeldes Benutzername/E-Mail auf der Login Seite
+        pswt = self.passEntry.get()#Inhalt des Eingabefeldes Passwort auf der Login Seite
+        fehler_text = self.backend.anmelden(user, pswt)#geprüft ob die Eingaben passen
         
-        if fehler_text != None:
+        if fehler_text != None:#wenn fehler zurückgegeben wird, dann wird dieser Fehler angezeigt und man kommt auf die Login Seite zurück
             #print(fehler_text)
             self.fehler.config(text=fehler_text)
             
             self.login()
-        else:
-            self.fehler.config(text='')
-            self.userEntry.delete(0,'end')
-            self.passEntry.delete(0,'end')
-            self.main()
+        else:#kein Fehler zurückgegeben
+            self.fehler.config(text='')#Fehlermeldung ausgeblendet
+            self.userEntry.delete(0,'end')#Eingabefeld wird geleert
+            self.passEntry.delete(0,'end')#Eingabefeld wird geleert
+            self.main()#Starseite wird aufgerufen/geöffnet
     def main(self):
-        self.clear_design()
-        self.menubar2()
+        self.clear_design()#Seite wird geleert
+        self.menubar2()#Menübar wird angezeig
         self.listbox.delete(0,'end')#alter Listbox stand wird gelöscht
 
         """Scrollbar wird zur Listbox hinzugefügt"""
         self.listbox["yscrollcommand"]=self.scroll.set
         self.scroll["command"]=self.listbox.yview
         
-        for i in self.backend.kundenevent():#die aktuelle Liste wird in der Listbox angezeigt
-            text = i[1]+" am "+str(i[2])+" um "+str(i[3])
+        for i in self.backend.kundenevent():#die aktueller Verlauf es Kunden wird in der Listbox angezeigt
+            text = i[1]+" am "+str(i[2])+" um "+str(i[3])#1 ist Eventname, 2 ist Eventdatum, 3 ist Eventzeit
             self.listbox.insert(END, text)
         #positionierung der Listbox und Scrollbar
         self.listbox.grid(row=1,column=1,columnspan=10,sticky=N+E+S+W)
         self.scroll.grid(row=1,column=10, sticky=E+N+S)
-        self.t_verlauf.config(text='Verlauf',font = "Helvetica 16 bold italic")
+        self.t_verlauf.config(text='Verlauf',font = "Helvetica 16 bold italic")#Überschrift
  
-        self.t_verlauf.grid(row = 0, column=1)
+        self.t_verlauf.grid(row = 0, column=1)#Überschrift positionieren
         #self.b_logout.grid(row = 3, column=11)
         #self.b_logout.config(text='Abmelden',command=self.logout)
         self.b_verdachtsfall.config(text='Corona Fall melden', command=self.verdachtsfall, bg='red', fg='black')
@@ -341,14 +344,14 @@ class GUI:#Klasse der Oberfläche
         #self.b_regestrieren_event.config(text='Event reservieren',command=self.event_reservieren)
         #self.b_regestrieren_event.grid(row = 13, column=3)
     def event_reservieren(self):
-        self.clear_design()
-        self.menubar3()
-        self.var_event_auswahl.set("Events")  # default value
+        self.clear_design()#Seite wird geleert
+        self.menubar3()#menübar wird angezeigt
+        self.var_event_auswahl.set("Events")  #String wird auf Events gestellt
 
         self.event_l.config(text='Select One', width=10)
         self.event_l.grid(row=2, column=1)
-        liste = self.backend.event()
-        self.event_om = OptionMenu(self.surface,self.var_event_auswahl, *liste)
+        liste = self.backend.event()#Alle Events mit ihren Informationen
+        self.event_om = OptionMenu(self.surface,self.var_event_auswahl, *liste)#OprionMenu wird erstellt, in self.var_event_auswahl wird die ausgewählte Event(value) eingetragen
         self.event_om.grid(row=2, column=2)
 
         self.event_b.config(text='Bestätigen', command=self.reservieren, bg="green", pady = 30)
@@ -356,100 +359,101 @@ class GUI:#Klasse der Oberfläche
         #self.pv_stop.config(text="Abbrechen", command=self.main)
         self.pv_stop.grid(row=2, column=1)
     def reservieren(self):
-        name = self.var_event_auswahl.get()
-        self.backend.db.connect()
-        verlauf = self.backend.db.verlauf(self.backend.id)
-        self.backend.db.close()
+        name = self.var_event_auswahl.get()#ausgewählter Event, ist ein string
+        self.backend.db.connect()#Verbindung zu DB erstellt
+        verlauf = self.backend.db.verlauf(self.backend.id)#alle Events die der Kunde reserviert hat werden in verlauf gespeichert
+        self.backend.db.close()#verbindung zu DB getrennt
         ok = 0
-        for i in verlauf:
-            if i[1] in name:
+        for i in verlauf:#jedes einzelne Event wird durchgegangen
+            if i[1] in name:#hat der Kunde schon das ausgewählte event reserviert, kommt diese Meldung, 0 = eventid, 1 = eventname
                 messagebox.showinfo('Event reservieren', 'Für dieses Event haben sie schon reserviert.')
                 ok = 1
                 break
         if ok == 0:        
-            events = self.backend.event()
-            for i in events:
-                if i[0] in name:
+            events = self.backend.event()#in evenst stehen alle Events mit ihren Informationen
+            for i in events:#jedes event wird einzeln durchgegangen
+                if i[0] in name:#das richtige event wird gesucht, 0 = eventname
                     self.backend.event_res(i[0])
-            self.main()
+            self.main()#Starseite wird aufgerufen
         else:
-            self.event_reservieren()
+            self.event_reservieren()#Seite reservieren wird aufgerufen
         
 
     def verdachtsfall(self):
         MsgBox = messagebox.askquestion('Corona Fall melden', 'Sind Sie sich sicher, dass Sie einen Corona Fall melden möchten?',icon='warning')
         if MsgBox == 'yes':
-            self.backend.mail()
+            self.backend.mail()#Email wird versendet
             messagebox.showinfo('Bestätigung', 'Die warn E-Mails wurden versendet')
-            self.main()
+            self.main()#Startseite
         else:
-            self.main()
+            self.main()#Starseite
             
 
     def logout(self):
-        self.backend.logout()
-        self.login()
+        self.backend.logout()#kunden id wird auf none gesetzt
+        self.login()#login Seite wird aufgerufen
     def pswt_r(self):
-        self.clear_design()
+        self.clear_design()#Seite wird geleert
         self.emailLabel.config(text="Geben sie bitte ihre Email-Adresse ihres Accounts an:", bg="#005ca9")
-        
+        #Eigenschaften ändern
         self.pv_button.config(text="Senden", command=self.email_p)
         self.pv_stop.config(text="Abbrechen", command=self.login)
-
+        #positionierungen
         self.emailLabel.grid(row=1, column=1)
         self.email.grid(row=2, column=1)
         self.pv_button.grid(row=3, column=0)
         self.pv_stop.grid(row=3, column=1)
         self.fehler.grid(row=4, column=1)
     def email_p(self):
-        email = self.email.get()
+        email = self.email.get()#E-Mail-Adresse
         fehler_text = self.backend.passwort_email(email)
         if fehler_text != None:#Gibt es einen Fehler wird die Meldung angezeigt und man kommt nicht weiter
             self.fehler.config(text=fehler_text)
             self.pswt_r()
-        else:#Inhalte der Eingabefelder werden entleert, Text vom Lable fehler wird geändert, man kommt auf die login Seite zurück
+        else:#Inhalte der Eingabefelder werden entleert, Text vom Lable fehler wird geändert
             self.fehler.config(text='')
-            self.email_adress = self.email.get()
+            self.email_adress = self.email.get()#E-Mail-Adresse, brauche ich für das Passwort update
             self.email.delete(0,'end')
             self.verifiziercode()
 
     def verifiziercode(self):
         self.clear_design()
+        #Eigenschaften ändern
         self.psLabel.config(text="Geben sie den 5-stellingen Code der ihnen per Email gesendet wurde", bg="#005ca9")
-
-        self.psLabel.grid(row=1, column=1)
-        self.email.grid(row=2, column=1)
         self.pv_button.config(text="Bestätigen", command=self.code_p)
         self.pv_stop.config(text="Abbrechen", command=self.login)
+        #positionierung
+        self.psLabel.grid(row=1, column=1)
+        self.email.grid(row=2, column=1)
         self.pv_button.grid(row=3, column=0)
         self.pv_stop.grid(row=3, column=1)
         self.fehler.grid(row=4, column=0)
     def code_p(self):
-        code = self.email.get()
+        code = self.email.get()#Code vom Eingabefeld
         fehler_text = self.backend.code_pr(code)
         if fehler_text != None:#Gibt es einen Fehler wird die Meldung angezeigt und man kommt nicht weiter
             messagebox.showinfo('Code ist falsch', fehler_text)
             self.email.delete(0,'end')
             self.login()
-        else:#Inhalte der Eingabefelder werden entleert, Text vom Lable fehler wird geändert, man kommt auf die login Seite zurück
+        else:#Inhalte der Eingabefelder werden entleert, Text vom Lable fehler wird geändert
             self.email.delete(0,'end')
             self.zuruecksetzen()
         
     def zuruecksetzen(self):
         self.clear_design()
         self.psLabel.config(text="Geben sie das neue Passwort ein:", bg="#005ca9")
-       
+       #Eigenschaften ändern
         self.pv_button.config(text="Bestätigen", command=self.neu_pswt_p)
         self.pv_stop.config(text="Abbrechen", command=self.login)
-
+        #positionierung
         self.psLabel.grid(row=0, column=0)
         self.pv_pass.grid(row=1, column=0)
         self.pv_passw.grid(row=2, column=0)
         self.pv_button.grid(row=3, column=0)
         self.pv_stop.grid(row=3, column=1)
     def neu_pswt_p(self):
-        pswt = self.pv_pass.get()
-        pswt_w = self.pv_passw.get()
+        pswt = self.pv_pass.get()#Passwort
+        pswt_w = self.pv_passw.get()#Password wiederholen
         fehler_text = self.backend.neuse_passwort(pswt,pswt_w,self.email_adress)
         if fehler_text != None:#Gibt es einen Fehler wird die Meldung angezeigt und man kommt nicht weiter
             self.fehler.config(text=fehler_text)
@@ -462,6 +466,7 @@ class GUI:#Klasse der Oberfläche
     #Fenster zum erstellen von Events
     def event_input(self):
         self.clear_design()
+        #Eigenschaften ändern
         self.ev_title.config(text="Geben Sie die Info des Events das sie erstellen wollen an.", bg="#005ca9", font="bold")
         self.name.config(text='Name:', bg="#005ca9")
         self.datum.config(text='Datum:', bg="#005ca9")
@@ -469,6 +474,7 @@ class GUI:#Klasse der Oberfläche
         self.ev_createbutton.config(text="Bestätigen", command=self.event_erstellen)
         self.ev_cancelbutton.config(text="Abbrechen", command=self.main)
         self.ev_error.config(text="", bg="#005ca9", fg="red")
+        #positionierung
         self.ev_title.grid(row=0, columnspan=20)
         self.name.grid(row=1, column=0)
         self.datum.grid(row=2, column=0)
@@ -521,7 +527,7 @@ class DB:#Hier passiert alles was mit der DB zutun hat
         sql = "INSERT INTO `kunden`(`benutzername`, `passwort`, `vorname`, `nachname`, `email`) VALUES ('{}','{}','{}','{}','{}')".format(benutzername,pswt,vorname,nachname,email)
         self.cur.execute(sql)
         self.mydb.commit()
-    def insert_kundenevent(self,kunden_id,event_id):
+    def insert_kundenevent(self,kunden_id,event_id):#Eintrag welcher Kunde zu welchen Event geht
         sql="INSERT INTO `kundenevents` (`kID`, `eID`) VALUES ('{}', '{}');".format(kunden_id[0][0],event_id[0][0])
         self.cur.execute(sql)
         self.mydb.commit()
@@ -529,32 +535,31 @@ class DB:#Hier passiert alles was mit der DB zutun hat
         sql = "SELECT passwort FROM `kunden` WHERE benutzername = '{}' or email = '{}'".format(benutzername_email, benutzername_email)
         self.cur.execute(sql)
         return self.cur.fetchall()
-    def select_id(self,benutzername_email,pswd):
+    def select_id(self,benutzername_email,pswd):#die ID vom Kunden wird ausgegeben
         sql = "SELECT id FROM kunden WHERE (`benutzername`='{}' or `email`='{}') and `passwort` = '{}' ".format(benutzername_email,benutzername_email,pswd)
         self.cur.execute(sql)
         return self.cur.fetchall()
-    def select_benutzername(self,benutzername):
+    def select_benutzername(self,benutzername):#hier wird geschaut ob es Informationen zum Benutzer gibt bzw. ob dieser Benutzername schon exestiert
         sql = "SELECT COUNT(*) FROM kunden WHERE benutzername = '{}' ".format(benutzername)
         self.cur.execute(sql)
         return self.cur.fetchall()
-    def select_email(self,email):
+    def select_email(self,email):#hier wird geschaut ob es Informationen zur Email gibt bzw. ob diese Email schon exestiert
         sql = "SELECT COUNT(*) FROM kunden WHERE email = '{}' ".format(email)
         self.cur.execute(sql)
         return self.cur.fetchall()
-    def select_mail(self,kunden_id,date):
+    def select_mail(self,kunden_id,date):#alle Emails von Kunden die bei den gleichen Events waren ab einem gewissen Datum wie auch der User war werden ausgegeben
         sql = "SELECT kunden.`email` FROM kunden JOIN kundenevents ON kunden.id=kundenevents.kID JOIN eventsentry on eventsentry.id = kundenevents.eID WHERE kunden.id != {} and eventsentry.datum >='{}'and eventsentry.id IN(SELECT eventsentry.id FROM eventsentry JOIN kundenevents ON eventsentry.id=kundenevents.eID JOIN kunden on kunden.id = kundenevents.kID WHERE kunden.id = {} and eventsentry.datum >='{}')".format(kunden_id[0][0],date,kunden_id[0][0],date)  
         self.cur.execute(sql)
         return self.cur.fetchall() 
-    def select_event_mail(self,kunden_id,date):
+    def select_event_mail(self,kunden_id,date):#alle Events die der User ab einen gewissen Datum reserviert hat, werden ausgegeben
         sql = "SELECT eventsentry.name,eventsentry.datum,eventsentry.zeit FROM eventsentry JOIN kundenevents ON eventsentry.id=kundenevents.eID JOIN kunden on kunden.id = kundenevents.kID WHERE kunden.id = {} and eventsentry.datum >= '{}'".format(kunden_id[0][0],date)  
         self.cur.execute(sql)
         return self.cur.fetchall()  
-    def select_user_email(self, kunden_id):
+    def select_user_email(self, kunden_id):#email von user wid ausgegeben
         sql = "SELECT `email` FROM kunden WHERE id = {}".format(kunden_id)
         self.cur.execute(sql)
         return self.cur.fetchall() 
-    def update_pswd(self, pswd,email):
-        
+    def update_pswd(self, pswd,email):#passwort wird geändert
         sql = "UPDATE `kunden` SET `passwort`='{}' WHERE `email` = '{}'".format(pswd,email)
         self.cur.execute(sql)
         self.mydb.commit()
@@ -566,20 +571,19 @@ class DB:#Hier passiert alles was mit der DB zutun hat
         self.cur.execute(sql)
         self.mydb.commit()
     
-    def eventoutput(self, name):
+    def eventoutput(self, name):#alle Informatione zu einem gewissen Event werden ausgegeben
         sql = "SELECT * FROM `eventsentry` WHERE `eventsentry`.`name` = '{}'".format(name)
         self.cur.execute(sql)
         return self.cur.fetchall()
-    def event_id(self, name):
+    def event_id(self, name):#die ID zu einem gewissen Event wird ausgegeben
         sql = "SELECT id FROM `eventsentry` WHERE `eventsentry`.`name` = '{}'".format(name)
         self.cur.execute(sql)
         return self.cur.fetchall()
-    def eventout(self):
+    def eventout(self):#alle Informatione von allen Events werden ausgegeben
         sql = "SELECT `name`,`datum`,`zeit` FROM `eventsentry`"
         self.cur.execute(sql)
         return self.cur.fetchall()
-    def verlauf(self,kunden_id):
-
+    def verlauf(self,kunden_id):#alle Informationen von allen reservierten Evenst vom Kunden werden ausgegeben
         sql = "SELECT * FROM eventsentry WHERE id IN (SELECT eID FROM kundenevents WHERE kID = {})".format(kunden_id[0][0])
         self.cur.execute(sql)
         return self.cur.fetchall()
@@ -599,10 +603,11 @@ class Backend:#Hier passiert alles was im hintergrund der Webseite
         self.db.connect()#Verbindung zur DB wird erstellt
         pswd_sql = self.db.select_pswd(benutzername_email)#das Passwort was zum Benutzername/E-Mail passt was in der DB gespeichert wurde wird hier zurückgegeben
         
-        if len(pswd_sql) != 0:
-            encoded_pswd = pswd_sql[0][0].encode('ascii')
-            encoded_byte = base64.b64decode(encoded_pswd)
-            pswd = encoded_byte.decode('ascii')
+        if len(pswd_sql) != 0:#wenn Benutzername/Email exestiert
+            #passwort wird entschlüsselt
+            encoded_pswd = pswd_sql[0][0].encode('ascii')#b'fdskjfsfj
+            encoded_byte = base64.b64decode(encoded_pswd)#b'hallo
+            pswd = encoded_byte.decode('ascii')#hallo
             
             if pswt != pswd:#hier wird geschaut ob das Passwort im Eingabefeld das gleiche Passwort ist wie in der DB. Stimmt es nicht kommt eine Fehlermeldung.
                 fehler_medlung = "Fehler! Benutzername/E-Mail oder Passwort stimmt nicht."
@@ -610,10 +615,10 @@ class Backend:#Hier passiert alles was im hintergrund der Webseite
                 return fehler_medlung
                 
             
-            if fehlerfrei == 'ok':
+            if fehlerfrei == 'ok':#ist kein fehler aufgetreten kommt man hier rein
                 #print('benutz:',benutzername_email)
                 #print(pswd)
-                self.id = self.db.select_id(benutzername_email,pswd_sql[0][0])
+                self.id = self.db.select_id(benutzername_email,pswd_sql[0][0])#kunden id wird gespeichert
                 #print('anmelden',self.id)
                 self.db.close()#Verbindung zur DB wird getrennt
         else:
@@ -632,7 +637,7 @@ class Backend:#Hier passiert alles was im hintergrund der Webseite
         benutzername = benutzername.strip()#Leerzeichen werden am Anfang und am Ende entfernt
         vorname = vorname.strip()#Leerzeichen werden am Anfang und am Ende entfernt
         nachname = nachname.strip()#Leerzeichen werden am Anfang und am Ende entfernt
-
+        #regex prüfungen
         p_email = "^([a-zA-Z0-9]+([-_\.]?[a-zA-Z0-9])+@[a-zA-Z0-9]+([-_\.]?[a-zA-Z0-9])+\.[a-z]{2,4}){0,}$"
         p_name = "^[a-zA-ZäüöÄÜÖ]{,20}$"
         p_pswd = "^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,32}$"
@@ -660,21 +665,16 @@ class Backend:#Hier passiert alles was im hintergrund der Webseite
             #print('Keine gültiges Passwort! min. 6 Zeichen lang,min. 1 Großbuchstaben, min. 1 Kleinbuchstaben und min. 1 Ziffer enthalten.')
             return 'Keine gültiges Passwort! min. 8 und max. 32 Zeichen lang,min. 1 Großbuchstaben, min. 1 Kleinbuchstaben und min. 1 Ziffer enthalten.'
             
-        # geburtsdatum = datetime.datetime.strptime(geburtsdatum, '%Y-%m-%d')#wird zum type datetime conventiert
-        # if geburtsdatum > datetime.datetime.today():#schaut ob du schon geboren wurdest, wenn nicht fehler meldung
-        #     print('Geburtsdatum stimmt nicht!')
+      
         if not re.search(p_name,vorname):  
-           
             fehlerfrei = ""
             #print('Kein gültiger Vorname. Es sind nur Buchstaben erlaubt.')
             return 'Kein gültiger Vorname. Es sind nur Buchstaben erlaubt und darf nicht länger als 20 Zeichen lang sein.'
         if not re.search(p_name,nachname):  
-            
             fehlerfrei = ""
             #print('Kein gültiger Nachname. Es sind nur Buchstaben erlaubt.')
             return 'Kein gültiger Nachname. Es sind nur Buchstaben erlaubt und darf nicht länger als 20 Zeichen lang sein.'
         if not re.search(p_email,email):  
-           
             fehlerfrei = ""
             #print('Keine gültige Email Adresse')
             return 'Keine gültige Email Adresse'
@@ -687,24 +687,23 @@ class Backend:#Hier passiert alles was im hintergrund der Webseite
        
         
         if fehlerfrei == 'ok':
-
-            pswd_byte = pswt.encode('ascii')
-            encoded_byte = base64.b64encode(pswd_byte)
-            encoded_pswd = encoded_byte.decode('ascii')
+            #passwort wird verschlüsselt
+            pswd_byte = pswt.encode('ascii')#hallo
+            encoded_byte = base64.b64encode(pswd_byte)#b'hallo
+            encoded_pswd = encoded_byte.decode('ascii')#b'sdjkfsf
 
 
             self.db.insert_kunde(benutzername,encoded_pswd,vorname,nachname,email)#neues Konot wird erstellt
 
             self.db.close()#Verbindung zur DB wird getrentt
 
-
-        
-    def kunde_id(self,benutzername_email,pswt):
+   
+    def kunde_id(self,benutzername_email,pswt):#kunden id wird rausgefunden und gespeichert
         self.db.connect()#Verbindung zur DB wird erstellt
         self.id = self.db.select_id(benutzername_email,pswt)
         self.id = self.id[0][0]
         self.db.close()#Verbindung zur DB wird getrent
-    def event_res(self, name):
+    def event_res(self, name):#eintrag welcher Kunde welches event reserviert hat
         self.db.connect()#Verbindung zur DB wird erstellt
         
         #SQL-State wo ich die ID vom Event bekomme was ich auswähle
@@ -716,7 +715,7 @@ class Backend:#Hier passiert alles was im hintergrund der Webseite
 
         
         
-        events = self.db.verlauf(self.id)
+        events = self.db.verlauf(self.id)#alle reservierten Events vom user
 
         self.db.close()#Verbindung zur DB wird getrent
         return events
@@ -733,28 +732,23 @@ class Backend:#Hier passiert alles was im hintergrund der Webseite
         date = heute-tage
         self.db.connect()
         
-        for i in self.db.select_event_mail(self.id,date):
+        for i in self.db.select_event_mail(self.id,date):#alle events die der user ab einem gewissen Datum reserviert hat
             for e in i:
-                mail_text = mail_text+' '+str(e)
-            mail_text = mail_text+','
-        mail_text = mail_text[:-1]
+                mail_text = mail_text+' '+str(e)#event wird zum mail text hinzugefügt
+            mail_text = mail_text+','#ein beistrich wird zum Text hinzugefügt
+        mail_text = mail_text[:-1]#der Letzte beistrich vom Text wird gelöscht
         emails = []
-        for i in self.db.select_mail(self.id,date):
+        for i in self.db.select_mail(self.id,date):##alle Emails von Kunden die bei den gleichen Events waren ab einem gewissen Datum wie auch der User war werden ausgegeben
             for e in i:
                 emails.append(e)
-        self.db.close()
+        self.db.close()#verbindung zur DB wird getrennt
 
         FROM = user
-        # to  = ", ".join(emails)
-        # print('to: ',to)
-        # DATA = 'From:{}\nTo:{}\nSubject:{}\n\n{}'.format(FROM, to, subject, mail_text)
+        #verbidnung zu meinen gmail konto zum email versenden
         server = smtplib.SMTP('smtp.gmail.com',587)
         server.starttls()
         server.login(user, pwd)
-        # server.sendmail(FROM, to, DATA)
-        
-
-
+  
         header = 'To:' + ", ".join(emails) + '\n' + 'From: ' + FROM + '\n' + 'Subject: ' + subject + '\n'
         msg = header + '\n' + mail_text + '\n\n'
         server.sendmail(FROM, emails, msg)
@@ -768,7 +762,7 @@ class Backend:#Hier passiert alles was im hintergrund der Webseite
         pwd = 'spuzunwyyivbpnbe'
         subject = 'Verifizierungs Email'
 
-        p_email = "^([a-zA-Z0-9]+([-_\.]?[a-zA-Z0-9])+@[a-zA-Z0-9]+([-_\.]?[a-zA-Z0-9])+\.[a-z]{2,4}){0,}$"
+        p_email = "^([a-zA-Z0-9]+([-_\.]?[a-zA-Z0-9])+@[a-zA-Z0-9]+([-_\.]?[a-zA-Z0-9])+\.[a-z]{2,4}){0,}$"#regex überprüfung
         if not re.search(p_email,email):  
             #print('Keine gültige Email Adresse')
             return 'Keine gültige Email Adresse'
@@ -806,8 +800,8 @@ class Backend:#Hier passiert alles was im hintergrund der Webseite
             return 'Code ist falsch und kann man jetzt nicht mehr verwenden'
     def neuse_passwort(self, pswt,pswt_w,email):
         fehlerfrei = "ok"
-        #ein SQL-State wo das Passwort geändert wird
-            
+        
+        #regex überprüfung  
         p_pswd = "^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}$"
 
         if pswt != pswt_w:#Hier wird geschaut ob in den Passwortfelder das gleiche drinnen steht, wenn nicht kommt eine Fehlermeldung
@@ -821,16 +815,14 @@ class Backend:#Hier passiert alles was im hintergrund der Webseite
             return 'Keine gültiges Passwort! min. 6 Zeichen lang,min. 1 Großbuchstaben, min. 1 Kleinbuchstaben und min. 1 Ziffer enthalten.'
         if fehlerfrei == 'ok':
             self.db.connect()
-
+            #passwort wird verschlüsselt
             pswd_byte = pswt.encode('ascii')
             encoded_byte = base64.b64encode(pswd_byte)
             encoded_pswd = encoded_byte.decode('ascii')
             
-            self.db.update_pswd(encoded_pswd,email)
+            self.db.update_pswd(encoded_pswd,email)#passwort wird geändert
             self.db.close()
                 #print('Passwort wurde zurückgesetzt')
-    
-            
 
     def evinput(self, name, datum, zeit):
         #Checkt ob das Datum richtig formatiert ist, falls nicht, wird es korregiert. (YYYY-MM-DD)
@@ -853,10 +845,8 @@ class Backend:#Hier passiert alles was im hintergrund der Webseite
         else:
             fehler = "Die Eingabe ist Fehlerhaft!"
             return fehler
-
-
-    #Funktion um Events aus der Datenbank zu holen.
-    def evoutput(self, name):
+  
+    def evoutput(self, name):#Funktion um Events aus der Datenbank zu holen.
         
         if name != None:
             self.db.connect()
@@ -866,24 +856,18 @@ class Backend:#Hier passiert alles was im hintergrund der Webseite
                 output.append(str(i))
             #print(output)
             self.db.close()
-    def event(self):
+    def event(self):#Funktion um Events aus der Datenbank zu holen.
         self.db.connect()
-        out = self.db.eventout()
+        out = self.db.eventout()#alle Events mit deren Informationen
         output = []
         for i in out:
             output.append(i)
         self.db.close()
         return output
+
     def logout(self):
         self.id = None
 
-
-
-
-surface = Tk()
-Website = GUI(surface)
-Website.login()
-
-
-
-#es hat gepusht
+surface = Tk()#Fenster erstellt
+Website = GUI(surface)#Obejkt von der Klasse GUI erstellt
+Website.login()#Login Seite aufrufen/öffnen
