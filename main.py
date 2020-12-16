@@ -307,11 +307,23 @@ class GUI:#Klasse der Oberfläche
         self.event_b.grid(row=2, column=3)
     def reservieren(self):
         name = self.var_event_auswahl.get()
-        events = self.backend.event()
-        for i in events:
-            if i[0] in name:
-                self.backend.event_res(i[0])
-        self.main()
+        self.backend.db.connect()
+        verlauf = self.backend.db.verlauf(self.backend.id)
+        self.backend.db.close()
+        ok = 0
+        for i in verlauf:
+            if i[1] in name:
+                messagebox.showinfo('Event reservieren', 'Dieses Event hast du schon reserviert')
+                ok = 1
+                break
+        if ok == 0:        
+            events = self.backend.event()
+            for i in events:
+                if i[0] in name:
+                    self.backend.event_res(i[0])
+            self.main()
+        else:
+            self.event_reservieren()
         
 
     def verdachtsfall(self):
