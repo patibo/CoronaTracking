@@ -278,20 +278,20 @@ class GUI:  # Klasse der Oberfläche
 
 
         self.surface.configure(bg="#005ca9")  # hintergrundfrabe des fensters
-        self.surface.geometry("800x400")  # größe des fensters
+        self.surface.geometry("800x360")  # größe des fensters
         self.clear_design()  # ganzer Inhalt des Fensters wird ausgeblendet
         self.menubar()  # menübar wird angezeigt
         self.clear_design()
         self.email.delete(0, 'end')  # das meist verwendte Eingabefeld für Passwort zurücksetzen wird hier entleert
         # der Text der Labels werden geändert
-        self.userLabel.config(text="Email/Benutzername:", bg="#005ca9", fg="white")
+        self.userLabel.config(text="Email/Benutzername:", bg="#005ca9", fg="white",)
         self.passLabel.config(text="Passwort:", bg="#005ca9", fg="white")
         self.fehler.config(bg="#005ca9", fg="white")
         # die Labels werden positioniert
-        self.userLabel.grid(row=1, column=0, )
-        self.userEntry.grid(row=1, column=1, )
-        self.passLabel.grid(row=2, column=0)
-        self.passEntry.grid(row=2, column=1,)
+        self.userLabel.grid(row=1, column=0,padx=(240,0))
+        self.userEntry.grid(row=1, column=1,pady=(0,0))
+        self.passLabel.grid(row=2, column=0,padx=(240,0))
+        self.passEntry.grid(row=2, column=1)
         # die Eigenschaften der Buttons werden geändert
         #self.b_regestrieren.config(text='Regestrieren', command=self.fehler_text_leer_regestrieren, bg="green")
         self.b_login.config(text='Login', command=self.login_pr, bg="green",padx=44)
@@ -402,16 +402,16 @@ class GUI:  # Klasse der Oberfläche
     def pswt_r(self):
         self.clear_design()  # Seite wird geleert
         self.emailLabel.config(text="Geben sie bitte ihre Email-Adresse ihres Accounts an:", bg="#005ca9", fg="white",
-                               padx=200)
+                               padx=270,)
         # Eigenschaften ändern
-        self.pv_button.config(text="Senden", command=self.email_p,bg = "green" ,padx=30  )
+        self.pv_button.config(text="Senden", command=self.email_p,bg = "green" ,padx=30, fg="white"  )
         self.pv_stop.config(text="Abbrechen", command=self.login, bg= "red", fg="white",padx=19)
         # positionierungen
-        self.emailLabel.grid(row=1, column=1)
+        self.emailLabel.grid(row=1, column=1,pady=(100,0))
         self.email.grid(row=2, column=1)
         self.pv_button.grid(row=3, column=1, pady=3 )
         self.pv_stop.grid(row=4, column=1,pady=3)
-        self.fehler.grid(row=4, column=1)
+        self.fehler.grid(row=5, column=1)
 
     def email_p(self):
         email = self.email.get()  # E-Mail-Adresse
@@ -428,11 +428,11 @@ class GUI:  # Klasse der Oberfläche
     def verifiziercode(self):
         self.clear_design()
         # Eigenschaften ändern
-        self.psLabel.config(text="Geben sie den 5-stellingen Code der ihnen per Email gesendet wurde", bg="#005ca9",padx=200, fg= "white")
+        self.psLabel.config(text="Geben sie den 5-stellingen Code der ihnen per Email gesendet wurde", bg="#005ca9",padx=220, fg= "white")
         self.pv_button.config(text="Bestätigen", command=self.code_p, padx=23)
         # self.pv_stop.config(text="Abbrechen", command=self.login)
         # positionierung
-        self.psLabel.grid(row=1, column=1, pady=3)
+        self.psLabel.grid(row=1, column=1, pady=(110,0))
         self.email.grid(row=2, column=1)
         self.pv_button.grid(row=3, column=1, pady=3)
         self.pv_stop.grid(row=4, column=1)
@@ -457,10 +457,10 @@ class GUI:  # Klasse der Oberfläche
 
         # self.pv_stop.config(text="Abbrechen", command=self.login)
         # positionierung
-        self.psLabel.grid(row=0, column=0)
-        self.pv_pass.grid(row=1, column=0)
+        self.psLabel.grid(row=0, column=0, pady=(120,0))
+        self.pv_pass.grid(row=1, column=0, pady=3)
         self.pv_passw.grid(row=2, column=0)
-        self.pv_button.grid(row=3, column=0)
+        self.pv_button.grid(row=3, column=0, pady=3)
         # self.pv_stop.grid(row=3, column=1)
 
     def neu_pswt_p(self):
