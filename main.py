@@ -340,9 +340,9 @@ class GUI:#Klasse der Oberfläche
         self.event_om = OptionMenu(self.surface,self.var_event_auswahl, *liste)
         self.event_om.grid(row=2, column=2)
 
-        self.event_b.config(text='Reservieren', command=self.reservieren)
-        self.event_b.grid(row=2, column=3)
-        self.pv_stop.config(text="Abbrechen", command=self.main)
+        self.event_b.config(text='Bestätigen', command=self.reservieren, bg="green", pady = 30)
+        self.event_b.grid(row=3, column=2)
+        #self.pv_stop.config(text="Abbrechen", command=self.main)
         self.pv_stop.grid(row=2, column=1)
     def reservieren(self):
         name = self.var_event_auswahl.get()
