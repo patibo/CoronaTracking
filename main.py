@@ -164,6 +164,7 @@ class GUI:#Klasse der Oberfläche
         self.emailLabel.grid_forget()
         self.psLabel.grid_forget()
         self.codeLabel.grid_forget()
+        self.email.grid_forget()
         
 
         self.pv_pass.grid_forget()
@@ -230,7 +231,16 @@ class GUI:#Klasse der Oberfläche
             self.e_nachname.delete(0,'end')
             self.e_email.delete(0,'end')
             self.login()
-
+    def fehler_text_leer_regestrieren(self):
+        self.fehler.config(text='')
+        self.userEntry.delete(0,'end')
+        self.passEntry.delete(0,'end')
+        self.regestrieren()
+    def fehler_text_leer_pswt_r(self):
+        self.fehler.config(text='')
+        self.userEntry.delete(0,'end')
+        self.passEntry.delete(0,'end')
+        self.pswt_r()
     def login(self):
         self.surface.configure(bg="#005ca9")
         self.surface.geometry("800x400")
@@ -245,9 +255,9 @@ class GUI:#Klasse der Oberfläche
         self.passLabel.grid(row=2, column=0)
         self.passEntry.grid(row=2, column=1,pady = (5))
         #die Eigenschaften der Buttons werden geändert
-        self.b_regestrieren.config(text='Regestrieren',command=self.regestrieren,bg="green")
+        self.b_regestrieren.config(text='Regestrieren',command=self.fehler_text_leer_regestrieren,bg="green")
         self.b_login.config(text='Login',command=self.login_pr,bg="green")
-        self.b_pswt_return.config(text='Passwort zurücksetzen',command=self.pswt_r,bg="#33ccff")
+        self.b_pswt_return.config(text='Passwort zurücksetzen',command=self.fehler_text_leer_pswt_r,bg="#33ccff")
         #die Buttons werden positioniert
         self.b_regestrieren.grid(row=4, column=1)
         self.b_login.grid(row=4, column=0)
@@ -389,7 +399,7 @@ class GUI:#Klasse der Oberfläche
         
     def zuruecksetzen(self):
         self.clear_design()
-        self.psLabel = Label(text="Geben sie das neue Passwort ein:", bg="#005ca9")
+        self.psLabel.config(text="Geben sie das neue Passwort ein:", bg="#005ca9")
        
         self.pv_button.config(text="Bestätigen", command=self.neu_pswt_p)
         self.pv_stop.config(text="Abbrechen", command=self.login)
@@ -498,7 +508,7 @@ class DB:#Hier passiert alles was mit der DB zutun hat
         self.cur.execute(sql)
         return self.cur.fetchall() 
     def select_event_mail(self,kunden_id,date):
-        sql = "SELECT eventsentry.name,eventsentry.datum,eventsentry.zeit FROM eventsentry JOIN kundenevents ON eventsentry.id=kundenevents.eID JOIN kunden on kunden.id = kundenevents.kID WHERE kunden.id = {} and eventsentry.datum >= '{}'".format(kunden_id[0][0],date,kunden_id[0][0],date)  
+        sql = "SELECT eventsentry.name,eventsentry.datum,eventsentry.zeit FROM eventsentry JOIN kundenevents ON eventsentry.id=kundenevents.eID JOIN kunden on kunden.id = kundenevents.kID WHERE kunden.id = {} and eventsentry.datum >= '{}'".format(kunden_id[0][0],date)  
         self.cur.execute(sql)
         return self.cur.fetchall()  
     def select_user_email(self, kunden_id):
@@ -540,7 +550,7 @@ class Backend:#Hier passiert alles was im hintergrund der Webseite
     def __init__(self):
         #ilirjan: 'root','15071998','localhost','3306','coronatracking'
         #alisa: 'root','root','localhost','8889','coronatracking'
-        self.db = DB('root','15071998','localhost','3306','coronatracking')#hier kann ich die Klasse DB verwenden bzw. hier wird sie aufgerufen
+        self.db = DB('root','root','localhost','8889','coronatracking')#hier kann ich die Klasse DB verwenden bzw. hier wird sie aufgerufen
         self.id = None
         self.mail_text = ""
     def anmelden(self,benutzername_email,pswt):#anmelde funktion
