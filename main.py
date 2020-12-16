@@ -95,6 +95,39 @@ class GUI:#Klasse der Oberfläche
 
         self.email_adress = None
 
+    def menubar(self):
+        menubar = Menu(self.surface)
+
+        menubar.add_command(label="Registrieren", command=self.regestrieren)
+        menubar.add_command(label="Login", command=self.login)
+
+
+
+        self.surface.config(menu=menubar)
+
+    def menubar2(self):
+        menubar = Menu(self.surface)
+
+        menubar.add_command(label="Home", command=self.main)
+        menubar.add_command(label="Event Anmeldung", command=self.event_reservieren)
+
+        menubar.add_command(label="Logout", command=self.logout)
+
+
+        self.surface.config(menu=menubar)
+
+    def menubar3(self):
+        menubar = Menu(self.surface)
+
+        menubar.add_command(label="Home", command=self.main)
+        menubar.add_command(label="Event Anmeldung", command=self.event_reservieren)
+
+        menubar.add_command(label="Logout", command=self.logout)
+
+        self.surface.config(menu=menubar)
+
+
+
     def clear_design(self):
         #hier werden alle Labels, Enterys, etc. ausgeblendet
         """ Hauptseit: Listenbox """
@@ -203,7 +236,7 @@ class GUI:#Klasse der Oberfläche
         self.b_save.config(text='Erstellen', command=self.benutzer_erstellen,bg="green")#der Text vom Button wird geändert und festgelegt welche Methode aufgerufen wird, wenn der Button geklickt wird
         self.b_save.grid(row=18, column=2, pady = (12))
         self.fehler.grid(row=19, column=2, columnspan=30)
-        
+
 
 
         
@@ -217,7 +250,7 @@ class GUI:#Klasse der Oberfläche
         email = self.e_email.get()
         #Eingaben werden überprüft
         fehler_text = self.backend.neu(benutzername,pswt,pswt_w,vorname,nachname,email)
-        
+
         if fehler_text != None:#Gibt es einen Fehler wird die Meldung angezeigt und man kommt nicht weiter
             self.fehler.config(text=fehler_text)
             
@@ -245,6 +278,7 @@ class GUI:#Klasse der Oberfläche
         self.surface.configure(bg="#005ca9")
         self.surface.geometry("800x400")
         self.clear_design()#ganzer Inhalt des Fensters wird ausgeblendet
+        self.menubar()
         #der Text der Labels werden geändert
         self.userLabel.config(text="Email/Benutzername:",bg="#005ca9", fg="white", padx=130)
         self.passLabel.config(text="Passwort:",bg="#005ca9", fg="white")
@@ -264,6 +298,8 @@ class GUI:#Klasse der Oberfläche
         self.b_pswt_return.grid(row=3, column=1)
         self.fehler.grid(row=5, column=1)
         self.surface.mainloop()#fenster schließt sich nicht automatisch
+
+
     def login_pr(self):
         user = self.userEntry.get()
         pswt = self.passEntry.get()
@@ -281,6 +317,7 @@ class GUI:#Klasse der Oberfläche
             self.main()
     def main(self):
         self.clear_design()
+        self.menubar2()
         self.listbox.delete(0,'end')#alter Listbox stand wird gelöscht
 
         """Scrollbar wird zur Listbox hinzugefügt"""
@@ -293,30 +330,30 @@ class GUI:#Klasse der Oberfläche
         #positionierung der Listbox und Scrollbar
         self.listbox.grid(row=1,column=1,columnspan=10,sticky=N+E+S+W)
         self.scroll.grid(row=1,column=10, sticky=E+N+S)
-
         self.t_verlauf.config(text='Verlauf',font = "Helvetica 16 bold italic")
  
         self.t_verlauf.grid(row = 0, column=1)
-        self.b_logout.grid(row = 3, column=11)
-        self.b_logout.config(text='Abmelden',command=self.logout)
+        #self.b_logout.grid(row = 3, column=11)
+        #self.b_logout.config(text='Abmelden',command=self.logout)
         self.b_verdachtsfall.config(text='Corona Fall melden', command=self.verdachtsfall, bg='red', fg='black')
         self.b_verdachtsfall.grid(row = 12, column=1)
-        self.b_regestrieren_event.config(text='Event reservieren',command=self.event_reservieren)
-        self.b_regestrieren_event.grid(row = 13, column=3)
+        #self.b_regestrieren_event.config(text='Event reservieren',command=self.event_reservieren)
+        #self.b_regestrieren_event.grid(row = 13, column=3)
     def event_reservieren(self):
         self.clear_design()
+        self.menubar3()
         self.var_event_auswahl.set("Events")  # default value
 
-        self.event_l.config(text='Event auswählen')
+        self.event_l.config(text='Select One', width=10)
         self.event_l.grid(row=2, column=1)
         liste = self.backend.event()
         self.event_om = OptionMenu(self.surface,self.var_event_auswahl, *liste)
         self.event_om.grid(row=2, column=2)
 
-        self.event_b.config(text='Reservieren', command=self.reservieren)
-        self.event_b.grid(row=2, column=3)
-        self.pv_stop.config(text="Abbrechen", command=self.main)
-        self.pv_stop.grid(row=3, column=1)
+        self.event_b.config(text='Bestätigen', command=self.reservieren, bg="green", pady = 30)
+        self.event_b.grid(row=3, column=2)
+        #self.pv_stop.config(text="Abbrechen", command=self.main)
+        self.pv_stop.grid(row=2, column=1)
     def reservieren(self):
         name = self.var_event_auswahl.get()
         self.backend.db.connect()
