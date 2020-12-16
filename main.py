@@ -332,16 +332,16 @@ class GUI:  # Klasse der Oberfläche
             text = i[1] + " am " + str(i[2]) + " um " + str(i[3])  # 1 ist Eventname, 2 ist Eventdatum, 3 ist Eventzeit
             self.listbox.insert(END, text)
         # positionierung der Listbox und Scrollbar
-        self.listbox.grid(row=1, column=1, columnspan=10, sticky=N + E + S + W)
-        self.scroll.grid(row=1, column=10, sticky=E + N + S)
-        self.t_verlauf.config(text='Verlauf', font="Helvetica 16 bold italic", bg="#005ca9", fg="white")  # Überschrift
+        self.listbox.grid(row=1, column=1, columnspan=10, sticky=N + E + S + W,padx=20)
+        self.scroll.grid(row=1, column=10, sticky=E + N + S,)
+        self.t_verlauf.config(text='Verlauf', font="Helvetica 16 bold italic", bg="#005ca9", fg="white",padx=190,pady=10)  # Überschrift
 
-        self.t_verlauf.grid(row=0, column=1)  # Überschrift positionieren
+        self.t_verlauf.grid(row=0, column=1,pady=(0,10))  # Überschrift positionieren
         # self.b_logout.grid(row = 3, column=11)
         # self.b_logout.config(text='Abmelden',command=self.logout)
-        self.b_verdachtsfall.config(text='Corona Fall melden', command=self.verdachtsfall, bg='red', fg='black',
+        self.b_verdachtsfall.config(text='Corona Fall melden', command=self.verdachtsfall, bg='red', fg='white',
                                     pady="24", padx=30)
-        self.b_verdachtsfall.grid(row=12, column=4)
+        self.b_verdachtsfall.grid(row=2, column=12,padx=100)
         # self.b_regestrieren_event.config(text='Event reservieren',command=self.event_reservieren)
         # self.b_regestrieren_event.grid(row = 13, column=3)
 
@@ -350,7 +350,7 @@ class GUI:  # Klasse der Oberfläche
         self.menubar3()  # menübar wird angezeigt
         self.var_event_auswahl.set("Events")  # String wird auf Events gestellt
 
-        self.event_l.config(text='Select One', width=10)
+        self.event_l.config(text='Select One', width=10, bg="#005ca9", fg= "white" )
         self.event_l.grid(row=2, column=1)
         liste = self.backend.event()  # Alle Events mit ihren Informationen
         self.event_om = OptionMenu(self.surface, self.var_event_auswahl,
