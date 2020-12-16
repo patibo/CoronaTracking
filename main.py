@@ -97,19 +97,28 @@ class GUI:#Klasse der Oberfläche
 
     def menubar(self):
         menubar = Menu(self.surface)
-        filemenu = Menu(self.surface, tearoff=0)
-        filemenu.add_command(label="Registrieren", command=self.regestrieren)
-        filemenu.add_command(label="Login", command=self.login)
 
-        filemenu.add_separator()
-        filemenu.add_command(label="Exit", command=self.surface.destroy)
-        menubar.add_cascade(label="Menü", menu=filemenu)
+        menubar.add_command(label="Registrieren", command=self.regestrieren)
+        menubar.add_command(label="Login", command=self.login)
+
+
 
         self.surface.config(menu=menubar)
 
     def menubar2(self):
         menubar = Menu(self.surface)
+
+        menubar.add_command(label="Logout", command=self.logout)
+
+        menubar.add_command(label="Exit", command=self.surface.destroy)
+
+
+        self.surface.config(menu=menubar)
+
+    def menubar3(self):
+        menubar = Menu(self.surface)
         filemenu = Menu(self.surface, tearoff=0)
+        filemenu.add_command(label="Home", command=self.main)
         filemenu.add_command(label="Logout", command=self.logout)
 
         filemenu.add_separator()
@@ -117,6 +126,7 @@ class GUI:#Klasse der Oberfläche
         menubar.add_cascade(label="Menü", menu=filemenu)
 
         self.surface.config(menu=menubar)
+
 
 
     def clear_design(self):
@@ -298,6 +308,7 @@ class GUI:#Klasse der Oberfläche
             self.main()
     def main(self):
         self.clear_design()
+        self.menubar2()
         self.listbox.delete(0,'end')#alter Listbox stand wird gelöscht
 
         """Scrollbar wird zur Listbox hinzugefügt"""
@@ -321,7 +332,7 @@ class GUI:#Klasse der Oberfläche
         self.b_regestrieren_event.grid(row = 13, column=3)
     def event_reservieren(self):
         self.clear_design()
-        self.menubar2()
+        self.menubar3()
         self.var_event_auswahl.set("Events")  # default value
 
         self.event_l.config(text='Select One', width=10)
