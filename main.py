@@ -98,12 +98,23 @@ class GUI:#Klasse der Oberfläche
     def menubar(self):
         menubar = Menu(self.surface)
         filemenu = Menu(self.surface, tearoff=0)
-        filemenu.add_command(label="Registrieren", command=self.regestrieren())
+        filemenu.add_command(label="Registrieren", command=self.regestrieren)
         filemenu.add_command(label="Login", command=self.login)
 
         filemenu.add_separator()
         filemenu.add_command(label="Exit", command=self.surface.destroy)
-        menubar.add_cascade(label="File", menu=filemenu)
+        menubar.add_cascade(label="Menü", menu=filemenu)
+
+        self.surface.config(menu=menubar)
+
+    def menubar2(self):
+        menubar = Menu(self.surface)
+        filemenu = Menu(self.surface, tearoff=0)
+        filemenu.add_command(label="Logout", command=self.logout)
+
+        filemenu.add_separator()
+        filemenu.add_command(label="Exit", command=self.surface.destroy)
+        menubar.add_cascade(label="Menü", menu=filemenu)
 
         self.surface.config(menu=menubar)
 
@@ -229,7 +240,7 @@ class GUI:#Klasse der Oberfläche
         email = self.e_email.get()
         #Eingaben werden überprüft
         fehler_text = self.backend.neu(benutzername,pswt,pswt_w,vorname,nachname,email)
-        
+
         if fehler_text != None:#Gibt es einen Fehler wird die Meldung angezeigt und man kommt nicht weiter
             self.fehler.config(text=fehler_text)
             
@@ -248,6 +259,7 @@ class GUI:#Klasse der Oberfläche
         self.surface.configure(bg="#005ca9")
         self.surface.geometry("800x400")
         self.clear_design()#ganzer Inhalt des Fensters wird ausgeblendet
+        self.menubar()
         #der Text der Labels werden geändert
         self.userLabel.config(text="Email/Benutzername:",bg="#005ca9", fg="white", padx=130)
         self.passLabel.config(text="Passwort:",bg="#005ca9", fg="white")
@@ -258,7 +270,7 @@ class GUI:#Klasse der Oberfläche
         self.passLabel.grid(row=2, column=0)
         self.passEntry.grid(row=2, column=1,pady = (5))
         #die Eigenschaften der Buttons werden geändert
-        self.b_regestrieren.config(text='Regestrieren',command=self.menubar,bg="green")
+        self.b_regestrieren.config(text='Regestrieren',command=self.regestrieren,bg="green")
         self.b_login.config(text='Login',command=self.login_pr,bg="green")
         self.b_pswt_return.config(text='Passwort zurücksetzen',command=self.pswt_r,bg="#33ccff")
         #die Buttons werden positioniert
@@ -267,6 +279,8 @@ class GUI:#Klasse der Oberfläche
         self.b_pswt_return.grid(row=3, column=1)
         self.fehler.grid(row=5, column=1)
         self.surface.mainloop()#fenster schließt sich nicht automatisch
+
+
     def login_pr(self):
         user = self.userEntry.get()
         pswt = self.passEntry.get()
@@ -296,7 +310,6 @@ class GUI:#Klasse der Oberfläche
         #positionierung der Listbox und Scrollbar
         self.listbox.grid(row=1,column=1,columnspan=10,sticky=N+E+S+W)
         self.scroll.grid(row=1,column=10, sticky=E+N+S)
-
         self.t_verlauf.config(text='Verlauf',font = "Helvetica 16 bold italic")
  
         self.t_verlauf.grid(row = 0, column=1)
@@ -308,6 +321,7 @@ class GUI:#Klasse der Oberfläche
         self.b_regestrieren_event.grid(row = 13, column=3)
     def event_reservieren(self):
         self.clear_design()
+        self.menubar2()
         self.var_event_auswahl.set("Events")  # default value
 
         self.event_l.config(text='Select One', width=10)
