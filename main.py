@@ -93,6 +93,8 @@ class GUI:#Klasse der Oberfläche
         self.pv_button = Button(self.surface)
         self.pv_stop = Button(self.surface)
 
+        self.email_adress = None
+
     def clear_design(self):
         #hier werden alle Labels, Enterys, etc. ausgeblendet
         """ Hauptseit: Listenbox """
@@ -345,6 +347,7 @@ class GUI:#Klasse der Oberfläche
             self.pswt_r()
         else:#Inhalte der Eingabefelder werden entleert, Text vom Lable fehler wird geändert, man kommt auf die login Seite zurück
             self.fehler.config(text='')
+            self.email_adress = self.email.get()
             self.email.delete(0,'end')
             self.verifiziercode()
 
@@ -363,10 +366,10 @@ class GUI:#Klasse der Oberfläche
         code = self.email.get()
         fehler_text = self.backend.code_pr(code)
         if fehler_text != None:#Gibt es einen Fehler wird die Meldung angezeigt und man kommt nicht weiter
-            self.fehler.config(text=fehler_text)
-            self.verifiziercode()
+            messagebox.showinfo('Code ist falsch', fehler_text)
+            self.email.delete(0,'end')
+            self.login()
         else:#Inhalte der Eingabefelder werden entleert, Text vom Lable fehler wird geändert, man kommt auf die login Seite zurück
-            self.fehler.config(text='')
             self.email.delete(0,'end')
             self.zuruecksetzen()
         
@@ -385,7 +388,7 @@ class GUI:#Klasse der Oberfläche
     def neu_pswt_p(self):
         pswt = self.pv_pass.get()
         pswt_w = self.pv_passw.get()
-        fehler_text = self.backend.neuse_passwort(pswt,pswt_w)
+        fehler_text = self.backend.neuse_passwort(pswt,pswt_w,self.email_adress)
         if fehler_text != None:#Gibt es einen Fehler wird die Meldung angezeigt und man kommt nicht weiter
             self.fehler.config(text=fehler_text)
             self.zuruecksetzen()
@@ -485,8 +488,9 @@ class DB:#Hier passiert alles was mit der DB zutun hat
         sql = "SELECT `email` FROM kunden WHERE id = {}".format(kunden_id)
         self.cur.execute(sql)
         return self.cur.fetchall() 
-    def update_pswd(self, pswd,kunden_id):
-        sql = "UPDATE `kunden` SET `passwort`='{}' WHERE `id` = '{}'".format(pswd,kunden_id[0][0])
+    def update_pswd(self, pswd,email):
+        
+        sql = "UPDATE `kunden` SET `passwort`='{}' WHERE `email` = '{}'".format(pswd,email)
         self.cur.execute(sql)
         self.mydb.commit()
     def close(self):#die Verbindung zur DB wird getrennt
@@ -694,7 +698,9 @@ class Backend:#Hier passiert alles was im hintergrund der Webseite
         if not re.search(p_email,email):  
             #print('Keine gültige Email Adresse')
             return 'Keine gültige Email Adresse'
+        self.db.connect()
         exist_email = self.db.select_email(email)
+        self.db.close()
         exist_email = exist_email[0][0]
         if exist_email != 0:
             #eindeutige Nummer für die Passwort zurücksetzung wird erstellt.
@@ -719,21 +725,21 @@ class Backend:#Hier passiert alles was im hintergrund der Webseite
         else:
             return "Diese E-Mail exestiert bei keinem Account"
     def code_pr(self, code):
-        
+        code = code.strip()#Leerzeichen werden am Anfang und am Ende entfernt
         if code == self.mail_text:
             return None
         else:
             return 'Code ist falsch und kann man jetzt nicht mehr verwenden'
-    def neuse_passwort(self, pswt,pswt_w):
+    def neuse_passwort(self, pswt,pswt_w,email):
         fehlerfrei = "ok"
         #ein SQL-State wo das Passwort geändert wird
             
         p_pswd = "^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}$"
 
         if pswt != pswt_w:#Hier wird geschaut ob in den Passwortfelder das gleiche drinnen steht, wenn nicht kommt eine Fehlermeldung
-                fehler_medlung = "Fehler! Passwortfelder stimmen nicht überein."
-                fehlerfrei = ""
-                return fehler_medlung
+            fehler_medlung = "Fehler! Passwortfelder stimmen nicht überein."
+            fehlerfrei = ""
+            return fehler_medlung
                     #print(fehler_medlung)
         if not re.search(p_pswd,pswt):  
             #print('Keine gültiges Passwort! min. 6 Zeichen lang,min. 1 Großbuchstaben, min. 1 Kleinbuchstaben und min. 1 Ziffer enthalten.')
@@ -741,7 +747,12 @@ class Backend:#Hier passiert alles was im hintergrund der Webseite
             return 'Keine gültiges Passwort! min. 6 Zeichen lang,min. 1 Großbuchstaben, min. 1 Kleinbuchstaben und min. 1 Ziffer enthalten.'
         if fehlerfrei == 'ok':
             self.db.connect()
-            self.db.update_pswd(pswt,self.id)
+
+            pswd_byte = pswt.encode('ascii')
+            encoded_byte = base64.b64encode(pswd_byte)
+            encoded_pswd = encoded_byte.decode('ascii')
+            
+            self.db.update_pswd(encoded_pswd,email)
             self.db.close()
                 #print('Passwort wurde zurückgesetzt')
     
