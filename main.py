@@ -351,7 +351,7 @@ class GUI:#Klasse der Oberfläche
         self.event_l.config(text='Select One', width=10)
         self.event_l.grid(row=2, column=1)
         liste = self.backend.event()#Alle Events mit ihren Informationen
-        self.event_om = OptionMenu(self.surface,self.var_event_auswahl, *liste)#OprionMenu wird erstellt, in self.var_event_auswahl wird die ausgewählte Event(value) eingetragen
+        self.event_om = OptionMenu(self.surface,self.var_event_auswahl, *liste)#OptionMenu wird erstellt, in self.var_event_auswahl wird die ausgewählte Event(value) eingetragen
         self.event_om.grid(row=2, column=2)
 
         self.event_b.config(text='Bestätigen', command=self.reservieren, bg="green", pady = 30)
@@ -394,9 +394,9 @@ class GUI:#Klasse der Oberfläche
         self.login()#login Seite wird aufgerufen
     def pswt_r(self):
         self.clear_design()#Seite wird geleert
-        self.emailLabel.config(text="Geben sie bitte ihre Email-Adresse ihres Accounts an:", bg="#005ca9")
+        self.emailLabel.config(text="Geben sie bitte ihre Email-Adresse ihres Accounts an:", bg="#005ca9", fg="white", padx= 200)
         #Eigenschaften ändern
-        self.pv_button.config(text="Senden", command=self.email_p)
+        self.pv_button.config(text="Senden", command=self.email_p, )
         self.pv_stop.config(text="Abbrechen", command=self.login)
         #positionierungen
         self.emailLabel.grid(row=1, column=1)
@@ -421,7 +421,7 @@ class GUI:#Klasse der Oberfläche
         #Eigenschaften ändern
         self.psLabel.config(text="Geben sie den 5-stellingen Code der ihnen per Email gesendet wurde", bg="#005ca9")
         self.pv_button.config(text="Bestätigen", command=self.code_p)
-        self.pv_stop.config(text="Abbrechen", command=self.login)
+        #self.pv_stop.config(text="Abbrechen", command=self.login)
         #positionierung
         self.psLabel.grid(row=1, column=1)
         self.email.grid(row=2, column=1)
@@ -441,16 +441,17 @@ class GUI:#Klasse der Oberfläche
         
     def zuruecksetzen(self):
         self.clear_design()
-        self.psLabel.config(text="Geben sie das neue Passwort ein:", bg="#005ca9")
+        self.psLabel.config(text="Geben sie das neue Passwort ein:", bg="#005ca9", padx = 300)
        #Eigenschaften ändern
         self.pv_button.config(text="Bestätigen", command=self.neu_pswt_p)
-        self.pv_stop.config(text="Abbrechen", command=self.login)
+
+        #self.pv_stop.config(text="Abbrechen", command=self.login)
         #positionierung
         self.psLabel.grid(row=0, column=0)
         self.pv_pass.grid(row=1, column=0)
         self.pv_passw.grid(row=2, column=0)
         self.pv_button.grid(row=3, column=0)
-        self.pv_stop.grid(row=3, column=1)
+        #self.pv_stop.grid(row=3, column=1)
     def neu_pswt_p(self):
         pswt = self.pv_pass.get()#Passwort
         pswt_w = self.pv_passw.get()#Password wiederholen
@@ -592,7 +593,7 @@ class Backend:#Hier passiert alles was im hintergrund der Webseite
     def __init__(self):
         #ilirjan: 'root','15071998','localhost','3306','coronatracking'
         #alisa: 'root','root','localhost','8889','coronatracking'
-        self.db = DB('root','root','localhost','8889','coronatracking')#hier kann ich die Klasse DB verwenden bzw. hier wird sie aufgerufen
+        self.db = DB('root','','localhost','3306','coronatracking')#hier kann ich die Klasse DB verwenden bzw. hier wird sie aufgerufen
         self.id = None
         self.mail_text = ""
     def anmelden(self,benutzername_email,pswt):#anmelde funktion
