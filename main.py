@@ -340,7 +340,7 @@ class GUI:#Klasse der Oberfläche
         self.event_om = OptionMenu(self.surface,self.var_event_auswahl, *liste)
         self.event_om.grid(row=2, column=2)
 
-        self.event_b.config(text='Bestätigen', command=self.reservieren, bg="green", pady = 30)
+        self.event_b.config(text='Bestätigen', command=self.reservieren, bg="green", pady=(10))
         self.event_b.grid(row=3, column=2)
         #self.pv_stop.config(text="Abbrechen", command=self.main)
         self.pv_stop.grid(row=2, column=1)
