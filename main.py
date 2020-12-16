@@ -305,6 +305,8 @@ class GUI:#Klasse der Oberfläche
 
         self.event_b.config(text='Reservieren', command=self.reservieren)
         self.event_b.grid(row=2, column=3)
+        self.pv_stop.config(text="Abbrechen", command=self.main)
+        self.pv_stop.grid(row=2, column=1)
     def reservieren(self):
         name = self.var_event_auswahl.get()
         self.backend.db.connect()
@@ -313,7 +315,7 @@ class GUI:#Klasse der Oberfläche
         ok = 0
         for i in verlauf:
             if i[1] in name:
-                messagebox.showinfo('Event reservieren', 'Dieses Event hast du schon reserviert')
+                messagebox.showinfo('Event reservieren', 'Für dieses Event haben sie schon reserviert.')
                 ok = 1
                 break
         if ok == 0:        
@@ -494,7 +496,10 @@ class DB:#Hier passiert alles was mit der DB zutun hat
     def select_mail(self,kunden_id,date):
         sql = "SELECT kunden.`email` FROM kunden JOIN kundenevents ON kunden.id=kundenevents.kID JOIN eventsentry on eventsentry.id = kundenevents.eID WHERE kunden.id != {} and eventsentry.datum >='{}'and eventsentry.id IN(SELECT eventsentry.id FROM eventsentry JOIN kundenevents ON eventsentry.id=kundenevents.eID JOIN kunden on kunden.id = kundenevents.kID WHERE kunden.id = {} and eventsentry.datum >='{}')".format(kunden_id[0][0],date,kunden_id[0][0],date)  
         self.cur.execute(sql)
-
+        return self.cur.fetchall() 
+    def select_event_mail(self,kunden_id,date):
+        sql = "SELECT eventsentry.name,eventsentry.datum,eventsentry.zeit FROM eventsentry JOIN kundenevents ON eventsentry.id=kundenevents.eID JOIN kunden on kunden.id = kundenevents.kID WHERE kunden.id = {} and eventsentry.datum >= '{}'".format(kunden_id[0][0],date,kunden_id[0][0],date)  
+        self.cur.execute(sql)
         return self.cur.fetchall()  
     def select_user_email(self, kunden_id):
         sql = "SELECT `email` FROM kunden WHERE id = {}".format(kunden_id)
@@ -667,7 +672,7 @@ class Backend:#Hier passiert alles was im hintergrund der Webseite
     def mail(self):
         user = 'alisa6rieger@gmail.com'
         pwd = 'spuzunwyyivbpnbe'
-        mail_text = 'Es gab einen Coronafall!'
+        mail_text = 'Es gab einen Coronafall bei diesen Events:'
         subject = 'Warnung!'
 
         #emails sind alle Emails von den Usern, ausgenommen der die Meldung sendete, die auch bei den Events waren wo auch der erkrankte User 3 Tage vor dem 1 Syntom tag war
@@ -676,6 +681,12 @@ class Backend:#Hier passiert alles was im hintergrund der Webseite
 
         date = heute-tage
         self.db.connect()
+        
+        for i in self.db.select_event_mail(self.id,date):
+            for e in i:
+                mail_text = mail_text+' '+str(e)
+            mail_text = mail_text+','
+        mail_text = mail_text[:-1]
         emails = []
         for i in self.db.select_mail(self.id,date):
             for e in i:
