@@ -230,7 +230,7 @@ class GUI:  # Klasse der Oberfläche
         self.e_email.grid(row=14, column=2, pady=(0, 10))
 
         self.b_save.config(text='Erstellen', command=self.benutzer_erstellen,
-                           bg="green")  # der Text vom Button wird geändert und festgelegt welche Methode aufgerufen wird, wenn der Button geklickt wird
+                           bg="green",padx=36,pady=6)  # der Text vom Button wird geändert und festgelegt welche Methode aufgerufen wird, wenn der Button geklickt wird
         self.b_save.grid(row=18, column=2, pady=(12))
         self.fehler.grid(row=19, column=2, columnspan=30)
 
@@ -286,20 +286,20 @@ class GUI:  # Klasse der Oberfläche
         # der Text der Labels werden geändert
         self.userLabel.config(text="Email/Benutzername:", bg="#005ca9", fg="white")
         self.passLabel.config(text="Passwort:", bg="#005ca9", fg="white")
-        self.fehler.config(bg="#005ca9", fg="red")
+        self.fehler.config(bg="#005ca9", fg="white")
         # die Labels werden positioniert
         self.userLabel.grid(row=1, column=0, )
         self.userEntry.grid(row=1, column=1, )
         self.passLabel.grid(row=2, column=0)
         self.passEntry.grid(row=2, column=1,)
         # die Eigenschaften der Buttons werden geändert
-        self.b_regestrieren.config(text='Regestrieren', command=self.fehler_text_leer_regestrieren, bg="green")
-        self.b_login.config(text='Login', command=self.login_pr, bg="green")
+        #self.b_regestrieren.config(text='Regestrieren', command=self.fehler_text_leer_regestrieren, bg="green")
+        self.b_login.config(text='Login', command=self.login_pr, bg="green",padx=44)
         self.b_pswt_return.config(text='Passwort zurücksetzen', command=self.fehler_text_leer_pswt_r, bg="#33ccff")
         # die Buttons werden positioniert
-        self.b_regestrieren.grid(row=4, column=1)
-        self.b_login.grid(row=4, column=0)
-        self.b_pswt_return.grid(row=3, column=1)
+        #self.b_regestrieren.grid(row=4, column=1)
+        self.b_login.grid(row=4, column=1, pady=3, )
+        self.b_pswt_return.grid(row=3, column=1, pady= 3)
         self.fehler.grid(row=5, column=1)
         self.surface.mainloop()  # fenster schließt sich nicht automatisch
 
@@ -404,13 +404,13 @@ class GUI:  # Klasse der Oberfläche
         self.emailLabel.config(text="Geben sie bitte ihre Email-Adresse ihres Accounts an:", bg="#005ca9", fg="white",
                                padx=200)
         # Eigenschaften ändern
-        self.pv_button.config(text="Senden", command=self.email_p,bg = "green",  )
-        self.pv_stop.config(text="Abbrechen", command=self.login, bg= "red", fg="white")
+        self.pv_button.config(text="Senden", command=self.email_p,bg = "green" ,padx=30  )
+        self.pv_stop.config(text="Abbrechen", command=self.login, bg= "red", fg="white",padx=19)
         # positionierungen
         self.emailLabel.grid(row=1, column=1)
         self.email.grid(row=2, column=1)
-        self.pv_button.grid(row=3, column=0)
-        self.pv_stop.grid(row=3, column=1)
+        self.pv_button.grid(row=3, column=1, pady=3 )
+        self.pv_stop.grid(row=4, column=1,pady=3)
         self.fehler.grid(row=4, column=1)
 
     def email_p(self):
@@ -428,15 +428,15 @@ class GUI:  # Klasse der Oberfläche
     def verifiziercode(self):
         self.clear_design()
         # Eigenschaften ändern
-        self.psLabel.config(text="Geben sie den 5-stellingen Code der ihnen per Email gesendet wurde", bg="#005ca9")
-        self.pv_button.config(text="Bestätigen", command=self.code_p)
+        self.psLabel.config(text="Geben sie den 5-stellingen Code der ihnen per Email gesendet wurde", bg="#005ca9",padx=200, fg= "white")
+        self.pv_button.config(text="Bestätigen", command=self.code_p, padx=23)
         # self.pv_stop.config(text="Abbrechen", command=self.login)
         # positionierung
-        self.psLabel.grid(row=1, column=1)
+        self.psLabel.grid(row=1, column=1, pady=3)
         self.email.grid(row=2, column=1)
-        self.pv_button.grid(row=3, column=0)
-        self.pv_stop.grid(row=3, column=1)
-        self.fehler.grid(row=4, column=0)
+        self.pv_button.grid(row=3, column=1, pady=3)
+        self.pv_stop.grid(row=4, column=1)
+        self.fehler.grid(row=5, column=0)
 
     def code_p(self):
         code = self.email.get()  # Code vom Eingabefeld
@@ -705,7 +705,7 @@ class Backend:  # Hier passiert alles was im hintergrund der Webseite
         if not re.search(p_pswd, pswt):
             fehlerfrei = ""
             # print('Keine gültiges Passwort! min. 6 Zeichen lang,min. 1 Großbuchstaben, min. 1 Kleinbuchstaben und min. 1 Ziffer enthalten.')
-            return 'Keine gültiges Passwort! min. 8 und max. 32 Zeichen lang,min. 1 Großbuchstaben, min. 1 Kleinbuchstaben und min. 1 Ziffer enthalten.'
+            return 'Keine gültiges Passwort! min. 8 und max. 32 Zeichen lang,min.\n 1 Großbuchstaben, min. 1 Kleinbuchstaben und min. 1 Ziffer enthalten.'
 
         if not re.search(p_name, vorname):
             fehlerfrei = ""
