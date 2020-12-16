@@ -288,10 +288,10 @@ class GUI:  # Klasse der Oberfläche
         self.passLabel.config(text="Passwort:", bg="#005ca9", fg="white")
         self.fehler.config(bg="#005ca9", fg="white")
         # die Labels werden positioniert
-        self.userLabel.grid(row=1, column=0,padx=(240,0))
-        self.userEntry.grid(row=1, column=1,pady=(0,0))
+        self.userLabel.grid(row=1, column=0,padx=(240,0), pady=(120,0))
+        self.userEntry.grid(row=1, column=1,pady=(120,0))
         self.passLabel.grid(row=2, column=0,padx=(240,0))
-        self.passEntry.grid(row=2, column=1)
+        self.passEntry.grid(row=2, column=1,pady=6)
         # die Eigenschaften der Buttons werden geändert
         #self.b_regestrieren.config(text='Regestrieren', command=self.fehler_text_leer_regestrieren, bg="green")
         self.b_login.config(text='Login', command=self.login_pr, bg="green",padx=44)
@@ -300,7 +300,7 @@ class GUI:  # Klasse der Oberfläche
         #self.b_regestrieren.grid(row=4, column=1)
         self.b_login.grid(row=4, column=1, pady=3, )
         self.b_pswt_return.grid(row=3, column=1, pady= 3)
-        self.fehler.grid(row=5, column=1)
+        self.fehler.grid(row=4, column=2)
         self.surface.mainloop()  # fenster schließt sich nicht automatisch
 
     def login_pr(self):
