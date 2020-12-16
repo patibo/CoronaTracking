@@ -279,6 +279,7 @@ class GUI:#Klasse der Oberfläche
         self.surface.geometry("800x400")
         self.clear_design()#ganzer Inhalt des Fensters wird ausgeblendet
         self.menubar()
+        self.email.delete(0,'end')
         #der Text der Labels werden geändert
         self.userLabel.config(text="Email/Benutzername:",bg="#005ca9", fg="white", padx=130)
         self.passLabel.config(text="Passwort:",bg="#005ca9", fg="white")
@@ -597,11 +598,12 @@ class Backend:#Hier passiert alles was im hintergrund der Webseite
         benutzername_email = benutzername_email.strip()#Leerzeichen werden am Anfang und am Ende entfernt
         self.db.connect()#Verbindung zur DB wird erstellt
         pswd_sql = self.db.select_pswd(benutzername_email)#das Passwort was zum Benutzername/E-Mail passt was in der DB gespeichert wurde wird hier zurückgegeben
-
+        
         if len(pswd_sql) != 0:
             encoded_pswd = pswd_sql[0][0].encode('ascii')
             encoded_byte = base64.b64decode(encoded_pswd)
             pswd = encoded_byte.decode('ascii')
+            
             if pswt != pswd:#hier wird geschaut ob das Passwort im Eingabefeld das gleiche Passwort ist wie in der DB. Stimmt es nicht kommt eine Fehlermeldung.
                 fehler_medlung = "Fehler! Benutzername/E-Mail oder Passwort stimmt nicht."
                 fehlerfrei = ""
