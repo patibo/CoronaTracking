@@ -323,12 +323,12 @@ class GUI:#Klasse der Oberfläche
         self.t_verlauf.config(text='Verlauf',font = "Helvetica 16 bold italic")
  
         self.t_verlauf.grid(row = 0, column=1)
-        self.b_logout.grid(row = 3, column=11)
-        self.b_logout.config(text='Abmelden',command=self.logout)
+        #self.b_logout.grid(row = 3, column=11)
+        #self.b_logout.config(text='Abmelden',command=self.logout)
         self.b_verdachtsfall.config(text='Corona Fall melden', command=self.verdachtsfall, bg='red', fg='black')
         self.b_verdachtsfall.grid(row = 12, column=1)
-        self.b_regestrieren_event.config(text='Event reservieren',command=self.event_reservieren)
-        self.b_regestrieren_event.grid(row = 13, column=3)
+        #self.b_regestrieren_event.config(text='Event reservieren',command=self.event_reservieren)
+        #self.b_regestrieren_event.grid(row = 13, column=3)
     def event_reservieren(self):
         self.clear_design()
         self.menubar3()
