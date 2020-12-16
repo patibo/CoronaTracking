@@ -334,13 +334,13 @@ class GUI:#Klasse der Oberfläche
         #positionierung der Listbox und Scrollbar
         self.listbox.grid(row=1,column=1,columnspan=10,sticky=N+E+S+W)
         self.scroll.grid(row=1,column=10, sticky=E+N+S)
-        self.t_verlauf.config(text='Verlauf',font = "Helvetica 16 bold italic")#Überschrift
+        self.t_verlauf.config(text='Verlauf',font = "Helvetica 16 bold italic", bg = "#005ca9", fg="white")#Überschrift
  
         self.t_verlauf.grid(row = 0, column=1)#Überschrift positionieren
         #self.b_logout.grid(row = 3, column=11)
         #self.b_logout.config(text='Abmelden',command=self.logout)
-        self.b_verdachtsfall.config(text='Corona Fall melden', command=self.verdachtsfall, bg='red', fg='black')
-        self.b_verdachtsfall.grid(row = 12, column=1)
+        self.b_verdachtsfall.config(text='Corona Fall melden', command=self.verdachtsfall, bg='red', fg='black',pady="24",padx = 30)
+        self.b_verdachtsfall.grid(row = 12, column=4)
         #self.b_regestrieren_event.config(text='Event reservieren',command=self.event_reservieren)
         #self.b_regestrieren_event.grid(row = 13, column=3)
     def event_reservieren(self):
@@ -593,7 +593,7 @@ class Backend:#Hier passiert alles was im hintergrund der Webseite
     def __init__(self):
         #ilirjan: 'root','15071998','localhost','3306','coronatracking'
         #alisa: 'root','root','localhost','8889','coronatracking'
-        self.db = DB('root','','localhost','3306','coronatracking')#hier kann ich die Klasse DB verwenden bzw. hier wird sie aufgerufen
+        self.db = DB('root','root','localhost','8889','coronatracking')#hier kann ich die Klasse DB verwenden bzw. hier wird sie aufgerufen
         self.id = None
         self.mail_text = ""
     def anmelden(self,benutzername_email,pswt):#anmelde funktion
