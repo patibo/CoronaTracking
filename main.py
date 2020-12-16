@@ -78,6 +78,21 @@ class GUI:#Klasse der Oberfläche
         self.event_om = Label(self.surface)
         self.event_b = Button(self.surface)
 
+        #passwort zurücksetzen
+        self.pvLabel = Label(self.surface)
+        self.emailLabel = Label(self.surface)
+        self.psLabel = Label(self.surface)
+        self.codeLabel = Label(self.surface)
+        
+        self.email = Entry(self.surface)
+
+        self.pv_pass = Entry(self.surface)
+        self.pv_passw = Entry(self.surface)
+        self.pv_code = Entry(self.surface)
+        self.pv_email = Entry(self.surface)
+        self.pv_button = Button(self.surface)
+        self.pv_stop = Button(self.surface)
+
     def clear_design(self):
         #hier werden alle Labels, Enterys, etc. ausgeblendet
         """ Hauptseit: Listenbox """
@@ -141,6 +156,20 @@ class GUI:#Klasse der Oberfläche
         self.event_l.grid_forget()
         self.event_om.grid_forget()
         self.event_b.grid_forget()
+
+        #passwort zurücksetzen
+        self.pvLabel.grid_forget()
+        self.emailLabel.grid_forget()
+        self.psLabel.grid_forget()
+        self.codeLabel.grid_forget()
+        
+
+        self.pv_pass.grid_forget()
+        self.pv_passw.grid_forget()
+        self.pv_code.grid_forget()
+        self.pv_email.grid_forget()
+        self.pv_button.grid_forget()
+        self.pv_stop.grid_forget()
 
 
     def regestrieren(self):
@@ -297,7 +326,74 @@ class GUI:#Klasse der Oberfläche
         self.backend.logout()
         self.login()
     def pswt_r(self):
-        pass
+        self.clear_design()
+        self.emailLabel.config(text="Geben sie bitte ihre Email-Adresse ihres Accounts an:", bg="#005ca9")
+        
+        self.pv_button.config(text="Senden", command=self.email_p)
+        self.pv_stop.config(text="Abbrechen", command=self.login)
+
+        self.emailLabel.grid(row=1, column=1)
+        self.email.grid(row=2, column=1)
+        self.pv_button.grid(row=3, column=0)
+        self.pv_stop.grid(row=3, column=1)
+        self.fehler.grid(row=4, column=1)
+    def email_p(self):
+        email = self.email.get()
+        fehler_text = self.backend.passwort_email(email)
+        if fehler_text != None:#Gibt es einen Fehler wird die Meldung angezeigt und man kommt nicht weiter
+            self.fehler.config(text=fehler_text)
+            self.pswt_r()
+        else:#Inhalte der Eingabefelder werden entleert, Text vom Lable fehler wird geändert, man kommt auf die login Seite zurück
+            self.fehler.config(text='')
+            self.email.delete(0,'end')
+            self.verifiziercode()
+
+    def verifiziercode(self):
+        self.clear_design()
+        self.psLabel.config(text="Geben sie den 5-stellingen Code der ihnen per Email gesendet wurde", bg="#005ca9")
+
+        self.psLabel.grid(row=1, column=1)
+        self.email.grid(row=2, column=1)
+        self.pv_button.config(text="Bestätigen", command=self.code_p)
+        self.pv_stop.config(text="Abbrechen", command=self.login)
+        self.pv_button.grid(row=3, column=0)
+        self.pv_stop.grid(row=3, column=1)
+        self.fehler.grid(row=4, column=0)
+    def code_p(self):
+        code = self.email.get()
+        fehler_text = self.backend.code_pr(code)
+        if fehler_text != None:#Gibt es einen Fehler wird die Meldung angezeigt und man kommt nicht weiter
+            self.fehler.config(text=fehler_text)
+            self.verifiziercode()
+        else:#Inhalte der Eingabefelder werden entleert, Text vom Lable fehler wird geändert, man kommt auf die login Seite zurück
+            self.fehler.config(text='')
+            self.email.delete(0,'end')
+            self.zuruecksetzen()
+        
+    def zuruecksetzen(self):
+        self.clear_design()
+        self.psLabel = Label(text="Geben sie das neue Passwort ein:", bg="#005ca9")
+       
+        self.pv_button.config(text="Bestätigen", command=self.neu_pswt_p)
+        self.pv_stop.config(text="Abbrechen", command=self.login)
+
+        self.psLabel.grid(row=0, column=0)
+        self.pv_pass.grid(row=1, column=0)
+        self.pv_passw.grid(row=2, column=0)
+        self.pv_button.grid(row=3, column=0)
+        self.pv_stop.grid(row=3, column=1)
+    def neu_pswt_p(self):
+        pswt = self.pv_pass.get()
+        pswt_w = self.pv_passw.get()
+        fehler_text = self.backend.neuse_passwort(pswt,pswt_w)
+        if fehler_text != None:#Gibt es einen Fehler wird die Meldung angezeigt und man kommt nicht weiter
+            self.fehler.config(text=fehler_text)
+            self.zuruecksetzen()
+        else:#Inhalte der Eingabefelder werden entleert, Text vom Lable fehler wird geändert, man kommt auf die login Seite zurück
+            self.fehler.config(text='')
+            self.pv_pass.delete(0,'end')
+            self.pv_passw.delete(0,'end')
+            self.login()
     #Fenster zum erstellen von Events
     def event_input(self):
         self.clear_design()
@@ -389,8 +485,8 @@ class DB:#Hier passiert alles was mit der DB zutun hat
         sql = "SELECT `email` FROM kunden WHERE id = {}".format(kunden_id)
         self.cur.execute(sql)
         return self.cur.fetchall() 
-    def update_pswd(self, pswd,email):
-        sql = "UPDATE `kunden` SET `passwort`='{}' WHERE `email` = '{}'".format(pswd,email)
+    def update_pswd(self, pswd,kunden_id):
+        sql = "UPDATE `kunden` SET `passwort`='{}' WHERE `id` = '{}'".format(pswd,kunden_id[0][0])
         self.cur.execute(sql)
         self.mydb.commit()
     def close(self):#die Verbindung zur DB wird getrennt
@@ -423,6 +519,7 @@ class Backend:#Hier passiert alles was im hintergrund der Webseite
     def __init__(self):
         self.db = DB('root','root','localhost','8889','coronatracking')#hier kann ich die Klasse DB verwenden bzw. hier wird sie aufgerufen
         self.id = None
+        self.mail_text = ""
     def anmelden(self,benutzername_email,pswt):#anmelde funktion
 
         fehlerfrei = "ok"
@@ -593,48 +690,62 @@ class Backend:#Hier passiert alles was im hintergrund der Webseite
         pwd = 'spuzunwyyivbpnbe'
         subject = 'Verifizierungs Email'
 
-        #eindeutige Nummer für die Passwort zurücksetzung wird erstellt.
-        #im ergebnis steht die eindeutige nummer die als inhalt der email geschickt wird
-        mail_text = ""
-        for x in range(5):
-            mail_text += str(random.randint(1,9))
+        p_email = "^([a-zA-Z0-9]+([-_\.]?[a-zA-Z0-9])+@[a-zA-Z0-9]+([-_\.]?[a-zA-Z0-9])+\.[a-z]{2,4}){0,}$"
+        if not re.search(p_email,email):  
+            #print('Keine gültige Email Adresse')
+            return 'Keine gültige Email Adresse'
+        exist_email = self.db.select_email(email)
+        exist_email = exist_email[0][0]
+        if exist_email != 0:
+            #eindeutige Nummer für die Passwort zurücksetzung wird erstellt.
+            #im ergebnis steht die eindeutige nummer die als inhalt der email geschickt wird
+            self.mail_text = ""
+            for x in range(5):
+                self.mail_text += str(random.randint(1,9))
 
-        MAIL_FROM = user
-        self.db.connect()
-        #email = self.db.select_user_email(self.id)
-        self.db.close()
-        RCPT_TO  = email#[0][0]#email ist die Email vom User der das Passwort ändern möchte. Diese Information bekomme ich aus der DB
-        DATA = 'From:%s\nTo:%s\nSubject:%s\n\n%s' % (MAIL_FROM, RCPT_TO, subject, mail_text)
-        server = smtplib.SMTP('smtp.gmail.com',587)
-        server.starttls()
-        server.login(user, pwd)
-        server.sendmail(MAIL_FROM, RCPT_TO, DATA)
-        server.quit()
-        #Die verbindung wird geschlossen
-        server.close()
+            MAIL_FROM = user
+            self.db.connect()
+            #email = self.db.select_user_email(self.id)
+            self.db.close()
+            RCPT_TO  = email#[0][0]#email ist die Email vom User der das Passwort ändern möchte. Diese Information bekomme ich aus der DB
+            DATA = 'From:%s\nTo:%s\nSubject:%s\n\n%s' % (MAIL_FROM, RCPT_TO, subject, self.mail_text)
+            server = smtplib.SMTP('smtp.gmail.com',587)
+            server.starttls()
+            server.login(user, pwd)
+            server.sendmail(MAIL_FROM, RCPT_TO, DATA)
+            server.quit()
+            #Die verbindung wird geschlossen
+            server.close()
+        else:
+            return "Diese E-Mail exestiert bei keinem Account"
+    def code_pr(self, code):
+        
+        if code == self.mail_text:
+            return None
+        else:
+            return 'Code ist falsch und kann man jetzt nicht mehr verwenden'
+    def neuse_passwort(self, pswt,pswt_w):
         fehlerfrei = "ok"
         #ein SQL-State wo das Passwort geändert wird
-        code = input('Code: ')#request.POST.get('name_eingabefeld')
-        if code == mail_text:
-            pswt = input('neues Passwort: ')#Eingabefeld vom Passwort #request.POST.get('name_eingabefeld')
-            pswt_w = input('neues Passwort wiederholen: ')#Eingabefeld vom Passwort wiederholen     #request.POST.get('name_eingabefeld')
-            p_pswd = "^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}$"
+            
+        p_pswd = "^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}$"
 
-            if pswt != pswt_w:#Hier wird geschaut ob in den Passwortfelder das gleiche drinnen steht, wenn nicht kommt eine Fehlermeldung
-                    fehler_medlung = "Fehler! Passwortfelder stimmen nicht überein."
-                    fehlerfrei = ""
-                    #print(fehler_medlung)
-            if not re.search(p_pswd,pswt):  
-                #print('Keine gültiges Passwort! min. 6 Zeichen lang,min. 1 Großbuchstaben, min. 1 Kleinbuchstaben und min. 1 Ziffer enthalten.')
+        if pswt != pswt_w:#Hier wird geschaut ob in den Passwortfelder das gleiche drinnen steht, wenn nicht kommt eine Fehlermeldung
+                fehler_medlung = "Fehler! Passwortfelder stimmen nicht überein."
                 fehlerfrei = ""
-            if fehlerfrei == 'ok':
-                self.db.connect()
-                self.db.update_pswd(pswt,email)
-                self.db.close()
+                return fehler_medlung
+                    #print(fehler_medlung)
+        if not re.search(p_pswd,pswt):  
+            #print('Keine gültiges Passwort! min. 6 Zeichen lang,min. 1 Großbuchstaben, min. 1 Kleinbuchstaben und min. 1 Ziffer enthalten.')
+            fehlerfrei = ""
+            return 'Keine gültiges Passwort! min. 6 Zeichen lang,min. 1 Großbuchstaben, min. 1 Kleinbuchstaben und min. 1 Ziffer enthalten.'
+        if fehlerfrei == 'ok':
+            self.db.connect()
+            self.db.update_pswd(pswt,self.id)
+            self.db.close()
                 #print('Passwort wurde zurückgesetzt')
-        else:
-            #print('Code ist falsch und kann man jetzt nicht mehr verwenden')
-            pass
+    
+            
 
     def evinput(self, name, datum, zeit):
         #Checkt ob das Datum richtig formatiert ist, falls nicht, wird es korregiert. (YYYY-MM-DD)
