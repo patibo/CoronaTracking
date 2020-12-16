@@ -108,22 +108,21 @@ class GUI:#Klasse der Oberfläche
     def menubar2(self):
         menubar = Menu(self.surface)
 
-        menubar.add_command(label="Logout", command=self.logout)
+        menubar.add_command(label="Home", command=self.main)
+        menubar.add_command(label="Event Anmeldung", command=self.event_reservieren)
 
-        menubar.add_command(label="Exit", command=self.surface.destroy)
+        menubar.add_command(label="Logout", command=self.logout)
 
 
         self.surface.config(menu=menubar)
 
     def menubar3(self):
         menubar = Menu(self.surface)
-        filemenu = Menu(self.surface, tearoff=0)
-        filemenu.add_command(label="Home", command=self.main)
-        filemenu.add_command(label="Logout", command=self.logout)
 
-        filemenu.add_separator()
-        filemenu.add_command(label="Exit", command=self.surface.destroy)
-        menubar.add_cascade(label="Menü", menu=filemenu)
+        menubar.add_command(label="Home", command=self.main)
+        menubar.add_command(label="Event Anmeldung", command=self.event_reservieren)
+
+        menubar.add_command(label="Logout", command=self.logout)
 
         self.surface.config(menu=menubar)
 
