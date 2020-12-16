@@ -187,7 +187,7 @@ class GUI:#Klasse der Oberfläche
 
     def login(self):
         self.surface.configure(bg="#005ca9")
-        self.surface.geometry("600x400")
+        self.surface.geometry("800x400")
         self.clear_design()#ganzer Inhalt des Fensters wird ausgeblendet
         #der Text der Labels werden geändert
         self.userLabel.config(text="Email/Benutzername:",bg="#005ca9", fg="white")
@@ -195,18 +195,18 @@ class GUI:#Klasse der Oberfläche
         self.fehler.config(bg="#005ca9", fg="red")
         #die Labels werden positioniert
         self.userLabel.grid(row=1, column=0, padx = (50))
-        self.userEntry.grid(row=1, column=1,pady = (20))
+        self.userEntry.grid(row=1, column=1,pady = (10,4))
         self.passLabel.grid(row=2, column=0)
-        self.passEntry.grid(row=2, column=1,pady = (10))
+        self.passEntry.grid(row=2, column=1,pady = (5))
         #die Eigenschaften der Buttons werden geändert
         self.b_regestrieren.config(text='Regestrieren',command=self.regestrieren,bg="green")
         self.b_login.config(text='Login',command=self.login_pr,bg="green")
         self.b_pswt_return.config(text='Passwort zurücksetzen',command=self.pswt_r,bg="#33ccff")
         #die Buttons werden positioniert
-        self.b_regestrieren.grid(row=2, column=1)
+        self.b_regestrieren.grid(row=4, column=1)
         self.b_login.grid(row=4, column=0)
         self.b_pswt_return.grid(row=3, column=1)
-        self.fehler.grid(row=1, column=4)
+        self.fehler.grid(row=5, column=1)
         self.surface.mainloop()#fenster schließt sich nicht automatisch
     def login_pr(self):
         user = self.userEntry.get()
@@ -243,10 +243,10 @@ class GUI:#Klasse der Oberfläche
         self.t_verlauf.grid(row = 0, column=1)
         self.b_logout.grid(row = 3, column=11)
         self.b_logout.config(text='Abmelden',command=self.logout)
-        self.b_verdachtsfall.config(text='Corona Fall melden', command=self.verdachtsfall, bg='red', fg='white')
+        self.b_verdachtsfall.config(text='Corona Fall melden', command=self.verdachtsfall, bg='red', fg='black')
         self.b_verdachtsfall.grid(row = 12, column=1)
     def verdachtsfall(self):
-        MsgBox = messagebox.askquestion('Exit Application', 'Sind Sie sich sicher, dass Sie einen Corona Fall melden möchten?',icon='warning')
+        MsgBox = messagebox.askquestion('Corona Fall melden', 'Sind Sie sich sicher, dass Sie einen Corona Fall melden möchten?',icon='warning')
         if MsgBox == 'yes':
             self.backend.mail()
             messagebox.showinfo('Bestätigung', 'Die warn E-Mails wurden versendet')
