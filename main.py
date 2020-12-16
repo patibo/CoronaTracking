@@ -297,7 +297,7 @@ class GUI:#Klasse der Oberfläche
         self.clear_design()
         self.var_event_auswahl.set("Events")  # default value
 
-        self.event_l.config(text='Select One', width=10)
+        self.event_l.config(text='Event auswählen')
         self.event_l.grid(row=2, column=1)
         liste = self.backend.event()
         self.event_om = OptionMenu(self.surface,self.var_event_auswahl, *liste)
@@ -306,7 +306,7 @@ class GUI:#Klasse der Oberfläche
         self.event_b.config(text='Reservieren', command=self.reservieren)
         self.event_b.grid(row=2, column=3)
         self.pv_stop.config(text="Abbrechen", command=self.main)
-        self.pv_stop.grid(row=2, column=1)
+        self.pv_stop.grid(row=3, column=1)
     def reservieren(self):
         name = self.var_event_auswahl.get()
         self.backend.db.connect()
@@ -540,7 +540,7 @@ class Backend:#Hier passiert alles was im hintergrund der Webseite
     def __init__(self):
         #ilirjan: 'root','15071998','localhost','3306','coronatracking'
         #alisa: 'root','root','localhost','8889','coronatracking'
-        self.db = DB('root','root','localhost','8889','coronatracking')#hier kann ich die Klasse DB verwenden bzw. hier wird sie aufgerufen
+        self.db = DB('root','15071998','localhost','3306','coronatracking')#hier kann ich die Klasse DB verwenden bzw. hier wird sie aufgerufen
         self.id = None
         self.mail_text = ""
     def anmelden(self,benutzername_email,pswt):#anmelde funktion
