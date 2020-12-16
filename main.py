@@ -538,7 +538,7 @@ class DB:#Hier passiert alles was mit der DB zutun hat
 
 class Backend:#Hier passiert alles was im hintergrund der Webseite
     def __init__(self):
-        self.db = DB('root','root','localhost','8889','coronatracking')#hier kann ich die Klasse DB verwenden bzw. hier wird sie aufgerufen
+        self.db = DB('root','15071998','localhost','3306','coronatracking')#hier kann ich die Klasse DB verwenden bzw. hier wird sie aufgerufen
         self.id = None
         self.mail_text = ""
     def anmelden(self,benutzername_email,pswt):#anmelde funktion
@@ -835,3 +835,4 @@ Website.login()
 
 
 
+#es hat gepusht
