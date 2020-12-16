@@ -139,23 +139,23 @@ class GUI:#Klasse der Oberfläche
         self.email.config(text='Email:',bg="#005ca9", fg="white")
         
         #Labels,Enterys, Buttons werden hier positioniert
-        self.benutzername.grid(row=2, column=1, pady = (20,10),padx = (80))
-        self.pswt.grid(row=4, column=1, pady = (0,10))
-        self.pswt_w.grid(row=6, column=1, pady = (0,10))
-        self.vorname.grid(row=8, column=1, pady = (0,10))
-        self.nachname.grid(row=10, column=1, pady = (0,10))
-        self.email.grid(row=14, column=1, pady = (0,10))
+        self.benutzername.grid(row=2, column=1)
+        self.pswt.grid(row=4, column=1, pady=(0, 10))
+        self.pswt_w.grid(row=6, column=1, pady=(0, 10))
+        self.vorname.grid(row=8, column=1, pady=(0, 10))
+        self.nachname.grid(row=10, column=1, pady=(0, 10))
+        self.email.grid(row=14, column=1, pady=(0, 10))
 
-        self.e_benutzername.grid(row=2, column=2, pady = (20,10))
-        self.e_pswt.grid(row=4, column=2, pady = (0,10))
-        self.e_pswt_w.grid(row=6, column=2, pady = (0,10))
-        self.e_vorname.grid(row=8, column=2, pady = (0,10))
-        self.e_nachname.grid(row=10, column=2, pady = (0,10))
-        self.e_email.grid(row=14, column=2, pady = (0,10))
+        self.e_benutzername.grid(row=2, column=2, pady=(20, 10))
+        self.e_pswt.grid(row=4, column=2, pady=(0, 10))
+        self.e_pswt_w.grid(row=6, column=2, pady=(0, 10))
+        self.e_vorname.grid(row=8, column=2, pady=(0, 10))
+        self.e_nachname.grid(row=10, column=2, pady=(0, 10))
+        self.e_email.grid(row=14, column=2, pady=(0, 10))
 
         self.b_save.config(text='Erstellen', command=self.benutzer_erstellen,bg="green")#der Text vom Button wird geändert und festgelegt welche Methode aufgerufen wird, wenn der Button geklickt wird
         self.b_save.grid(row=18, column=1, pady = (12))
-        self.fehler.grid(row=18, column=2,sticky=N+S+E+W, columnspan=30)
+        self.fehler.grid(row=18, column=2, columnspan=30)
         
 
 
