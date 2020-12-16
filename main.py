@@ -177,7 +177,7 @@ class GUI:#Klasse der Oberfläche
     def regestrieren(self):
         self.clear_design()#ganzer Inhalt des Fensters wird ausgeblendet
         #der Text der Labels werden geändert
-        self.benutzername.config(text='Benutzername:',bg="#005ca9", fg="white")
+        self.benutzername.config(text='Benutzername:',bg="#005ca9", fg="white",padx=140)
         self.pswt.config(text='Passwort:',bg="#005ca9", fg="white")
         self.pswt_w.config(text='Passwort wiederholen:',bg="#005ca9", fg="white")
         self.vorname.config(text='Vorname:',bg="#005ca9", fg="white")
@@ -200,8 +200,8 @@ class GUI:#Klasse der Oberfläche
         self.e_email.grid(row=14, column=2, pady=(0, 10))
 
         self.b_save.config(text='Erstellen', command=self.benutzer_erstellen,bg="green")#der Text vom Button wird geändert und festgelegt welche Methode aufgerufen wird, wenn der Button geklickt wird
-        self.b_save.grid(row=18, column=1, pady = (12))
-        self.fehler.grid(row=18, column=2, columnspan=30)
+        self.b_save.grid(row=18, column=2, pady = (12))
+        self.fehler.grid(row=19, column=2, columnspan=30)
         
 
 
@@ -236,11 +236,11 @@ class GUI:#Klasse der Oberfläche
         self.surface.geometry("800x400")
         self.clear_design()#ganzer Inhalt des Fensters wird ausgeblendet
         #der Text der Labels werden geändert
-        self.userLabel.config(text="Email/Benutzername:",bg="#005ca9", fg="white")
+        self.userLabel.config(text="Email/Benutzername:",bg="#005ca9", fg="white", padx=130)
         self.passLabel.config(text="Passwort:",bg="#005ca9", fg="white")
         self.fehler.config(bg="#005ca9", fg="red")
         #die Labels werden positioniert
-        self.userLabel.grid(row=1, column=0, padx = (50))
+        self.userLabel.grid(row=1, column=0,)
         self.userEntry.grid(row=1, column=1,pady = (10,4))
         self.passLabel.grid(row=2, column=0)
         self.passEntry.grid(row=2, column=1,pady = (5))
