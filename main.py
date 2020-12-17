@@ -288,15 +288,15 @@ class GUI:  # Klasse der Oberfläche
 
         self.email.delete(0, 'end')  # das meist verwendte Eingabefeld für Passwort zurücksetzen wird hier entleert
         # der Text der Labels werden geändert
-        self.titleLabel.config(text="Corona Tracking App", bg="#005ca9", fg="white", font="Helvetica 24 bold italic")
+        self.titleLabel.config(text="Corona Tracking App", bg="#005ca9", fg="white", font="Helvetica 28 bold italic")
         self.userLabel.config(text="Email/Benutzername:", bg="#005ca9", fg="white",)
         self.passLabel.config(text="Passwort:", bg="#005ca9", fg="white")
         #self.fehler.config(bg="#005ca9", fg="white")
         # die Labels werden positioniert
-        self.titleLabel.grid(row=1, column=0, padx=120, columnspan=30)
-        self.userLabel.grid(row=2, column=0,padx=(120,0), pady=(60,0))
-        self.userEntry.grid(row=2, column=1,pady=(60,0))
-        self.passLabel.grid(row=3, column=0,padx=(120,0))
+        self.titleLabel.grid(row=1, column=0, padx=200, columnspan=30)
+        self.userLabel.grid(row=2, column=0,padx=(240,0), pady=(115,0))
+        self.userEntry.grid(row=2, column=1,pady=(120,0))
+        self.passLabel.grid(row=3, column=0,padx=(240,0))
         self.passEntry.grid(row=3, column=1,pady=6)
         # die Eigenschaften der Buttons werden geändert
         #self.b_regestrieren.config(text='Regestrieren', command=self.fehler_text_leer_regestrieren, bg="green")
