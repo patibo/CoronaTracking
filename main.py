@@ -78,6 +78,7 @@ class GUI:  # Klasse der Oberfläche
         self.event_om = Label(self.surface)
         self.event_lb = Label(self.surface)
         self.event_b = Button(self.surface)
+        self.event_return = Button(self.surface)
 
         # passwort zurücksetzen
         self.pvLabel = Label(self.surface)
@@ -180,6 +181,7 @@ class GUI:  # Klasse der Oberfläche
         self.event_om.grid_forget()
         self.event_lb.grid_forget()
         self.event_b.grid_forget()
+        self.event_return.grid_forget()
 
         # passwort zurücksetzen
         self.pvLabel.grid_forget()
@@ -365,6 +367,8 @@ class GUI:  # Klasse der Oberfläche
 
         self.event_b.config(text='Bestätigen', command=self.reservieren, bg="green", pady=10)
         self.event_b.grid(row=4, column=2)
+        self.event_return.config(text='Abrechen', command=self.main)
+        self.event_return.grid(row=5, column=2)
 
       
 
