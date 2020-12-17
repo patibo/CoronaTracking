@@ -294,8 +294,8 @@ class GUI:  # Klasse der Oberfläche
         #self.fehler.config(bg="#005ca9", fg="white")
         # die Labels werden positioniert
         self.titleLabel.grid(row=1, column=0, padx=200, columnspan=30)
-        self.userLabel.grid(row=2, column=0,padx=(240,0), pady=(115,0))
-        self.userEntry.grid(row=2, column=1,pady=(120,0))
+        self.userLabel.grid(row=2, column=0,padx=(240,0), pady=(50,0))
+        self.userEntry.grid(row=2, column=1,pady=(50,0))
         self.passLabel.grid(row=3, column=0,padx=(240,0))
         self.passEntry.grid(row=3, column=1,pady=6)
         # die Eigenschaften der Buttons werden geändert
