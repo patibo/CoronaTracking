@@ -76,6 +76,7 @@ class GUI:  # Klasse der Oberfläche
         self.var_event_auswahl = StringVar(self.surface)
         self.event_l = Label(self.surface)
         self.event_om = Label(self.surface)
+        self.event_lb = Label(self.surface)
         self.event_b = Button(self.surface)
 
         # passwort zurücksetzen
@@ -177,6 +178,7 @@ class GUI:  # Klasse der Oberfläche
 
         self.event_l.grid_forget()
         self.event_om.grid_forget()
+        self.event_lb.grid_forget()
         self.event_b.grid_forget()
 
         # passwort zurücksetzen
@@ -346,35 +348,43 @@ class GUI:  # Klasse der Oberfläche
     def event_reservieren(self):
         self.clear_design()  # Seite wird geleert
         self.menubar2()  # menübar wird angezeigt
-        self.var_event_auswahl.set("Events")  # String wird auf Events gestellt
+        #self.var_event_auswahl.set("Events")  # String wird auf Events gestellt
 
-        self.event_l.config(text='Select One', width=10, bg="#005ca9", fg= "white" )
+        self.event_l.config(text='Wählen Sie das Event aus an dem Sie Teilnehmen möchten', bg="#005ca9", fg= "white")
         self.event_l.grid(row=2, column=1)
         liste = self.backend.event()  # Alle Events mit ihren Informationen
-        self.event_om = OptionMenu(self.surface, self.var_event_auswahl, *liste)  # OptionMenu wird erstellt, in self.var_event_auswahl wird die ausgewählte Event(value) eingetragen
-        self.event_om.grid(row=2, column=2)
+        #self.event_om = OptionMenu(self.surface, self.var_event_auswahl, *liste)  # OptionMenu wird erstellt, in self.var_event_auswahl wird die ausgewählte Event(value) eingetragen
+        #self.event_om.grid(row=2, column=2)
+
+        self.event_lb = Listbox(self.surface, width=50)
+        self.event_lb.insert(END, self.var_event_auswahl, *liste)
+        self.event_lb.delete(0, 0)
+        var = self.event_lb.get(END)
+        self.event_lb.grid(row=3, column=2)
+        print(var)
 
         self.event_b.config(text='Bestätigen', command=self.reservieren, bg="green", pady=10)
-        self.event_b.grid(row=3, column=2)
+        self.event_b.grid(row=4, column=2)
 
       
 
     def reservieren(self):
-        name = self.var_event_auswahl.get()  # ausgewählter Event, ist ein string
+        #name = self.var_event_auswahl.get()  # ausgewählter Event, ist ein string
+        lb = self.event_lb.get(self.event_lb.curselection()) #mit .curselction() wird das Event geholt, das ausgewählt wurde.
         self.backend.db.connect()  # Verbindung zu DB erstellt
         verlauf = self.backend.db.verlauf(
             self.backend.id)  # alle Events die der Kunde reserviert hat werden in verlauf gespeichert
         self.backend.db.close()  # verbindung zu DB getrennt
         ok = 0
         for i in verlauf:  # jedes einzelne Event wird durchgegangen
-            if i[1] in name:  # hat der Kunde schon das ausgewählte event reserviert, kommt diese Meldung, 0 = eventid, 1 = eventname
+            if i[1] in lb:  # hat der Kunde schon das ausgewählte event reserviert, kommt diese Meldung, 0 = eventid, 1 = eventname
                 messagebox.showinfo('Event reservieren', 'Für dieses Event haben sie schon reserviert.')
                 ok = 1
                 break
         if ok == 0:
             events = self.backend.event()  # in evenst stehen alle Events mit ihren Informationen
             for i in events:  # jedes event wird einzeln durchgegangen
-                if i[0] in name:  # das richtige event wird gesucht, 0 = eventname
+                if i[0] in lb:  # das richtige event wird gesucht, 0 = eventname
                     self.backend.event_res(i[0])
             self.main()  # Starseite wird aufgerufen
         else:
