@@ -39,7 +39,7 @@ class GUI:  # Klasse der Oberfläche
 
         self.b_save = Button(self.surface)
 
-        self.fehler = Label(self.surface)
+        self.fehler = Label(self.surface,bg="#005ca9", fg="white")
         # login
         self.userLabel = Label(self.surface)
         self.userEntry = Entry(self.surface)
@@ -98,8 +98,8 @@ class GUI:  # Klasse der Oberfläche
     def menubar(self):
         menubar = Menu(self.surface)
 
-        menubar.add_command(label="Registrieren", command=self.regestrieren)
-        menubar.add_command(label="Login", command=self.login)
+        menubar.add_command(label="Registrieren", command=self.fehler_text_leer_regestrieren)
+        menubar.add_command(label="Login", command=self.fehler_text_leer_login)
 
         self.surface.config(menu=menubar)
 
@@ -109,21 +109,12 @@ class GUI:  # Klasse der Oberfläche
         menubar.add_command(label="Home", command=self.main)
         menubar.add_command(label="Event Anmeldung", command=self.event_reservieren)
 
-        menubar.add_command(label="Logout", command=self.logout)
+        menubar.add_command(label="Logout", command=self.fehler_text_leer_login)
 
         self.surface.config(menu=menubar)
 
 
-    def menubar3(self):
-        menubar = Menu(self.surface)
 
-        menubar.add_command(label="Home", command=self.main)
-        menubar.add_command(label="Event Anmeldung", command=self.event_reservieren)
-
-        menubar.add_command(label="Logout", command=self.logout)
-
-        self.surface.config(menu=menubar)
-        self.clear_design()
 
     def clear_design(self):
         # hier werden alle Labels, Enterys, etc. ausgeblendet
@@ -265,6 +256,14 @@ class GUI:  # Klasse der Oberfläche
         self.userEntry.delete(0, 'end')
         self.passEntry.delete(0, 'end')
         self.regestrieren()
+    def fehler_text_leer_login(self):
+        """die Eingabefelder Benutzername/E-Mail und Passwort auf der Login Seite werden geleert und die Fehlermeldung ausgeblendet. Dann wird die regestrier Seite geöffnet/aufgerufen"""
+        self.fehler.config(text='',bg="#005ca9")
+        self.userEntry.delete(0, 'end')
+        self.passEntry.delete(0, 'end')
+        self.pv_pass.delete(0, 'end')
+        self.pv_passw.delete(0, 'end')
+        self.login()
 
     def fehler_text_leer_pswt_r(self):
         """die Eingabefelder Benutzername/E-Mail und Passwort auf der Login Seite werden geleert und die Fehlermeldung ausgeblendet. Dann wird die Passwort zurücksetzen Seite geöffnet/aufgerufen"""
@@ -280,12 +279,12 @@ class GUI:  # Klasse der Oberfläche
         self.surface.geometry("800x360")  # größe des fensters
         self.clear_design()  # ganzer Inhalt des Fensters wird ausgeblendet
         self.menubar()  # menübar wird angezeigt
-        self.clear_design()
+
         self.email.delete(0, 'end')  # das meist verwendte Eingabefeld für Passwort zurücksetzen wird hier entleert
         # der Text der Labels werden geändert
         self.userLabel.config(text="Email/Benutzername:", bg="#005ca9", fg="white",)
         self.passLabel.config(text="Passwort:", bg="#005ca9", fg="white")
-        self.fehler.config(bg="#005ca9", fg="white")
+        #self.fehler.config(bg="#005ca9", fg="white")
         # die Labels werden positioniert
         self.userLabel.grid(row=1, column=0,padx=(240,0), pady=(120,0))
         self.userEntry.grid(row=1, column=1,pady=(120,0))
@@ -368,8 +367,7 @@ class GUI:  # Klasse der Oberfläche
         self.backend.db.close()  # verbindung zu DB getrennt
         ok = 0
         for i in verlauf:  # jedes einzelne Event wird durchgegangen
-            if i[
-                1] in name:  # hat der Kunde schon das ausgewählte event reserviert, kommt diese Meldung, 0 = eventid, 1 = eventname
+            if i[1] in name:  # hat der Kunde schon das ausgewählte event reserviert, kommt diese Meldung, 0 = eventid, 1 = eventname
                 messagebox.showinfo('Event reservieren', 'Für dieses Event haben sie schon reserviert.')
                 ok = 1
                 break
@@ -401,7 +399,7 @@ class GUI:  # Klasse der Oberfläche
                                padx=270,)
         # Eigenschaften ändern
         self.pv_button.config(text="Senden", command=self.email_p,bg = "green" ,padx=30, fg="white"  )
-        self.pv_stop.config(text="Abbrechen", command=self.login, bg= "red", fg="white",padx=19)
+        self.pv_stop.config(text="Abbrechen", command=self.fehler_text_leer_login, bg= "red", fg="white",padx=19)
         # positionierungen
         self.emailLabel.grid(row=1, column=1,pady=(100,0))
         self.email.grid(row=2, column=1)
@@ -413,7 +411,7 @@ class GUI:  # Klasse der Oberfläche
         email = self.email.get()  # E-Mail-Adresse
         fehler_text = self.backend.passwort_email(email)
         if fehler_text != None:  # Gibt es einen Fehler wird die Meldung angezeigt und man kommt nicht weiter
-            self.fehler.config(text=fehler_textbg="red")
+            self.fehler.config(text=fehler_text,bg="red")
             self.pswt_r()
         else:  # Inhalte der Eingabefelder werden entleert, Text vom Lable fehler wird geändert
             self.fehler.config(text='',bg="#005ca9")
@@ -457,12 +455,14 @@ class GUI:  # Klasse der Oberfläche
         self.pv_pass.grid(row=1, column=0, pady=3)
         self.pv_passw.grid(row=2, column=0)
         self.pv_button.grid(row=3, column=0, pady=3)
+        self.fehler.grid(row=3, column=3)
         # self.pv_stop.grid(row=3, column=1)
 
     def neu_pswt_p(self):
         pswt = self.pv_pass.get()  # Passwort
         pswt_w = self.pv_passw.get()  # Password wiederholen
         fehler_text = self.backend.neuse_passwort(pswt, pswt_w, self.email_adress)
+        print(fehler_text)
         if fehler_text != None:  # Gibt es einen Fehler wird die Meldung angezeigt und man kommt nicht weiter
             self.fehler.config(text=fehler_text,bg="red")
             self.zuruecksetzen()
@@ -632,7 +632,8 @@ class Backend:  # Hier passiert alles was im hintergrund der Webseite
     def __init__(self):
         # ilirjan: 'root','15071998','localhost','3306','coronatracking'
         # alisa: 'root','root','localhost','8889','coronatracking'
-        self.db = DB('root','root','localhost','8889','coronatracking')  # hier kann ich die Klasse DB verwenden bzw. hier wird sie aufgerufen
+        # alisa: 'root','','localhost','3306','coronatracking'
+        self.db = DB('root','','localhost','3306','coronatracking')  # hier kann ich die Klasse DB verwenden bzw. hier wird sie aufgerufen
         self.id = None
         self.mail_text = ""
 
