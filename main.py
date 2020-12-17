@@ -39,7 +39,7 @@ class GUI:  # Klasse der Oberfläche
 
         self.b_save = Button(self.surface)
 
-        self.fehler = Label(self.surface, bg="#005ca9", fg="white")
+        self.fehler = Label(self.surface,bg="#005ca9", fg="white")
         # login
         self.userLabel = Label(self.surface)
         self.userEntry = Entry(self.surface)
@@ -112,6 +112,9 @@ class GUI:  # Klasse der Oberfläche
         menubar.add_command(label="Logout", command=self.fehler_text_leer_login)
 
         self.surface.config(menu=menubar)
+
+
+
 
     def clear_design(self):
         # hier werden alle Labels, Enterys, etc. ausgeblendet
@@ -192,6 +195,7 @@ class GUI:  # Klasse der Oberfläche
 
     def regestrieren(self):
 
+
         self.clear_design()  # ganzer Inhalt des Fensters wird ausgeblendet
         # der Text der Labels werden geändert
         self.benutzername.config(text='Benutzername:', bg="#005ca9", fg="white", padx=140)
@@ -216,10 +220,10 @@ class GUI:  # Klasse der Oberfläche
         self.e_nachname.grid(row=10, column=2, pady=(0, 10))
         self.e_email.grid(row=14, column=2, pady=(0, 10))
 
-        self.b_save.config(text='Erstellen', command=self.benutzer_erstellen, bg="green", padx=36,
-                           pady=6)  # der Text vom Button wird geändert und festgelegt welche Methode aufgerufen wird, wenn der Button geklickt wird
+        self.b_save.config(text='Erstellen', command=self.benutzer_erstellen,bg="green",padx=36,pady=6)  # der Text vom Button wird geändert und festgelegt welche Methode aufgerufen wird, wenn der Button geklickt wird
         self.b_save.grid(row=18, column=2, pady=(12))
         self.fehler.grid(row=19, column=2, columnspan=30)
+
 
     def benutzer_erstellen(self):
         # Inahlter der Eingabefelder werden rausgehohlt
@@ -233,11 +237,11 @@ class GUI:  # Klasse der Oberfläche
         fehler_text = self.backend.neu(benutzername, pswt, pswt_w, vorname, nachname, email)
 
         if fehler_text != None:  # Gibt es einen Fehler wird die Meldung angezeigt und man kommt nicht weiter
-            self.fehler.config(text=fehler_text, bg="red")
+            self.fehler.config(text=fehler_text,bg="red")
 
             self.regestrieren()
         else:  # Inhalte der Eingabefelder werden entleert, Text vom Lable fehler wird geändert, man kommt auf die login Seite zurück
-            self.fehler.config(text='', bg="#005ca9")
+            self.fehler.config(text='',bg="#005ca9")
             self.e_benutzername.delete(0, 'end')
             self.e_pswt.delete(0, 'end')
             self.e_pswt_w.delete(0, 'end')
@@ -248,14 +252,13 @@ class GUI:  # Klasse der Oberfläche
 
     def fehler_text_leer_regestrieren(self):
         """die Eingabefelder Benutzername/E-Mail und Passwort auf der Login Seite werden geleert und die Fehlermeldung ausgeblendet. Dann wird die regestrier Seite geöffnet/aufgerufen"""
-        self.fehler.config(text='', bg="#005ca9")
+        self.fehler.config(text='',bg="#005ca9")
         self.userEntry.delete(0, 'end')
         self.passEntry.delete(0, 'end')
         self.regestrieren()
-
     def fehler_text_leer_login(self):
         """die Eingabefelder Benutzername/E-Mail und Passwort auf der Login Seite werden geleert und die Fehlermeldung ausgeblendet. Dann wird die regestrier Seite geöffnet/aufgerufen"""
-        self.fehler.config(text='', bg="#005ca9")
+        self.fehler.config(text='',bg="#005ca9")
         self.userEntry.delete(0, 'end')
         self.passEntry.delete(0, 'end')
         self.pv_pass.delete(0, 'end')
@@ -264,12 +267,13 @@ class GUI:  # Klasse der Oberfläche
 
     def fehler_text_leer_pswt_r(self):
         """die Eingabefelder Benutzername/E-Mail und Passwort auf der Login Seite werden geleert und die Fehlermeldung ausgeblendet. Dann wird die Passwort zurücksetzen Seite geöffnet/aufgerufen"""
-        self.fehler.config(text='', bg="#005ca9")
+        self.fehler.config(text='',bg="#005ca9")
         self.userEntry.delete(0, 'end')
         self.passEntry.delete(0, 'end')
         self.pswt_r()
 
     def login(self):
+
 
         self.surface.configure(bg="#005ca9")  # hintergrundfrabe des fensters
         self.surface.geometry("800x360")  # größe des fensters
@@ -278,22 +282,22 @@ class GUI:  # Klasse der Oberfläche
 
         self.email.delete(0, 'end')  # das meist verwendte Eingabefeld für Passwort zurücksetzen wird hier entleert
         # der Text der Labels werden geändert
-        self.userLabel.config(text="Email/Benutzername:", bg="#005ca9", fg="white", )
+        self.userLabel.config(text="Email/Benutzername:", bg="#005ca9", fg="white",)
         self.passLabel.config(text="Passwort:", bg="#005ca9", fg="white")
-        # self.fehler.config(bg="#005ca9", fg="white")
+        #self.fehler.config(bg="#005ca9", fg="white")
         # die Labels werden positioniert
-        self.userLabel.grid(row=1, column=0, padx=(240, 0), pady=(120, 0))
-        self.userEntry.grid(row=1, column=1, pady=(120, 0))
-        self.passLabel.grid(row=2, column=0, padx=(240, 0))
-        self.passEntry.grid(row=2, column=1, pady=6)
+        self.userLabel.grid(row=1, column=0,padx=(240,0), pady=(120,0))
+        self.userEntry.grid(row=1, column=1,pady=(120,0))
+        self.passLabel.grid(row=2, column=0,padx=(240,0))
+        self.passEntry.grid(row=2, column=1,pady=6)
         # die Eigenschaften der Buttons werden geändert
-        # self.b_regestrieren.config(text='Regestrieren', command=self.fehler_text_leer_regestrieren, bg="green")
-        self.b_login.config(text='Login', command=self.login_pr, bg="green", padx=44)
+        #self.b_regestrieren.config(text='Regestrieren', command=self.fehler_text_leer_regestrieren, bg="green")
+        self.b_login.config(text='Login', command=self.login_pr, bg="green",padx=44)
         self.b_pswt_return.config(text='Passwort zurücksetzen', command=self.fehler_text_leer_pswt_r, bg="#33ccff")
         # die Buttons werden positioniert
-        # self.b_regestrieren.grid(row=4, column=1)
+        #self.b_regestrieren.grid(row=4, column=1)
         self.b_login.grid(row=4, column=1, pady=3, )
-        self.b_pswt_return.grid(row=3, column=1, pady=3)
+        self.b_pswt_return.grid(row=3, column=1, pady= 3)
         self.fehler.grid(row=4, column=2)
         self.surface.mainloop()  # fenster schließt sich nicht automatisch
 
@@ -304,11 +308,11 @@ class GUI:  # Klasse der Oberfläche
 
         if fehler_text != None:  # wenn fehler zurückgegeben wird, dann wird dieser Fehler angezeigt und man kommt auf die Login Seite zurück
             # print(fehler_text)
-            self.fehler.config(text=fehler_text, bg='red')
+            self.fehler.config(text=fehler_text,bg='red')
 
             self.login()
         else:  # kein Fehler zurückgegeben
-            self.fehler.config(text='', bg="#005ca9")  # Fehlermeldung ausgeblendet
+            self.fehler.config(text='',bg="#005ca9")  # Fehlermeldung ausgeblendet
             self.userEntry.delete(0, 'end')  # Eingabefeld wird geleert
             self.passEntry.delete(0, 'end')  # Eingabefeld wird geleert
             self.main()  # Starseite wird aufgerufen/geöffnet
@@ -326,34 +330,34 @@ class GUI:  # Klasse der Oberfläche
             text = i[1] + " am " + str(i[2]) + " um " + str(i[3])  # 1 ist Eventname, 2 ist Eventdatum, 3 ist Eventzeit
             self.listbox.insert(END, text)
         # positionierung der Listbox und Scrollbar
-        self.listbox.grid(row=1, column=1, columnspan=10, sticky=N + E + S + W, padx=20)
-        self.scroll.grid(row=1, column=10, sticky=E + N + S, )
-        self.t_verlauf.config(text='Verlauf', font="Helvetica 16 bold italic", bg="#005ca9", fg="white", padx=190,
-                              pady=10)  # Überschrift
+        self.listbox.grid(row=1, column=1, columnspan=10, sticky=N + E + S + W,padx=20)
+        self.scroll.grid(row=1, column=10, sticky=E + N + S,)
+        self.t_verlauf.config(text='Verlauf', font="Helvetica 16 bold italic", bg="#005ca9", fg="white",padx=190,pady=10)  # Überschrift
 
-        self.t_verlauf.grid(row=0, column=1, pady=(0, 10))  # Überschrift positionieren
+        self.t_verlauf.grid(row=0, column=1,pady=(0,10))  # Überschrift positionieren
         # self.b_logout.grid(row = 3, column=11)
         # self.b_logout.config(text='Abmelden',command=self.logout)
         self.b_verdachtsfall.config(text='Corona Fall melden', command=self.verdachtsfall, bg='red', fg='white',
                                     pady="24", padx=30)
-        self.b_verdachtsfall.grid(row=2, column=12, padx=100)
+        self.b_verdachtsfall.grid(row=2, column=12,padx=100)
         # self.b_regestrieren_event.config(text='Event reservieren',command=self.event_reservieren)
         # self.b_regestrieren_event.grid(row = 13, column=3)
 
     def event_reservieren(self):
         self.clear_design()  # Seite wird geleert
-        self.menubar3()  # menübar wird angezeigt
+        self.menubar2()  # menübar wird angezeigt
         self.var_event_auswahl.set("Events")  # String wird auf Events gestellt
 
-        self.event_l.config(text='Select One', width=10, bg="#005ca9", fg="white")
+        self.event_l.config(text='Select One', width=10, bg="#005ca9", fg= "white" )
         self.event_l.grid(row=2, column=1)
         liste = self.backend.event()  # Alle Events mit ihren Informationen
-        self.event_om = OptionMenu(self.surface, self.var_event_auswahl,
-                                   *liste)  # OptionMenu wird erstellt, in self.var_event_auswahl wird die ausgewählte Event(value) eingetragen
+        self.event_om = OptionMenu(self.surface, self.var_event_auswahl, *liste)  # OptionMenu wird erstellt, in self.var_event_auswahl wird die ausgewählte Event(value) eingetragen
         self.event_om.grid(row=2, column=2)
 
         self.event_b.config(text='Bestätigen', command=self.reservieren, bg="green", pady=10)
         self.event_b.grid(row=3, column=2)
+
+      
 
     def reservieren(self):
         name = self.var_event_auswahl.get()  # ausgewählter Event, ist ein string
@@ -363,8 +367,7 @@ class GUI:  # Klasse der Oberfläche
         self.backend.db.close()  # verbindung zu DB getrennt
         ok = 0
         for i in verlauf:  # jedes einzelne Event wird durchgegangen
-            if i[
-                1] in name:  # hat der Kunde schon das ausgewählte event reserviert, kommt diese Meldung, 0 = eventid, 1 = eventname
+            if i[1] in name:  # hat der Kunde schon das ausgewählte event reserviert, kommt diese Meldung, 0 = eventid, 1 = eventname
                 messagebox.showinfo('Event reservieren', 'Für dieses Event haben sie schon reserviert.')
                 ok = 1
                 break
@@ -378,9 +381,7 @@ class GUI:  # Klasse der Oberfläche
             self.event_reservieren()  # Seite reservieren wird aufgerufen
 
     def verdachtsfall(self):
-        MsgBox = messagebox.askquestion('Corona Fall melden',
-                                        'Sind Sie sich sicher, dass Sie einen Corona Fall melden möchten?',
-                                        icon='warning')
+        MsgBox = messagebox.askquestion('Corona Fall melden','Sind Sie sich sicher, dass Sie einen Corona Fall melden möchten?',icon='warning')
         if MsgBox == 'yes':
             self.backend.mail()  # Email wird versendet
             messagebox.showinfo('Bestätigung', 'Die warn E-Mails wurden versendet')
@@ -395,25 +396,25 @@ class GUI:  # Klasse der Oberfläche
     def pswt_r(self):
         self.clear_design()  # Seite wird geleert
         self.emailLabel.config(text="Geben sie bitte ihre Email-Adresse ihres Accounts an:", bg="#005ca9", fg="white",
-                               padx=270, )
+                               padx=270,)
         # Eigenschaften ändern
-        self.pv_button.config(text="Senden", command=self.email_p, bg="green", padx=30, fg="white")
-        self.pv_stop.config(text="Abbrechen", command=self.fehler_text_leer_login, bg="red", fg="white", padx=19)
+        self.pv_button.config(text="Senden", command=self.email_p,bg = "green" ,padx=30, fg="white"  )
+        self.pv_stop.config(text="Abbrechen", command=self.fehler_text_leer_login, bg= "red", fg="white",padx=19)
         # positionierungen
-        self.emailLabel.grid(row=1, column=1, pady=(100, 0))
+        self.emailLabel.grid(row=1, column=1,pady=(100,0))
         self.email.grid(row=2, column=1)
-        self.pv_button.grid(row=3, column=1, pady=3)
-        self.pv_stop.grid(row=4, column=1, pady=3)
+        self.pv_button.grid(row=3, column=1, pady=3 )
+        self.pv_stop.grid(row=4, column=1,pady=3)
         self.fehler.grid(row=5, column=1)
 
     def email_p(self):
         email = self.email.get()  # E-Mail-Adresse
         fehler_text = self.backend.passwort_email(email)
         if fehler_text != None:  # Gibt es einen Fehler wird die Meldung angezeigt und man kommt nicht weiter
-            self.fehler.config(text=fehler_text, bg="red")
+            self.fehler.config(text=fehler_text,bg="red")
             self.pswt_r()
         else:  # Inhalte der Eingabefelder werden entleert, Text vom Lable fehler wird geändert
-            self.fehler.config(text='', bg="#005ca9")
+            self.fehler.config(text='',bg="#005ca9")
             self.email_adress = self.email.get()  # E-Mail-Adresse, brauche ich für das Passwort update
             self.email.delete(0, 'end')
             self.verifiziercode()
@@ -421,12 +422,11 @@ class GUI:  # Klasse der Oberfläche
     def verifiziercode(self):
         self.clear_design()
         # Eigenschaften ändern
-        self.psLabel.config(text="Geben sie den 5-stellingen Code der ihnen per Email gesendet wurde", bg="#005ca9",
-                            padx=220, fg="white")
+        self.psLabel.config(text="Geben sie den 5-stellingen Code der ihnen per Email gesendet wurde", bg="#005ca9",padx=220, fg= "white")
         self.pv_button.config(text="Bestätigen", command=self.code_p, padx=23)
         # self.pv_stop.config(text="Abbrechen", command=self.login)
         # positionierung
-        self.psLabel.grid(row=1, column=1, pady=(110, 0))
+        self.psLabel.grid(row=1, column=1, pady=(110,0))
         self.email.grid(row=2, column=1)
         self.pv_button.grid(row=3, column=1, pady=3)
         self.pv_stop.grid(row=4, column=1)
@@ -451,11 +451,11 @@ class GUI:  # Klasse der Oberfläche
 
         # self.pv_stop.config(text="Abbrechen", command=self.login)
         # positionierung
-        self.psLabel.grid(row=0, column=0, pady=(120, 0))
+        self.psLabel.grid(row=0, column=0, pady=(120,0))
         self.pv_pass.grid(row=1, column=0, pady=3)
         self.pv_passw.grid(row=2, column=0)
         self.pv_button.grid(row=3, column=0, pady=3)
-        self.fehler.grid(row=4, column=0)
+        self.fehler.grid(row=4, column=2)
         # self.pv_stop.grid(row=3, column=1)
 
     def neu_pswt_p(self):
@@ -464,10 +464,10 @@ class GUI:  # Klasse der Oberfläche
         fehler_text = self.backend.neuse_passwort(pswt, pswt_w, self.email_adress)
         print(fehler_text)
         if fehler_text != None:  # Gibt es einen Fehler wird die Meldung angezeigt und man kommt nicht weiter
-            self.fehler.config(text=fehler_text, bg="red")
+            self.fehler.config(text=fehler_text,bg="red")
             self.zuruecksetzen()
         else:  # Inhalte der Eingabefelder werden entleert, Text vom Lable fehler wird geändert, man kommt auf die login Seite zurück
-            self.fehler.config(text='', bg="#005ca9")
+            self.fehler.config(text='',bg="#005ca9")
             self.pv_pass.delete(0, 'end')
             self.pv_passw.delete(0, 'end')
             self.login()
@@ -633,8 +633,7 @@ class Backend:  # Hier passiert alles was im hintergrund der Webseite
         # ilirjan: 'root','15071998','localhost','3306','coronatracking'
         # alisa: 'root','root','localhost','8889','coronatracking'
         # alisa: 'root','','localhost','3306','coronatracking'
-        self.db = DB('root', '', 'localhost', '3306',
-                     'coronatracking')  # hier kann ich die Klasse DB verwenden bzw. hier wird sie aufgerufen
+        self.db = DB('root','','localhost','3306','coronatracking')  # hier kann ich die Klasse DB verwenden bzw. hier wird sie aufgerufen
         self.id = None
         self.mail_text = ""
 
