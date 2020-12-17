@@ -41,6 +41,7 @@ class GUI:  # Klasse der Oberfläche
 
         self.fehler = Label(self.surface,bg="#005ca9", fg="white")
         # login
+        self.titleLabel = Label(self.surface)
         self.userLabel = Label(self.surface)
         self.userEntry = Entry(self.surface)
         self.passLabel = Label(self.surface)
@@ -143,6 +144,7 @@ class GUI:  # Klasse der Oberfläche
 
         self.fehler.grid_forget()
         # login
+        self.titleLabel.grid_forget()
         self.userLabel.grid_forget()
         self.userEntry.grid_forget()
         self.passLabel.grid_forget()
@@ -286,23 +288,25 @@ class GUI:  # Klasse der Oberfläche
 
         self.email.delete(0, 'end')  # das meist verwendte Eingabefeld für Passwort zurücksetzen wird hier entleert
         # der Text der Labels werden geändert
+        self.titleLabel.config(text="Corona Tracking App", bg="#005ca9", fg="white", font="Helvetica 24 bold italic")
         self.userLabel.config(text="Email/Benutzername:", bg="#005ca9", fg="white",)
         self.passLabel.config(text="Passwort:", bg="#005ca9", fg="white")
         #self.fehler.config(bg="#005ca9", fg="white")
         # die Labels werden positioniert
-        self.userLabel.grid(row=1, column=0,padx=(240,0), pady=(120,0))
-        self.userEntry.grid(row=1, column=1,pady=(120,0))
-        self.passLabel.grid(row=2, column=0,padx=(240,0))
-        self.passEntry.grid(row=2, column=1,pady=6)
+        self.titleLabel.grid(row=1, column=0, padx=120, columnspan=30)
+        self.userLabel.grid(row=2, column=0,padx=(120,0), pady=(60,0))
+        self.userEntry.grid(row=2, column=1,pady=(60,0))
+        self.passLabel.grid(row=3, column=0,padx=(120,0))
+        self.passEntry.grid(row=3, column=1,pady=6)
         # die Eigenschaften der Buttons werden geändert
         #self.b_regestrieren.config(text='Regestrieren', command=self.fehler_text_leer_regestrieren, bg="green")
         self.b_login.config(text='Login', command=self.login_pr, bg="green",padx=44)
         self.b_pswt_return.config(text='Passwort zurücksetzen', command=self.fehler_text_leer_pswt_r, bg="#33ccff")
         # die Buttons werden positioniert
         #self.b_regestrieren.grid(row=4, column=1)
-        self.b_login.grid(row=4, column=1, pady=3, )
-        self.b_pswt_return.grid(row=3, column=1, pady= 3)
-        self.fehler.grid(row=4, column=2)
+        self.b_login.grid(row=5, column=1, pady=3, )
+        self.b_pswt_return.grid(row=4, column=1, pady= 3)
+        self.fehler.grid(row=5, column=2)
         self.surface.mainloop()  # fenster schließt sich nicht automatisch
 
     def login_pr(self):
@@ -352,8 +356,8 @@ class GUI:  # Klasse der Oberfläche
         self.menubar2()  # menübar wird angezeigt
         #self.var_event_auswahl.set("Events")  # String wird auf Events gestellt
 
-        self.event_l.config(text='Wählen Sie das Event aus an dem Sie Teilnehmen möchten', bg="#005ca9", fg= "white")
-        self.event_l.grid(row=2, column=1)
+        self.event_l.config(text='Wählen Sie das Event aus an dem Sie Teilnehmen möchten', font="Helvetica 16 bold italic", bg="#005ca9", fg= "white")
+        self.event_l.grid(row=2, column=1, columnspan=20)
         liste = self.backend.event()  # Alle Events mit ihren Informationen
         #self.event_om = OptionMenu(self.surface, self.var_event_auswahl, *liste)  # OptionMenu wird erstellt, in self.var_event_auswahl wird die ausgewählte Event(value) eingetragen
         #self.event_om.grid(row=2, column=2)
@@ -361,14 +365,12 @@ class GUI:  # Klasse der Oberfläche
         self.event_lb = Listbox(self.surface, width=50)
         self.event_lb.insert(END, self.var_event_auswahl, *liste)
         self.event_lb.delete(0, 0)
-        var = self.event_lb.get(END)
-        self.event_lb.grid(row=3, column=2)
-        print(var)
+        self.event_lb.grid(row=3, column=2, columnspan=10)
 
-        self.event_b.config(text='Bestätigen', command=self.reservieren, bg="green", pady=10)
-        self.event_b.grid(row=4, column=2)
-        self.event_return.config(text='Abrechen', command=self.main)
-        self.event_return.grid(row=5, column=2)
+        self.event_b.config(text='Bestätigen', command=self.reservieren, bg="green", fg="white", pady=10)
+        self.event_b.grid(row=4, column=5)
+        self.event_return.config(text='Abbrechen', command=self.main, bg="red", fg="white", pady=10)
+        self.event_return.grid(row=4, column=7)
 
       
 
@@ -437,13 +439,13 @@ class GUI:  # Klasse der Oberfläche
         self.clear_design()
         # Eigenschaften ändern
         self.psLabel.config(text="Geben sie den 5-stellingen Code der ihnen per Email gesendet wurde", bg="#005ca9",padx=220, fg= "white")
-        self.pv_button.config(text="Bestätigen", command=self.code_p, padx=23)
-        # self.pv_stop.config(text="Abbrechen", command=self.login)
+        self.pv_button.config(text="Bestätigen", command=self.code_p, padx=23, fg="white")
+        self.pv_stop.config(text="Abbrechen", command=self.fehler_text_leer_login, fg="white", bg="red")
         # positionierung
         self.psLabel.grid(row=1, column=1, pady=(110,0))
         self.email.grid(row=2, column=1)
         self.pv_button.grid(row=3, column=1, pady=3)
-        self.pv_stop.grid(row=4, column=1)
+        self.pv_stop.grid(row=3, column=2)
         self.fehler.grid(row=5, column=0)
 
     def code_p(self):
@@ -469,7 +471,7 @@ class GUI:  # Klasse der Oberfläche
         self.pv_pass.grid(row=1, column=0, pady=3)
         self.pv_passw.grid(row=2, column=0)
         self.pv_button.grid(row=3, column=0, pady=3)
-        self.fehler.grid(row=4, column=2)
+        self.fehler.grid(row=4, column=0)
         # self.pv_stop.grid(row=3, column=1)
 
     def neu_pswt_p(self):
@@ -647,7 +649,7 @@ class Backend:  # Hier passiert alles was im hintergrund der Webseite
         # ilirjan: 'root','15071998','localhost','3306','coronatracking'
         # alisa: 'root','root','localhost','8889','coronatracking'
         # alisa: 'root','','localhost','3306','coronatracking'
-        self.db = DB('root','','localhost','3306','coronatracking')  # hier kann ich die Klasse DB verwenden bzw. hier wird sie aufgerufen
+        self.db = DB('root','root','localhost','3306','coronatracking')  # hier kann ich die Klasse DB verwenden bzw. hier wird sie aufgerufen
         self.id = None
         self.mail_text = ""
 
