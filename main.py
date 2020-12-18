@@ -23,6 +23,7 @@ class GUI:  # Klasse der Oberfläche
         self.scroll = Scrollbar(self.surface, orient=VERTICAL)
 
         # regestrierung
+        self.regLabel = Label(self.surface)
         self.benutzername = Label(self.surface)
         self.pswt = Label(self.surface)
         self.pswt_w = Label(self.surface)
@@ -126,6 +127,7 @@ class GUI:  # Klasse der Oberfläche
         self.scroll.grid_forget()
 
         # regestrieren
+        self.regLabel.grid_forget()
         self.benutzername.grid_forget()
         self.pswt.grid_forget()
         self.pswt_w.grid_forget()
@@ -204,6 +206,7 @@ class GUI:  # Klasse der Oberfläche
 
         self.clear_design()  # ganzer Inhalt des Fensters wird ausgeblendet
         # der Text der Labels werden geändert
+        self.regLabel.config(text="Registrierung", bg="#005ca9", fg="white", font="helvetica 24 bold")
         self.benutzername.config(text='Benutzername:', bg="#005ca9", fg="white", padx=140)
         self.pswt.config(text='Passwort:', bg="#005ca9", fg="white")
         self.pswt_w.config(text='Passwort wiederholen:', bg="#005ca9", fg="white")
@@ -212,6 +215,7 @@ class GUI:  # Klasse der Oberfläche
         self.email_r.config(text='Email:', bg="#005ca9", fg="white")
 
         # Labels,Enterys, Buttons werden hier positioniert
+        self.regLabel.grid(row=1, column=2)
         self.benutzername.grid(row=2, column=1)
         self.pswt.grid(row=4, column=1, pady=(0, 10))
         self.pswt_w.grid(row=6, column=1, pady=(0, 10))
